@@ -1,64 +1,67 @@
 resources:
 - repo: self
+  clean: true
 
-queue:
-  name: Hosted VS2017
-  demands: npm
+phases:
 
-steps:
+- phase: Phase_1
+  displayName: Phase Windows
+  condition: succeeded()
+  
+  queue:
+    name: Hosted VS2017
+    demands: npm
 
-# Perform npm Install
-- task: Npm@1
-  displayName: 'Install'
-  inputs:
-    verbose: false
+  variables:
+    angular_version: '6.1.7'
 
-# Perform Angular Tests
-- task: Npm@1
-  displayName: 'Test'
-  inputs:
-    command: custom
-    verbose: false
-    customCommand: 'test'
+  steps:
+  
+  # Perform npm Install
+  - task: Npm@1
+    displayName: 'Install'
+    inputs:
+      verbose: false
 
-# Attach Test Report to Azure Pipeline
-- task: PublishTestResults@2
-  displayName: 'Report Tests'
-  inputs:
-    testRunner: NUnit
-    testResultsFiles: Reports/Results.xml
-    mergeTestResults: true
-    testRunTitle: 'Microsoft Account Profile Information'
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+  # Perform Angular Tests
+  - task: Npm@1
+    displayName: 'Test'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'test'
 
-# Attach Coverage Report to Azure Pipeline
-- task: PublishCodeCoverageResults@1
-  displayName: 'Report Coverage'
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: 'Reports/Coverage/cobertura-coverage.xml'
-    reportDirectory: Reports/Coverage
-  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+  # Attach Test Report to Azure Pipeline
+  - task: PublishTestResults@2
+    displayName: 'Report Tests'
+    inputs:
+      testRunner: NUnit
+      testResultsFiles: Reports/Results.xml
+      mergeTestResults: true
+      testRunTitle: 'Microsoft Account Profile Information'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
-# Perform Angular Build
-- task: Npm@1
-  displayName: 'Build'
-  inputs:
-    command: custom
-    verbose: false
-    customCommand: 'run build'
+  # Attach Coverage Report to Azure Pipeline
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Report Coverage'
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: 'Reports/Coverage/cobertura-coverage.xml'
+      reportDirectory: Reports/Coverage
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
 
-# Attach Build Output to Azure Pipeline
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish'
-  inputs:
-    PathtoPublish: Distributions
-    ArtifactName: Drop
-  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+  # Perform Angular Build
+  - task: Npm@1
+    displayName: 'Build'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run build'
 
-
-
-
-
-
-    
+  # Attach Build Output to Azure Pipeline
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish'
+    inputs:
+      PathtoPublish: Distributions
+      ArtifactName: Drop
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
