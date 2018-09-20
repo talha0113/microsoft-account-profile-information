@@ -2,6 +2,11 @@ resources:
 - repo: self
   clean: true
 
+trigger:
+- master
+- feature/*
+- bug/*
+
 phases:
 
 - phase: Phase_1
@@ -30,6 +35,7 @@ phases:
       command: custom
       verbose: false
       customCommand: 'test'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
   # Attach Test Report to Azure Pipeline
   - task: PublishTestResults@2
