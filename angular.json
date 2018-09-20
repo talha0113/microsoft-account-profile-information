@@ -1,0 +1,100 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "MicrosoftAccountProfileInformation": {
+      "root": "",
+      "sourceRoot": "Source",
+      "projectType": "application",
+      "prefix": "",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "Distributions",
+            "index": "Source/Index.html",
+            "main": "Source/main.ts",
+            "polyfills": "Source/polyfills.ts",
+            "tsConfig": "Source/tsconfig.app.json",
+            "assets": [
+              "Source/favicon.ico",
+              "Source/Assets"
+            ],
+            "styles": [
+              "Styles/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "Configurations/Environments/environment.ts",
+                  "with": "Configurations/Environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "MicrosoftAccountProfileInformation:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "MicrosoftAccountProfileInformation:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "MicrosoftAccountProfileInformation:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "Configurations/karma/karma.test.shim.ts",
+            "polyfills": "Source/polyfills.ts",
+            "tsConfig": "Configurations/karma/tsconfig.spec.json",
+            "karmaConfig": "Configurations/karma/karma.conf.js",
+            "styles": [
+              "Styles/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "Source/favicon.ico",
+              "Source/Assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "Source/tsconfig.app.json",
+              "Configurations/Karma/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "MicrosoftAccountProfileInformation"
+}

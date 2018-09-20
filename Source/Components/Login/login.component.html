@@ -1,0 +1,9 @@
+<div>
+    <div>
+        <button [disabled]="isInProgress" type="button" (click)="login()">Login</button>
+    </div>
+    <br />
+    <div>
+        <img src="../../Assets/loader.gif" height="30" width="30" *ngIf="isInProgress" />
+    </div>    
+</div>

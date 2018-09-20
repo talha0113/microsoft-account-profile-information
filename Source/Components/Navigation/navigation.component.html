@@ -1,0 +1,5 @@
+<div *ngIf="isAuthenticated">
+    <nav>
+        <a *ngFor="let navigationLink of navigationLinks" routerLinkActive="active" routerLink="{{navigationLink.url}}">{{navigationLink.title}}</a>
+    </nav>
+</div>
