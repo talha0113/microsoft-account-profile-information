@@ -52,8 +52,8 @@ phases:
     displayName: 'Report Coverage'
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: 'Reports/Coverage/cobertura-coverage.xml'
-      reportDirectory: Reports/Coverage
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Reports/Coverage/cobertura-coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/Reports/Coverage'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
 
   # Perform Angular Build
