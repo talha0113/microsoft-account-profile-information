@@ -1,0 +1,64 @@
+resources:
+- repo: self
+
+queue:
+  name: Hosted VS2017
+  demands: npm
+
+steps:
+
+# Perform npm Install
+- task: Npm@1
+  displayName: 'Install'
+  inputs:
+    verbose: false
+
+# Perform Angular Tests
+- task: Npm@1
+  displayName: 'Test'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'test'
+
+# Attach Test Report to Azure Pipeline
+- task: PublishTestResults@2
+  displayName: 'Report Tests'
+  inputs:
+    testRunner: NUnit
+    testResultsFiles: Reports/Results.xml
+    mergeTestResults: true
+    testRunTitle: 'Microsoft Account Profile Information'
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+
+# Attach Coverage Report to Azure Pipeline
+- task: PublishCodeCoverageResults@1
+  displayName: 'Report Coverage'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: 'Reports/Coverage/cobertura-coverage.xml'
+    reportDirectory: Reports/Coverage
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+
+# Perform Angular Build
+- task: Npm@1
+  displayName: 'Build'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'run build'
+
+# Attach Build Output to Azure Pipeline
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish'
+  inputs:
+    PathtoPublish: Distributions
+    ArtifactName: Drop
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+
+
+
+
+
+
+    
