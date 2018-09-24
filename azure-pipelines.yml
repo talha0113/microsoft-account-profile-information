@@ -5,11 +5,6 @@ resources:
   clean: true
 
 trigger:
-- master
-- feature/*
-- bug/*
-
-trigger:
     branches:
         include:
         - master
