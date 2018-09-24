@@ -9,6 +9,15 @@ trigger:
 - feature/*
 - bug/*
 
+trigger:
+    branches:
+        include:
+        - master
+        - feature/*
+        - bug/*
+        exclude:
+        - dummy/*
+
 phases:
 
 - phase: Phase_1
