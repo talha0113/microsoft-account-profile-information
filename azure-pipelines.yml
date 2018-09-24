@@ -1,3 +1,5 @@
+name: $(Year:yyyy).$(Month:MM).$(Day:dd).$(rev:.r)
+
 resources:
 - repo: self
   clean: true
