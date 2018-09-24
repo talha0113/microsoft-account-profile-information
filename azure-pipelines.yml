@@ -1,4 +1,4 @@
-name: $(Year:yyyy).$(Month:MM).$(Day:dd).$(rev:.r)
+name: $(Build.DefinitionName)-$(Year:yyyy).$(Month:MM).$(Day:dd).$(rev:.r)
 
 resources:
 - repo: self
