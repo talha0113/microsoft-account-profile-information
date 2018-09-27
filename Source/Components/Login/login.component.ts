@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../Services/authentication.service';
-import { tap, switchMap, catchError } from 'rxjs/operators';
-import { from, Observable } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -22,11 +22,9 @@ export class LoginComponent implements OnInit {
     login(): void {
         this.isInProgress = true;
         this.authenticationService.login().pipe(
-            switchMap(() => {
-                return from(this.router.navigateByUrl('/status'));
-            }),
             tap(() => {
                 this.isInProgress = false;
+                this.router.navigateByUrl('/status')
             }), catchError((error, caught: Observable<boolean>) => {
                 this.isInProgress = false;
                 return null;

@@ -1,13 +1,12 @@
 ﻿import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
+import { Query } from '@datorama/akita';
 
 import { AuthenticationStore } from '../Stores/authentication.store';
-import { Authentication } from '../Models/authentication.model';
 import { AuthenticationState } from '../States/authentication.state';
 
 
 @Injectable()
-export class AuthenticationQuery extends QueryEntity<AuthenticationState, Authentication> {
+export class AuthenticationQuery extends Query<AuthenticationState> {
     constructor(protected store: AuthenticationStore) {
         super(store);
     }
@@ -17,6 +16,6 @@ export class AuthenticationQuery extends QueryEntity<AuthenticationState, Authen
     }
 
     getToken(): string {
-        return this.getCount() > 0 ? this.getEntity(0).accessToken : null;
+        return this.getSnapshot().authentication != null ? this.getSnapshot().authentication.accessToken : null;
     }
 }
