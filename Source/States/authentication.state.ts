@@ -1,4 +1,5 @@
-﻿import { EntityState } from '@datorama/akita';
-import { Authentication } from '../Models/authentication.model';
+﻿import { Authentication } from '../Models/authentication.model';
 
-export interface AuthenticationState extends EntityState<Authentication> { }
+export interface AuthenticationState {
+    authentication: Authentication;
+}

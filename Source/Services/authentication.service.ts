@@ -27,7 +27,7 @@ export class AuthenticationService {
     login(): Observable<null> {
         return from<string>(this.msalApp.loginPopup(AuthenticationConfiguration.scopes)).pipe(
             tap((value: string) => {
-                this.authenticationStore.login(new Authentication(0, value, null));
+                this.authenticationStore.login(new Authentication(value, null));
             }),
             switchMap((value: string, index: number) => {
                 return this.refreshToken();
