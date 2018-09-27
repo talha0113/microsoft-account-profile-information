@@ -1,4 +1,4 @@
-name: $(Year:yyyy)-$(Month:MM)-$(DayOfMonth).$(rev:.r)
+name: $(Year:yyyy)-$(Month)-$(DayOfMonth).$(rev:r)
 
 resources:
 - repo: self
