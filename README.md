@@ -8,3 +8,4 @@ It is built using following frameworks and libraries
   - **Akita** State Management
   - **Jasmine & Karma** for unit testing
   - **TypeScript**
+  - **Puppeteer** and **Jest** for Automated UI Test
