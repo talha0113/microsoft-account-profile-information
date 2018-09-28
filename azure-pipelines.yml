@@ -82,7 +82,7 @@ phases:
        **
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       CleanTargetFolder: true
-      flattenFolders: true
+      flattenFolders: false
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
   # Attach Build Output to Azure Pipeline
