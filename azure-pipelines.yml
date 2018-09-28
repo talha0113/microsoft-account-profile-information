@@ -83,7 +83,7 @@ phases:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       CleanTargetFolder: true
       flattenFolders: true
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
   # Attach Build Output to Azure Pipeline
   - task: PublishBuildArtifacts@1
