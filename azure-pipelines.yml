@@ -75,7 +75,7 @@ phases:
 
   # Copy Build Output
   - task: CopyFiles@2
-    displayName: 'Copy
+    displayName: 'Copy'
     inputs:
       SourceFolder: Application/Distributions
       Contents: |
