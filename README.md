@@ -9,3 +9,5 @@ It is built using following frameworks and libraries
   - **Jasmine & Karma** for unit testing
   - **TypeScript**
   - **Puppeteer** and **Jest** for Automated UI Test
+
+[Demo](https://ms-account-profile-info.azurewebsites.net)
