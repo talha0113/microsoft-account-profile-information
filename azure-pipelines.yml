@@ -32,12 +32,14 @@ phases:
   - task: Npm@1
     displayName: 'Install'
     inputs:
+      workingDir: Application
       verbose: false
 
   # Perform Angular Tests
   - task: Npm@1
     displayName: 'Test'
     inputs:
+      workingDir: Application
       command: custom
       verbose: false
       customCommand: 'test'
@@ -48,7 +50,7 @@ phases:
     displayName: 'Report Tests'
     inputs:
       testRunner: NUnit
-      testResultsFiles: Reports/Results.xml
+      testResultsFiles: Application/Reports/Results.xml
       mergeTestResults: true
       testRunTitle: 'Microsoft Account Profile Information'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
@@ -58,22 +60,35 @@ phases:
     displayName: 'Report Coverage'
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Reports/Coverage/cobertura-coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/Reports/Coverage'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage/cobertura-coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
 
   # Perform Angular Build
   - task: Npm@1
     displayName: 'Build'
     inputs:
+      workingDir: Application
       command: custom
       verbose: false
       customCommand: 'run build'
+
+  # Copy Build Output
+  - task: CopyFiles@2
+    displayName: 'Copy'
+    inputs:
+      SourceFolder: Application/Distributions
+      Contents: |
+       **
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      CleanTargetFolder: true
+      flattenFolders: false
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
   # Attach Build Output to Azure Pipeline
   - task: PublishBuildArtifacts@1
     displayName: 'Publish'
     inputs:
-      PathtoPublish: Distributions
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: Drop
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
