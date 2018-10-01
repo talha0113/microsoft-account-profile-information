@@ -330,3 +330,5 @@ ASALocalRun/
 .mfractor/
 /Reports
 /Distributions
+/UITest/Reports/TestResults.trx
+/Application/Distributions/**/*.*
