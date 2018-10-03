@@ -12,6 +12,9 @@ trigger:
         - bug/*
         exclude:
         - dummy/*
+    paths:
+        include:
+        - /Application
 
 phases:
 
