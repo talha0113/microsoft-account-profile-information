@@ -1,4 +1,4 @@
-﻿import { Page } from "puppeteer";
+﻿import { Page, ElementHandle } from "puppeteer";
 import { ApplicationBase } from "../Code/application.base";
 import { environmentConfiguration } from "../../Configurations/environment.config";
 
@@ -29,6 +29,23 @@ describe('Microsoft Account Information Application', () => {
         await waitForLoginProcessPromise;
         await page.waitForNavigation();
         expect(page.url()).toContain("/status");
+    }, 30000);
+
+    test("Should see profile", async () => {
+        await page.waitForSelector('div > navigation > div > nav > a:nth-child(2)');
+        await page.click('div > navigation > div > nav > a:nth-child(2)');
+        await page.waitForSelector('profile > div > div > div > h3');
+        let profileName: string = await page.evaluate(() => document.querySelector('profile > div > div > div > h3').textContent);
+        expect(page.url()).toContain("/profile");
+        expect(profileName).toContain("Talha");
+    }, 30000);
+
+    test("Should logout", async () => {
+        await page.waitForSelector('div > navigation > div > nav > a:nth-child(3)');
+        await page.click('div > navigation > div > nav > a:nth-child(3)');
+        await page.waitForSelector('div > div > logout > div > button');
+        await page.click('div > div > logout > div > button');
+        expect(page.url()).toContain("/login");
     }, 30000);
 
     afterAll(async () => {

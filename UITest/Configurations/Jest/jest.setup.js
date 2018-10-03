@@ -10,7 +10,7 @@ const height = 1080;
 module.exports = async function () {
     const browser = await puppeteer.launch({
         timeout: 0,
-        headless: false,
+        headless: true,
         slowMo: 20,
         args: [
             `--window-size=${width},${height}`,
