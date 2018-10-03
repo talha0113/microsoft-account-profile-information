@@ -21,7 +21,16 @@
             "assets": [
               "Source/favicon.ico",
               "Source/Assets",
-              "Source/Web.Config"
+              {
+                "glob": "Web.Config",
+                "input": "Source/Assets",
+                "output": "/"
+              },
+              {
+                "glob": "robots.txt",
+                "input": "Source/Assets",
+                "output": "/"
+              }
             ],
             "styles": [
               "Styles/styles.css"

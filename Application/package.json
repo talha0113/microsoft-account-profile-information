@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod && node Tasks/Compression.js",
     "test": "ng test --code-coverage",
     "lint": "ng lint"
   },
