@@ -23,7 +23,7 @@ phases:
   condition: succeeded()
   
   queue:
-    name: Hosted VS2017
+    name: Hosted Linux Preview
     demands: npm
 
   variables:
