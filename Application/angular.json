@@ -14,7 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "Distributions",
-            "index": "Source/Index.html",
+            "index": "Source/index.html",
             "main": "Source/main.ts",
             "polyfills": "Source/polyfills.ts",
             "tsConfig": "Source/tsconfig.app.json",
