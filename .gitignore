@@ -332,3 +332,4 @@ ASALocalRun/
 /Distributions
 /UITest/Reports/TestResults.trx
 /Application/Distributions/**/*.*
+/Application/Reports
