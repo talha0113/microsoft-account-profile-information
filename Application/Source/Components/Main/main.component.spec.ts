@@ -1,8 +1,8 @@
 import { Location } from "@angular/common";
 import { Router } from '@angular/router';
 import { TestBed, ComponentFixture, ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { RouterTestingModule, SpyNgModuleFactoryLoader } from "@angular/router/testing";
-
+import { RouterTestingModule } from "@angular/router/testing";
+import { SwUpdate, ServiceWorkerModule } from '@angular/service-worker';
 
 import { appRoutes } from '../../Routes/main.route';
 import { MainComponent } from './main.component';
@@ -22,6 +22,7 @@ import { ProfileStore } from "../../Stores/profile.store";
 import { ProfileQuery } from "../../Queries/profile.query";
 import { AuthenticationServiceStub } from "../../Services/authentication.service.stub";
 import { setUpMock } from "../../Managers/storage.mock";
+import { environment } from "Configurations/Environments/environment";
 
 
 describe('Main Component', () => {
@@ -39,7 +40,8 @@ describe('Main Component', () => {
     beforeAll(async () => {
         TestBed.configureTestingModule({
             imports: [
-                RouterTestingModule.withRoutes(appRoutes)
+                RouterTestingModule.withRoutes(appRoutes),
+                ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
             ],
             declarations: [
                 MainComponent,
@@ -65,7 +67,8 @@ describe('Main Component', () => {
                 AuthenticationQuery,
                 ProfileService,
                 ProfileStore,
-                ProfileQuery
+                ProfileQuery,
+                SwUpdate
             ]
         }).compileComponents();        
     });

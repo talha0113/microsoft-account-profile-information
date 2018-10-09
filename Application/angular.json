@@ -30,7 +30,8 @@
                 "glob": "robots.txt",
                 "input": "Source/Assets",
                 "output": "/"
-              }
+              },
+              "Source/manifest.json"
             ],
             "styles": [
               "Styles/styles.css"
@@ -53,7 +54,9 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true,
+              "ngswConfigPath": "Source/ngsw-config.json"
             }
           }
         },
@@ -87,7 +90,8 @@
             "scripts": [],
             "assets": [
               "Source/favicon.ico",
-              "Source/Assets"
+              "Source/Assets",
+              "Source/manifest.json"
             ]
           }
         },

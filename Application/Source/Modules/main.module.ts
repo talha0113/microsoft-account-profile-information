@@ -20,6 +20,8 @@ import { AuthenticationQuery } from '../Queries/authentication.query';
 import { SafeUrlPipe } from '../Pipes/safe-url.pipe';
 import { ProfileStore } from '../Stores/profile.store';
 import { ProfileQuery } from '../Queries/profile.query';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../../Configurations/Environments/environment';
 
 @NgModule({
     declarations: [
@@ -34,7 +36,8 @@ import { ProfileQuery } from '../Queries/profile.query';
     imports: [
         BrowserModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [        
         {
