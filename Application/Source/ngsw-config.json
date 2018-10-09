@@ -19,7 +19,7 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/Assets/**"
+          "/Assets/**/*.*"
         ]
       }
     }
