@@ -19,7 +19,7 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/Assets/**/*.*"
+          "/Assets/**"
         ]
       }
     }
@@ -32,7 +32,7 @@
       ],
       "cacheConfig": {
         "maxAge": "30m",
-        "strategy": "freshness",
+        "strategy": "performance",
         "maxSize": "10"
       }
     }
