@@ -11,7 +11,9 @@
         <br />
         <router-outlet></router-outlet>
     </div>
-</div>
-<div *ngIf="isOffline">
-    Application is Offline
+    <div style="color:red" *ngIf="isOffline">
+        <b>
+            Application is Offline
+        </b>        
+    </div>
 </div>

@@ -13,10 +13,12 @@ import { Observable } from 'rxjs';
 export class LoginComponent implements OnInit {
 
     isInProgress: boolean = false;
+    isOffline: boolean = !navigator.onLine;
 
     constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
     ngOnInit() {
+        this.isInProgress = this.isOffline;
     }
 
     login(): void {
