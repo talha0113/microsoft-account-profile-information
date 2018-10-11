@@ -41,7 +41,9 @@ export class ProfileInterceptor implements HttpInterceptor {
                     return next.handle(RequestManager.secureRequest(request, this.authenticationQuery.getToken())).pipe(catchError((error) => {
                         return this.endSession(error);
                     }));
-                }));
+                }), catchError((error) => {
+                        return this.endSession(error);
+                    }));
             }
             
         }));
