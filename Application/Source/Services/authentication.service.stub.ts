@@ -6,18 +6,8 @@ import { Authentication } from '../Models/authentication.model';
 
 export class AuthenticationServiceStub extends AuthenticationService {
 
-    login(): Observable<null> {
-        return of<string>("Test_Token_Id").pipe(
-            tap((value: string) => {
-                this.authenticationStore.login(new Authentication(value, null));
-            }),
-            switchMap((value: string) => {
-                return this.refreshToken();
-            }),
-            map((value: string) => {
-                return null;
-            })
-        );
+    login(): void {
+        this.authenticationStore.login(new Authentication("Test_Token_Id", null));
     }
 
     refreshToken(): Observable<string> {

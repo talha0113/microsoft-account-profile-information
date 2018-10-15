@@ -1,13 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'status',
     templateUrl: './status.component.html'
 })
-export class StatusComponent implements OnInit {
+export class StatusComponent {
     constructor() { }
-
-    ngOnInit() { }
-
-    
 }

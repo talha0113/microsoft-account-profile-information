@@ -51,9 +51,10 @@ describe('Authentication Guard', () => {
     });
 
     it('Should allow for authenticated user', async () => {
-        authenticationService.login().subscribe(() => {
+        authenticationService.login();
+        authenticationService.refreshToken().subscribe(() => {
             expect(authenticationGuard.canActivate(null, null)).toEqual(true);
-        });        
+        });
     });
 
     it('Should not allow for un authenticated user', async () => {

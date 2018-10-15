@@ -23,11 +23,11 @@ describe('Microsoft Account Information Application', () => {
     }, 30000);
 
     test("Should login", async () => {
-        let waitForLoginProcessPromise: Promise<void> = applicationBase.loginPageProcess();
         await page.waitForSelector('div > login > div > div > button');
         await page.click('div > login > div > div > button');
-        await waitForLoginProcessPromise;
         await page.waitForNavigation();
+        await applicationBase.loginPageProcess(page);
+        await (new Promise(resolve => setTimeout(resolve, 3000)));
         expect(page.url()).toContain("/status");
     }, 30000);
 
