@@ -46,10 +46,11 @@ describe('Authentication Service', () => {
     });
 
     it(`Should login`, async () => {
-        authenticationService.login().subscribe(() => {
+        authenticationService.login();
+        authenticationService.refreshToken().subscribe(() => {
             expect(authenticationQuery.isAuthenticated()).toBeTruthy();
             expect(StorageManager.get<Authentication>(TokenConstant.token).tokenId).toBeDefined();
-        });        
+        });
     });
 
     it(`Should logout`, async () => {

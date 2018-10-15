@@ -67,7 +67,8 @@ describe('Navigation Component', () => {
     });
 
     it('Should render navigation', async () => {
-        authenticationService.login().subscribe(() => {
+        authenticationService.login();
+        authenticationService.refreshToken().subscribe(() => {
             let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
             let navigationElement: HTMLElement = nativeElement.querySelector('nav');
             expect(navigationElement).toBeDefined();

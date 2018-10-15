@@ -55,8 +55,9 @@ describe('Login Guard', () => {
     });
 
     it('Should not allow for authenticated user', async () => {
-        authenticationService.login().subscribe(() => {
+        authenticationService.login();
+        authenticationService.refreshToken().subscribe(() => {
             expect(loginGuard.canActivate(null, null)).toBeFalsy();
-        });        
+        });
     });
 });

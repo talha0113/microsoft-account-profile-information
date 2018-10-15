@@ -31,7 +31,7 @@
         "https://graph.microsoft.com/beta/**"
       ],
       "cacheConfig": {
-        "maxAge": "30m",
+        "maxAge": "2d",
         "strategy": "performance",
         "maxSize": "10"
       }

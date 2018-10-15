@@ -1,11 +1,10 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
-import { catchError, switchMap, tap, map } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { UserAgentApplication } from 'msal';
 
 import { AuthenticationConfiguration } from "../Configurations/authentication.configuration";
 import { ErrorManager } from '../Managers/error.manager';
-import { TokenConstant } from '../Constants/token.constant';
 import { AuthenticationStore } from '../Stores/authentication.store';
 import { Authentication } from '../Models/authentication.model';
 
@@ -21,27 +20,20 @@ export class AuthenticationService {
                 console.log("Error:" + error);
                 console.log("Token Type:" + tokenType);
                 console.log("User State:" + userState);
+
+                if (tokenType == "id_token") {
+                    this.authenticationStore.login(new Authentication(token, null));
+                    this.msalApp.acquireTokenRedirect(AuthenticationConfiguration.scopes);
+                }
             });
     }
 
-    login(): Observable<null> {
-        return from<string>(this.msalApp.loginPopup(AuthenticationConfiguration.scopes)).pipe(
-            tap((value: string) => {
-                this.authenticationStore.login(new Authentication(value, null));
-            }),
-            switchMap((value: string, index: number) => {
-                return this.refreshToken();
-            }),
-            map((value: string, index: number) => {
-                return null; 
-            }),
-            catchError((error: any) => {
-                return ErrorManager.generalError("AuthenticationService.login", error);
-            })
-        );
+    login(): void {
+        this.msalApp.loginRedirect(AuthenticationConfiguration.scopes);
     }
 
     logout(): void {
+        //this.msalApp.logout();
         this.authenticationStore.logout();
     }
 

@@ -13,24 +13,15 @@ export class ApplicationBase {
         return page;
     }
 
-    public async loginPageProcess(): Promise<void> {
-        let browser: Browser = (<Browser>(((<any>global).__BROWSER__)));
-        let loginPagePromise: Promise<void> = new Promise<void>((resolve, reject) => {
-            browser.once('targetcreated', async (e: Target) => {
-                let loginPage: Page= await e.page()
-                await loginPage.waitForSelector("input[name=loginfmt]");
-                await loginPage.type("input[name=loginfmt]", environmentConfiguration.userName, { delay: 20 });
-                await loginPage.keyboard.press("Enter");
-                await loginPage.waitForSelector("#idBtn_Back");
-                await (new Promise(resolve => setTimeout(resolve, 1000)));
-                await loginPage.type("input[name=passwd]", environmentConfiguration.password, { delay: 40 });
-                await loginPage.focus("#idSIButton9");
-                await loginPage.keyboard.press("Enter");
-                //await loginPage.waitForSelector("#KmsiCheckboxField");
-                //await loginPage.click("#idBtn_Back");
-                resolve();
-            });
-        });
-        return loginPagePromise;
+    public async loginPageProcess(loginPage: Page): Promise<void> {
+        await loginPage.waitForSelector("input[name=loginfmt]");
+        await loginPage.type("input[name=loginfmt]", environmentConfiguration.userName, { delay: 20 });
+        await loginPage.keyboard.press("Enter");
+        await loginPage.waitForSelector("#idBtn_Back");
+        await (new Promise(resolve => setTimeout(resolve, 1000)));
+        await loginPage.type("input[name=passwd]", environmentConfiguration.password, { delay: 40 });
+        await loginPage.focus("#idSIButton9");
+        await loginPage.keyboard.press("Enter");
+        return;
     }
 }
