@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, Event, NavigationEnd } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
 @Component({
@@ -9,7 +10,7 @@ export class MainComponent {
     public title: string = 'Profile Information!';
     public isOffline: boolean = !navigator.onLine;
 
-    constructor(private swUpdate: SwUpdate) { }
+    constructor(private swUpdate: SwUpdate, private router: Router) { }
 
     ngOnInit() {
         if (this.swUpdate.isEnabled) {
@@ -19,5 +20,11 @@ export class MainComponent {
                 }
             });
         }
+
+        this.router.events.subscribe((event: Event) => {
+            if (event instanceof NavigationEnd) {
+                this.isOffline = !navigator.onLine;
+            }
+        });
     }
 }
