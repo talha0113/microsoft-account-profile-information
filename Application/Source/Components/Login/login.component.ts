@@ -37,11 +37,9 @@ export class LoginComponent implements OnInit {
             });
         }
 
-        if (!this.isOffline && this.isInProgress) {
-            setTimeout(() => {
-                this.isInProgress = false;
-            }, 6000);
-        }
+        this.authenticationQuery.selectError().subscribe((error) => {
+            this.isInProgress = false;
+        });
     }
 
     login(): void {
