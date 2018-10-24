@@ -21,17 +21,18 @@
     <link href="Assets/SplashScreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
 
     <!--https://appsco.pe/developer/splash-screens-->
+    <!--ng update @angular/cli @angular/core-->
 
     <script>
         const isIos = () => {
-          const userAgent = window.navigator.userAgent.toLowerCase();
-          return /iphone|ipad|ipod/.test( userAgent );
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
         }
 
         const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
         if (isIos() && !isInStandaloneMode()) {
-          this.setState({ showInstallMessage: true });
+            this.setState({ showInstallMessage: true });
         }
     </script>
 </head>
