@@ -28,12 +28,14 @@ describe('Safe Url Pipe', () => {
     });
 
     beforeAll(async () => {
-        function noOp() { }
-
-        if (typeof window.URL.createObjectURL === 'undefined') {
-            Object.defineProperty(window.URL, 'createObjectURL', { value: noOp })
+        function noOp() {
+            return "";
         }
-        //spyOn(URL, 'createObjectURL').and.returnValue("something");
+
+        //if (typeof window.URL.createObjectURL === 'undefined') {
+        //    Object.defineProperty(window.URL, 'createObjectURL', { value: noOp })
+        //}
+        spyOn(URL, 'createObjectURL').and.returnValue("something");
     });
 
     it('Should exist', async () => {
