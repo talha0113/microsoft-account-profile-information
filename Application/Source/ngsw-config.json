@@ -32,7 +32,7 @@
       ],
       "cacheConfig": {
         "maxAge": "2d",
-        "strategy": "performance",
+        "strategy": "freshness",
         "maxSize": "10"
       }
     }

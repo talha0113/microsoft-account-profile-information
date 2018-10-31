@@ -15,6 +15,7 @@ trigger:
     paths:
         include:
         - /Application
+        - /NotificationService
 
 phases:
 
@@ -27,10 +28,17 @@ phases:
     demands: npm
 
   variables:
-    angular_version: '6.1.7'
+    angular_version: '7.0.0'
 
   steps:
   
+  # Perform Tokens Replacement
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    displayName: Replace
+    inputs:
+      rootDirectory: Application/Source/Configurations
+      targetFiles: vapid.configuration.ts
+
   # Perform npm Install
   - task: Npm@1
     displayName: 'Install'
@@ -95,3 +103,45 @@ phases:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: Drop
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+
+
+- phase: Phase_2
+  displayName: Phase Windows
+  condition: succeeded()
+  
+  queue:
+    name: Hosted VS2017
+
+  variables:
+    function_version: '2.0'
+
+  steps:
+  
+  # Perform Tokens Replacement
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    displayName: Replace
+    inputs:
+      rootDirectory: Application/Source/Configurations
+      targetFiles: vapid.configuration.ts
+
+  # Perform .Net Core Build
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**/*.csproj'
+
+  # Perform .Net Core Test
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: test
+      projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+
+  # Perform .Net Core Publish
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '**/*.csproj'
+ 

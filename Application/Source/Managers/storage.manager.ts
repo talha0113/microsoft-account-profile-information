@@ -1,6 +1,4 @@
-﻿import { HttpRequest } from "@angular/common/http";
-
-export class StorageManager {
+﻿export class StorageManager {
     static add<T>(key: string, item: T): void {
         localStorage.setItem(key, JSON.stringify(item));
     }

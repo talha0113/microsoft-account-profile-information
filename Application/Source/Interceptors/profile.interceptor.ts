@@ -1,10 +1,10 @@
 ﻿import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { RequestManager } from '../Managers/request.manager';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap, retry } from 'rxjs/operators';
 import { ErrorManager } from '../Managers/error.manager';
 import { AuthenticationQuery } from '../Queries/authentication.query';
 import { AuthenticationService } from '../Services/authentication.service';
@@ -24,6 +24,10 @@ export class ProfileInterceptor implements HttpInterceptor {
                         shouldLogout = false;
                         break;
                     }
+                    case 404: {
+                        shouldLogout = false;
+                        break;
+                    }
                     default: {
                         shouldLogout = true;
                         break;
@@ -37,15 +41,20 @@ export class ProfileInterceptor implements HttpInterceptor {
                 return this.endSession(error);
             }
             else {
-                return this.authenticationService.refreshToken().pipe(switchMap((value: string, index: number) => {
-                    return next.handle(RequestManager.secureRequest(request, this.authenticationQuery.getToken())).pipe(catchError((error) => {
+                if ((<HttpErrorResponse>error).status == 404) {
+                    let req = new HttpRequest("GET", request.url, { responseType: "blob" });
+                    return next.handle(req);
+                }
+                else {
+                    return this.authenticationService.refreshToken().pipe(switchMap((value: string, index: number) => {
+                        return next.handle(RequestManager.secureRequest(request, this.authenticationQuery.getToken())).pipe(catchError((error) => {
+                            return this.endSession(error);
+                        }));
+                    }), catchError((error) => {
                         return this.endSession(error);
                     }));
-                }), catchError((error) => {
-                        return this.endSession(error);
-                    }));
+                }
             }
-            
         }));
     }
 

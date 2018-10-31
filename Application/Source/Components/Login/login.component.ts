@@ -38,7 +38,9 @@ export class LoginComponent implements OnInit {
         }
 
         this.authenticationQuery.selectError().subscribe((error) => {
-            this.isInProgress = false;
+            if (error) {
+                this.isInProgress = false;
+            }
         });
     }
 
