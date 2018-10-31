@@ -20,11 +20,11 @@ trigger:
 phases:
 
 - phase: Phase_1
-  displayName: Phase Windows
+  displayName: Phase Angular Application
   condition: succeeded()
   
   queue:
-    name: Hosted VS2017
+    name: Hosted Linux Preview
     demands: npm
 
   variables:
@@ -106,7 +106,7 @@ phases:
 
 
 - phase: Phase_2
-  displayName: Phase Windows
+  displayName: Phase Azure Function
   condition: succeeded()
   
   queue:

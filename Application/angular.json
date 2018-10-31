@@ -22,11 +22,13 @@
               "Source/favicon.ico",
               "Source/Assets",
               "Source/Web.Config",
-              {
-                "glob": "robots.txt",
-                "input": "Source/Assets",
-                "output": "/"
-              },
+              "Source/robots.txt",
+              // Only for Windows
+              //{
+              //  "glob": "robots.txt",
+              //  "input": "Source/Assets",
+              //  "output": "/"
+              //},
               "Source/manifest.json"
             ],
             "styles": [
