@@ -110,7 +110,7 @@ phases:
   condition: succeeded()
   
   queue:
-    name: Hosted VS2017
+    name: Hosted Linux Preview
 
   variables:
     function_version: '2.0'
@@ -124,11 +124,20 @@ phases:
       rootDirectory: Application/Source/Configurations
       targetFiles: vapid.configuration.ts
 
+  # Perform .Net Core Restore
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+
+
   # Perform .Net Core Build
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
       projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'
 
   # Perform .Net Core Test
   - task: DotNetCoreCLI@2
@@ -136,6 +145,8 @@ phases:
     inputs:
       command: test
       projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
   # Perform .Net Core Publish
   - task: DotNetCoreCLI@2
@@ -144,4 +155,12 @@ phases:
       command: publish
       publishWebProjects: false
       projects: '**/*.csproj'
- 
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+  
+  # Publish Artifacts
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
