@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSAccountPushSubscription", "MSAccountPushSubscription\MSAccountPushSubscription.csproj", "{D9BD21B1-7DA7-4BC5-8C49-105B85ED1BBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSAccountPushSubscription.Tests", "MSAccountPushSubscription.Tests\MSAccountPushSubscription.Tests.csproj", "{A5F0EF98-C3F1-496D-8601-0F1C2B6384D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSAccountPushSubscription.Tests", "MSAccountPushSubscription.Tests\MSAccountPushSubscription.Tests.csproj", "{A5F0EF98-C3F1-496D-8601-0F1C2B6384D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

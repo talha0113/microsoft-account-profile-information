@@ -5,7 +5,7 @@ import { VAPIDConfiguration } from '../Configurations/vapid.configuration';
 import { NotificationService } from './notification.service';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { ErrorManager } from '../Managers/error.manager';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'Configurations/Environments/environment';
 
 
@@ -41,7 +41,7 @@ export class PushService {
     public get unSubscribe(): Observable<void> {
         if (this.swPush.isEnabled) {
             return this.swPush.subscription.pipe(switchMap((value: PushSubscription) => {
-                return this.httpClient.post(environment.PWAUnSubscribeUrl, value.toJSON());                
+                return this.httpClient.delete(`${environment.PWAUnSubscribeUrl}?endpoint=${value.endpoint}`);                
             }), switchMap(() => {
                     return from(this.swPush.unsubscribe());
                 }), map(() => {

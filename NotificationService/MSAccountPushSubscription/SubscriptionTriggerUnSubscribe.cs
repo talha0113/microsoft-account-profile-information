@@ -15,26 +15,25 @@ namespace MSAccountPushSubscription
     public static class SubscriptionTriggerUnSubscribe
     {
         [FunctionName("SubscriptionTriggerUnSubscribe")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("SubscriptionTriggerUnSubscribe Request Started.");
 
             try
             {
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var pushSubscription = JsonConvert.DeserializeObject<PushSubscriptionInformation>(requestBody);
+                string endPoint = req.Query["endpoint"];
 
-                if (pushSubscription != null)
+                if (endPoint != null)
                 {
                     var service = new PushNotificationService();
-                    service.UnSubscribe(pushSubscription);
+                    service.UnSubscribe(endPoint);
                     return new OkResult();
                 }
                 else
                 {
-                    return new BadRequestObjectResult("Empty Subscription in the Body");
+                    return new BadRequestObjectResult("Empty EndPoint");
                 }
             }
             catch (Exception ex)

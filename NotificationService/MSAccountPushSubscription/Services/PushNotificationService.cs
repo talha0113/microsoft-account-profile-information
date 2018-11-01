@@ -24,7 +24,7 @@ namespace MSAccountPushSubscription.Services
             pushClient.SendNotification(pushSubscription, payload);
         }
 
-        public void UnSubscribe(PushSubscriptionInformation subscription)
+        public void UnSubscribe(string endPoint)
         {
         }
     }
