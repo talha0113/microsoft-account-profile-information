@@ -7,6 +7,15 @@ namespace MSAccountPushSubscription.Models
 {
     class PushSubscriptionInformation
     {
+        [JsonProperty(PropertyName = "id")]
+        public string Id
+        {
+            get
+            {
+                return Keys.p256dh;
+            }
+        }
+
         [JsonProperty(PropertyName = "endpoint")]
         public string EndPoint {get;set;}
 

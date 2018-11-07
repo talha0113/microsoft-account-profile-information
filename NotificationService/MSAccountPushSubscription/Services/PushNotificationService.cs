@@ -1,8 +1,14 @@
-﻿using MSAccountPushSubscription.Configurations;
+﻿using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using MSAccountPushSubscription.Configurations;
 using MSAccountPushSubscription.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using WebPush;
 
 namespace MSAccountPushSubscription.Services
@@ -24,8 +30,48 @@ namespace MSAccountPushSubscription.Services
             pushClient.SendNotification(pushSubscription, payload);
         }
 
-        public void UnSubscribe(string endPoint)
+        public async Task Subscribe(PushSubscriptionInformation subscription, DocumentClient client)
         {
+            try
+            {
+                await client.ReadDocumentAsync(UriFactory.CreateDocumentUri("Subscriptions", "Items", subscription.Id));
+            }
+            catch (DocumentClientException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
+                    await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("Subscriptions", "Items"), subscription);
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
+            IQueryable<PushSubscriptionInformation> allSubscriptions = client.CreateDocumentQuery<PushSubscriptionInformation>(
+                UriFactory.CreateDocumentCollectionUri("Subscriptions", "Items"), queryOptions)
+                .Where(sub => sub.EndPoint != null);
+
+            foreach (PushSubscriptionInformation sub in allSubscriptions)
+            {
+                try
+                {
+                    SendNotification(sub, JsonConvert.SerializeObject(new RootNotification()));
+                }
+                catch { }
+            }
+        }
+        public async Task UnSubscribe(string endPoint, DocumentClient client)
+        {
+            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
+            IQueryable<PushSubscriptionInformation> allSubscriptions = client.CreateDocumentQuery<PushSubscriptionInformation>(
+                UriFactory.CreateDocumentCollectionUri("Subscriptions", "Items"), queryOptions)
+                .Where(sub => sub.EndPoint == endPoint);
+            foreach (PushSubscriptionInformation sub in allSubscriptions)
+            {
+                await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri("Subscriptions", "Items", sub.Id));
+            }
         }
     }
 }

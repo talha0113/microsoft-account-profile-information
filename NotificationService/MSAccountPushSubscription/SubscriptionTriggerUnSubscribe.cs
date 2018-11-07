@@ -9,14 +9,19 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Services;
+using Microsoft.Azure.Documents.Client;
 
 namespace MSAccountPushSubscription
 {
     public static class SubscriptionTriggerUnSubscribe
     {
         [FunctionName("SubscriptionTriggerUnSubscribe")]
-        public static IActionResult Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = null)] HttpRequest req,
+            [CosmosDB(
+                databaseName: "Subscriptions",
+                collectionName: "Items",
+                ConnectionStringSetting = "ms-account-profile-informationDBConnection")] DocumentClient client,
             ILogger log)
         {
             log.LogInformation("SubscriptionTriggerUnSubscribe Request Started.");
@@ -28,7 +33,7 @@ namespace MSAccountPushSubscription
                 if (endPoint != null)
                 {
                     var service = new PushNotificationService();
-                    service.UnSubscribe(endPoint);
+                    await service.UnSubscribe(endPoint, client);
                     return new OkResult();
                 }
                 else

@@ -17,12 +17,11 @@ namespace MSAccountPushSubscription
     {
         [FunctionName("SubscriptionTriggerSubscribe")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req
-            ,
-            //[CosmosDB(
-            //    databaseName: "MSAccountPushSubscription",
-            //    collectionName: "Subscriptions",
-            //    ConnectionStringSetting = "MSAccountPushSubscriptionDBConnection")] DocumentClient client,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [CosmosDB(
+                databaseName: "Subscriptions",
+                collectionName: "Items",
+                ConnectionStringSetting = "ms-account-profile-informationDBConnection")] DocumentClient client,
             ILogger log)
         {
             log.LogInformation("SubscriptionTriggerSubscribe Request Started.");
@@ -34,7 +33,7 @@ namespace MSAccountPushSubscription
                 if (pushSubscription != null)
                 {
                     var service = new PushNotificationService();
-                    service.SendNotification(pushSubscription, JsonConvert.SerializeObject(new RootNotification()));
+                    await service.Subscribe(pushSubscription, client);
                     return new OkResult();
                 }
                 else
