@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using MSAccountPushSubscription.Models;
 using Microsoft.Azure.Documents.Client;
 using MSAccountPushSubscription.Services;
+using MSAccountPushSubscription.Managers;
 
 namespace MSAccountPushSubscription
 {
@@ -32,8 +33,8 @@ namespace MSAccountPushSubscription
 
                 if (pushSubscription != null)
                 {
-                    var service = new PushNotificationService();
-                    await service.Subscribe(pushSubscription, client);
+                    var service = new PushNotificationService(client);
+                    await service.Subscribe(pushSubscription);
                     return new OkResult();
                 }
                 else

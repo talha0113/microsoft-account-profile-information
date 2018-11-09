@@ -32,8 +32,8 @@ namespace MSAccountPushSubscription
 
                 if (endPoint != null)
                 {
-                    var service = new PushNotificationService();
-                    await service.UnSubscribe(endPoint, client);
+                    var service = new PushNotificationService(client);
+                    await service.UnSubscribe(endPoint);
                     return new OkResult();
                 }
                 else
