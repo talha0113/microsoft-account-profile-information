@@ -123,11 +123,6 @@ phases:
   #  inputs:
   #    version: 2.1.403
 
-  # Start Cosmos DB Emulator
-  - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
-    displayName: 'Cosmos DB Emulator'
-
-
   # Perform Tokens Replacement
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     displayName: Replace
@@ -150,6 +145,10 @@ phases:
       projects: '**/*.csproj'
       arguments: '--configuration $(BuildConfiguration)'
 
+  # Start Cosmos DB Emulator
+  - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
+    displayName: 'Cosmos DB Emulator'
+  
   # Perform .Net Core Test
   - task: DotNetCoreCLI@2
     displayName: Test
