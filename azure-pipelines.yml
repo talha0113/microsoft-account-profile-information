@@ -24,7 +24,7 @@ phases:
   condition: succeeded()
   
   queue:
-    name: Hosted Linux Preview
+    name: Hosted Ubuntu 1604
     demands: npm
 
   variables:
@@ -110,7 +110,7 @@ phases:
   condition: succeeded()
   
   queue:
-    name: Hosted Linux Preview
+    name: Hosted VS2017
 
   variables:
     function_version: '2.0'
