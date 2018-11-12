@@ -156,7 +156,7 @@ phases:
     inputs:
       command: test
       projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-      arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="$(CosmosDbEmulator.Endpoint)" AccountKey="C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" DatabaseId="Subscriptions" CollectionId="Items"'
+      arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
     #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
   # Perform .Net Core Publish
