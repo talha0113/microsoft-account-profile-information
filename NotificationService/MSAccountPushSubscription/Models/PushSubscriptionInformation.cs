@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MSAccountPushSubscription.Models
 {
-    class PushSubscriptionInformation
+    public class PushSubscriptionInformation
     {
         [JsonProperty(PropertyName = "id")]
         public string Id
@@ -26,7 +26,7 @@ namespace MSAccountPushSubscription.Models
         public Keys Keys { get; set; }
     }
 
-    class Keys {
+    public class Keys {
         [JsonProperty(PropertyName = "p256dh")]
         public string p256dh { get; set; }
 

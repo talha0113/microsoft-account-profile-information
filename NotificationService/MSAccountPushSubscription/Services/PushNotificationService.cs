@@ -3,6 +3,7 @@ using Microsoft.Azure.Documents.Client;
 using MSAccountPushSubscription.Configurations;
 using MSAccountPushSubscription.Managers;
 using MSAccountPushSubscription.Models;
+using MSAccountPushSubscription.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,64 +17,32 @@ namespace MSAccountPushSubscription.Services
 {
     class PushNotificationService : IPushNotificationService
     {
-        private readonly WebPushClient pushClient;
-        private readonly DocumentClient client;
-
+        
         public PushNotificationService(DocumentClient client)
         {
-            this.client = client;
-            pushClient = new WebPushClient();
-            var vapidDetails = new VapidDetails(VAPIDConfiguration.Subject, VAPIDConfiguration.PublicKey, VAPIDConfiguration.PrivateKey);
-            pushClient.SetVapidDetails(vapidDetails);
-        }
-
-        public void SendNotification(PushSubscriptionInformation subscription, string payload)
-        {
-            var pushSubscription = new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Authentication);
-            pushClient.SendNotification(pushSubscription, payload);
+            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);
         }
 
         public async Task Subscribe(PushSubscriptionInformation subscription)
         {
-            try
+            if (await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(subscription.Id) == null)
             {
-                await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(SettingsManager.GetValue("DatabaseName"), SettingsManager.GetValue("CollectionName"), subscription.Id));
-            }
-            catch (DocumentClientException ex)
-            {
-                if (ex.StatusCode == HttpStatusCode.NotFound)
-                {
-                    await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(SettingsManager.GetValue("DatabaseName"), SettingsManager.GetValue("CollectionName")), subscription);
-                }
-                else
-                {
-                    throw ex;
-                }
+                await DocumentDBRepository<PushSubscriptionInformation>.CreateItemAsync(subscription);
             }
 
-            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
-            IQueryable<PushSubscriptionInformation> allSubscriptions = client.CreateDocumentQuery<PushSubscriptionInformation>(
-                UriFactory.CreateDocumentCollectionUri(SettingsManager.GetValue("DatabaseName"), SettingsManager.GetValue("CollectionName")), queryOptions)
-                .Where(sub => sub.EndPoint != null);
+            var allSubscriptions = await DocumentDBRepository<PushSubscriptionInformation>.GetItemsAsync(s => s.EndPoint != null);
 
             foreach (PushSubscriptionInformation sub in allSubscriptions)
             {
-                try
-                {
-                    SendNotification(sub, JsonConvert.SerializeObject(new RootNotification()));
-                }
-                catch { }
+                WebPushManager.SendNotification(sub);
             }
         }
         public async Task UnSubscribe(string endPoint)
         {
-            FeedOptions queryOptions = new FeedOptions { MaxItemCount = -1 };
-            IQueryable<PushSubscriptionInformation> allSubscriptions = client.CreateDocumentQuery<PushSubscriptionInformation>(
-                UriFactory.CreateDocumentCollectionUri(SettingsManager.GetValue("DatabaseName"), SettingsManager.GetValue("CollectionName")), queryOptions)
-                .Where(sub => sub.EndPoint == endPoint);
-            foreach (PushSubscriptionInformation sub in allSubscriptions)
+            var allSubscriptions = await DocumentDBRepository<PushSubscriptionInformation>.GetItemsAsync(s => s.EndPoint == endPoint);
+            if (allSubscriptions.Count() > 0)
             {
-                await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(SettingsManager.GetValue("DatabaseName"), SettingsManager.GetValue("CollectionName"), sub.Id));
+                await DocumentDBRepository<PushSubscriptionInformation>.DeleteItemAsync(allSubscriptions.ElementAt(0).Id);
             }
         }
     }

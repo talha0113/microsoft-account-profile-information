@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MSAccountPushSubscription.Services
 {
     interface IPushNotificationService
     {
-        void SendNotification(PushSubscriptionInformation subscription, string payload);
+        Task Subscribe(PushSubscriptionInformation subscription);
+        Task UnSubscribe(string endPoint);
     }
 }

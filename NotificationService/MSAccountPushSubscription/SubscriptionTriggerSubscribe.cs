@@ -11,6 +11,7 @@ using MSAccountPushSubscription.Models;
 using Microsoft.Azure.Documents.Client;
 using MSAccountPushSubscription.Services;
 using MSAccountPushSubscription.Managers;
+using System.Collections;
 
 namespace MSAccountPushSubscription
 {
@@ -26,6 +27,11 @@ namespace MSAccountPushSubscription
             ILogger log)
         {
             log.LogInformation("SubscriptionTriggerSubscribe Request Started.");
+            foreach (DictionaryEntry de in SettingsManager.GetAll())
+            {
+                log.LogInformation($"{de.Key}:{de.Value}");
+            }
+            //log.LogInformation($"Connection String: {Environment..GetEnvironmentVariable("ConnectionStrings:ms-account-profile-informationDBConnection", EnvironmentVariableTarget.Process)}");
 
             try {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
