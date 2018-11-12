@@ -41,6 +41,7 @@ namespace MSAccountPushSubscription.Tests
             Environment.SetEnvironmentVariable("CollectionId", TestContext.Properties["CollectionId"].ToString(), EnvironmentVariableTarget.Process);
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
+            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);
         }
 
         [TestMethod]
