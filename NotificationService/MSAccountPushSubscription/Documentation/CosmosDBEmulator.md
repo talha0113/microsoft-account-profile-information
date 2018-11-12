@@ -14,3 +14,7 @@ cd $hostDirectory
 `
 https://<emulator endpoint provided in response>/_explorer/index.html
 `
+
+````
+((Get-ChildItem -Recurse Cert:) | ? {$_.Thumbprint -eq "FB007987B70C2FCE854A66A84234395DD2C29A5C"}) | Remove-Item
+````

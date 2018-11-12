@@ -123,6 +123,11 @@ phases:
   #  inputs:
   #    version: 2.1.403
 
+  # Start Cosmos DB Emulator
+  - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
+    displayName: 'Cosmos DB Emulator'
+    #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
   # Perform Tokens Replacement
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     displayName: Replace
@@ -137,28 +142,37 @@ phases:
       command: restore
       projects: '**/*.csproj'
 
-
   # Perform .Net Core Build
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
       projects: '**/*.csproj'
       arguments: '--configuration $(BuildConfiguration)'
-
-  # Start Cosmos DB Emulator
-  - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
-    displayName: 'Cosmos DB Emulator'
-    inputs:
-      consistency: Strong
   
   # Perform .Net Core Test
-  - task: DotNetCoreCLI@2
+  - task: VSTest@2
     displayName: Test
     inputs:
-      command: test
-      projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-      arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
-    #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+      testAssemblyVer2: |
+       **\*Tests*.dll
+       !**\*TestAdapter.dll
+       !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
+      runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
+      overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+      runTestsInIsolation: true
+      codeCoverageEnabled: true
+      testRunTitle: 'Integration Tests'
+    #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+  # Perform .Net Core Test
+  #- task: DotNetCoreCLI@2
+  #  displayName: Test
+  #  inputs:
+  #    command: test
+  #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+  #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
+  #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
   # Perform .Net Core Publish
   - task: DotNetCoreCLI@2
