@@ -148,6 +148,8 @@ phases:
   # Start Cosmos DB Emulator
   - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
     displayName: 'Cosmos DB Emulator'
+    inputs:
+      consistency: Strong
   
   # Perform .Net Core Test
   - task: DotNetCoreCLI@2
