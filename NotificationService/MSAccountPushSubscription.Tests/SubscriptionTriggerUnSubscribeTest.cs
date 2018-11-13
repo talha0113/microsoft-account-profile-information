@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace MSAccountPushSubscription.Tests
 {
     [TestClass]
-    public class SubscriptionTriggerSubscribeTest
+    public class SubscriptionTriggerUnSubscribeTest
     {
         private ILogger log;
         private DefaultHttpRequest request;
@@ -41,37 +41,44 @@ namespace MSAccountPushSubscription.Tests
             Environment.SetEnvironmentVariable("CollectionId", TestContext.Properties["CollectionId"].ToString(), EnvironmentVariableTarget.Process);
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
+            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);
+            DocumentDBRepository<PushSubscriptionInformation>.CreateItemAsync(sub).Wait();
         }
 
         [TestMethod]
-        public async Task SubscribeEmptyBodyTest()
+        public async Task UnSubscribeEmptyQueryTest()
         {
             request = new DefaultHttpRequest(new DefaultHttpContext())
             {
-                Body = new MemoryStream(Encoding.ASCII.GetBytes(""))
+                QueryString = QueryString.Create("", "")
             };
-            var response = await SubscriptionTriggerSubscribe.Run(request, client, log);
+            var response = await SubscriptionTriggerUnSubscribe.Run(request, client, log);
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
             Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
         }
 
         [TestMethod]
-        public async Task SubscribeTest()
-        {
-            request = new DefaultHttpRequest(new DefaultHttpContext())
-            {
-                Body = new MemoryStream(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(sub)))
-            };
-
-            var response = await SubscriptionTriggerSubscribe.Run(request, client, log);
-            Assert.IsInstanceOfType(response, typeof(OkResult));
-        }
-
-        [TestMethod]
-        public async Task SubscriptionCreatedTest()
+        public async Task SubscriptionExistsTest()
         {
             var item = await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(sub.Id);
             Assert.AreEqual(item.Id, sub.Id);
+        }
+
+        [TestMethod]
+        public async Task SubscriptionRemovedTest()
+        {
+            request = new DefaultHttpRequest(new DefaultHttpContext())
+            {
+                QueryString = QueryString.Create("endpoint", sub.EndPoint)
+            };
+            var response = await SubscriptionTriggerUnSubscribe.Run(request, client, log);
+            Assert.IsInstanceOfType(response, typeof(OkResult));
+        }
+
+        public async Task SubscriptionsEmptyTest()
+        {
+            var item = await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(sub.Id);
+            Assert.AreEqual(item, null);
         }
 
         [ClassCleanup]
