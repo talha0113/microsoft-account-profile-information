@@ -75,7 +75,7 @@ namespace MSAccountPushSubscription.Tests
         }
 
         [TestCleanup]
-        public void Cleanup()
+        public async Task Cleanup()
         {
             await DocumentDBRepository<PushSubscriptionInformation>.DeleteItemAsync(sub.Id);            
         }
