@@ -126,14 +126,7 @@ phases:
   # Start Cosmos DB Emulator
   - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
     displayName: 'Cosmos DB Emulator'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-  # Perform Tokens Replacement
-  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-    displayName: Replace
-    inputs:
-      rootDirectory: Application/Source/Configurations
-      targetFiles: vapid.configuration.ts
+  # condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
   # Perform .Net Core Restore
   - task: DotNetCoreCLI@2
@@ -163,7 +156,7 @@ phases:
       runTestsInIsolation: true
       codeCoverageEnabled: true
       testRunTitle: 'Integration Tests'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+  # condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
   # Perform .Net Core Test
   #- task: DotNetCoreCLI@2
