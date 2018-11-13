@@ -77,7 +77,7 @@ namespace MSAccountPushSubscription.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            DocumentDBRepository<PushSubscriptionInformation>.Clean();
+            await DocumentDBRepository<PushSubscriptionInformation>.DeleteItemAsync(sub.Id);            
         }
     }
 }
