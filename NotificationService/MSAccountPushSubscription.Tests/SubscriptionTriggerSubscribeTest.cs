@@ -74,8 +74,8 @@ namespace MSAccountPushSubscription.Tests
             Assert.AreEqual(item.Id, sub.Id);
         }
 
-        [ClassCleanup]
-        public static void Cleanup()
+        [TestCleanup]
+        public void Cleanup()
         {
             DocumentDBRepository<PushSubscriptionInformation>.Clean();
         }
