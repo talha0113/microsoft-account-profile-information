@@ -25,6 +25,8 @@ import { setUpMock } from "../../Managers/storage.mock";
 import { environment } from "Configurations/Environments/environment";
 import { NotificationService } from "../../Services/notification.service";
 import { PushService } from "../../Services/push.service";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 
 
 describe('Main Component', () => {
@@ -42,6 +44,8 @@ describe('Main Component', () => {
     beforeAll(async () => {
         TestBed.configureTestingModule({
             imports: [
+                HttpClientModule,
+                FormsModule,
                 RouterTestingModule.withRoutes(appRoutes),
                 ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
             ],
