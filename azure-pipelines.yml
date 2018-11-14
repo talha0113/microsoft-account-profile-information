@@ -173,7 +173,7 @@ phases:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: '**/*.csproj'
+      projects: 'NotificationService/MSAccountPushSubscription/MSAccountPushSubscription.csproj'
       arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
   
