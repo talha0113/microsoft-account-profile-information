@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../Services/authentication.service';
-import { tap, catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { AuthenticationQuery } from '../../Queries/authentication.query';
-import { Authentication } from '../../Models/authentication.model';
 import { AuthenticationState } from '../../States/authentication.state';
 
 
@@ -38,7 +35,9 @@ export class LoginComponent implements OnInit {
         }
 
         this.authenticationQuery.selectError().subscribe((error) => {
-            this.isInProgress = false;
+            if (error) {
+                this.isInProgress = false;
+            }
         });
     }
 

@@ -79,5 +79,5 @@ describe('Profile Component', () => {
         ProfileServiceMock.pictureRequest(httpClientMock);
         httpClientMock.verify();
     });
-    
+
 });

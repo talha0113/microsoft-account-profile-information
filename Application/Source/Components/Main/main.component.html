@@ -11,6 +11,9 @@
         <br />
         <router-outlet></router-outlet>
     </div>
+    <div *ngIf="!isOffline">
+        <label>Subscribe to Notifications:</label> <input type="checkbox" [(ngModel)]="notificationsSubscribed" (change)="subscriptionChanged()" />
+    </div>
     <div style="color:red" *ngIf="isOffline">
         <b>
             Application is Offline

@@ -40,12 +40,14 @@ export class AuthenticationService {
     refreshToken(): Observable<string> {
         return from<string>(this.msalApp.acquireTokenSilent(AuthenticationConfiguration.scopes)).pipe(
             tap((value: string) => {
+                this.authenticationStore.setError(null);
                 this.authenticationStore.refreshToken(value);
             }),
             map((value: string, index: number) => {
                 return null; 
             }),
             catchError((error: any) => {
+                this.authenticationStore.setError(error);
                 return ErrorManager.generalError("AuthenticationService.refreshToken", error);
             })
         );

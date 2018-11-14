@@ -28,4 +28,10 @@ export class ProfileServiceMock {
         mockRequest.flush(new Blob([JSON.stringify("Images")], { type: 'image/jpeg' }));
         return mockRequest;
     }
+
+    public static pictureRequestEmpty(httpMockRequest: HttpTestingController): TestRequest {
+        let mockRequest: TestRequest = httpMockRequest.expectOne(GraphConstant.profilePictureUrl);
+        mockRequest.flush(null);
+        return mockRequest;
+    }
 }

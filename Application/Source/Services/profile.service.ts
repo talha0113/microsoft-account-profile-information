@@ -16,7 +16,7 @@ export class ProfileService {
         let basicInformation: Observable<Profile> = this.httpClient.get<Profile>(GraphConstant.profileMetaDataUrl).pipe(catchError((error) => { return of(null); }));
         let profilePicture: Observable<Blob> = this.httpClient.get(GraphConstant.profilePictureUrl, { responseType: "blob" }).pipe(catchError((error) => { return of(null); }));
         return forkJoin<Profile, Blob>(basicInformation, profilePicture).pipe(map((values: [Profile, Blob]) => {
-            if (values["0"] == null || values["1"] == null) {
+            if (values["0"] == null && values["1"] == null) {
                 return null;
             }
             else {

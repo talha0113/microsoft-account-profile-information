@@ -15,22 +15,30 @@ trigger:
     paths:
         include:
         - /Application
+        - /NotificationService
 
 phases:
 
 - phase: Phase_1
-  displayName: Phase Windows
+  displayName: Phase Angular Application
   condition: succeeded()
   
   queue:
-    name: Hosted VS2017
+    name: Hosted Ubuntu 1604
     demands: npm
 
   variables:
-    angular_version: '6.1.7'
+    angular_version: '7.0.0'
 
   steps:
   
+  # Perform Tokens Replacement
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    displayName: Replace
+    inputs:
+      rootDirectory: Application/Source/Configurations
+      targetFiles: vapid.configuration.ts
+
   # Perform npm Install
   - task: Npm@1
     displayName: 'Install'
@@ -93,5 +101,86 @@ phases:
     displayName: 'Publish'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: Drop
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+
+
+- phase: Phase_2
+  displayName: Phase Azure Function
+  condition: succeeded()
+  
+  queue:
+    name: Hosted VS2017
+
+  variables:
+    function_version: '2.0'
+
+  steps:
+  
+  # Perform .Net Core Install 2.1.403
+  #- task: DotNetCoreInstaller@0
+  #  displayName: '.NET Core sdk 2.1.403'
+  #  inputs:
+  #    version: 2.1.403
+
+  # Start Cosmos DB Emulator
+  - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
+    displayName: 'Cosmos DB Emulator'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+  # Perform .Net Core Restore
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+
+  # Perform .Net Core Build
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration)'
+  
+  # Perform .Net Core Test
+  - task: VSTest@2
+    displayName: Test
+    inputs:
+      testAssemblyVer2: |
+       **\*Tests*.dll
+       !**\*TestAdapter.dll
+       !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
+      runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
+      overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+      runTestsInIsolation: true
+      codeCoverageEnabled: true
+      testRunTitle: 'Integration Tests'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+  # Perform .Net Core Test
+  #- task: DotNetCoreCLI@2
+  #  displayName: Test
+  #  inputs:
+  #    command: test
+  #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+  #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
+  #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+
+  # Perform .Net Core Publish
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: 'NotificationService/MSAccountPushSubscription/MSAccountPushSubscription.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+  
+  # Publish Artifacts
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
       ArtifactName: Drop
     condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))

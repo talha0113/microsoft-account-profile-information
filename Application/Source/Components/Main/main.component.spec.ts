@@ -2,7 +2,7 @@ import { Location } from "@angular/common";
 import { Router } from '@angular/router';
 import { TestBed, ComponentFixture, ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { RouterTestingModule } from "@angular/router/testing";
-import { SwUpdate, ServiceWorkerModule } from '@angular/service-worker';
+import { SwUpdate, ServiceWorkerModule, SwPush } from '@angular/service-worker';
 
 import { appRoutes } from '../../Routes/main.route';
 import { MainComponent } from './main.component';
@@ -23,6 +23,10 @@ import { ProfileQuery } from "../../Queries/profile.query";
 import { AuthenticationServiceStub } from "../../Services/authentication.service.stub";
 import { setUpMock } from "../../Managers/storage.mock";
 import { environment } from "Configurations/Environments/environment";
+import { NotificationService } from "../../Services/notification.service";
+import { PushService } from "../../Services/push.service";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 
 
 describe('Main Component', () => {
@@ -40,6 +44,8 @@ describe('Main Component', () => {
     beforeAll(async () => {
         TestBed.configureTestingModule({
             imports: [
+                HttpClientModule,
+                FormsModule,
                 RouterTestingModule.withRoutes(appRoutes),
                 ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
             ],
@@ -68,7 +74,10 @@ describe('Main Component', () => {
                 ProfileService,
                 ProfileStore,
                 ProfileQuery,
-                SwUpdate
+                NotificationService,
+                PushService,
+                SwUpdate,
+                SwPush
             ]
         }).compileComponents();        
     });
