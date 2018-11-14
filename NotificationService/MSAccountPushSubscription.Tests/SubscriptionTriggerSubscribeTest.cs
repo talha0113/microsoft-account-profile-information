@@ -72,12 +72,13 @@ namespace MSAccountPushSubscription.Tests
         {
             var item = await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(sub.Id);
             Assert.AreEqual(item.Id, sub.Id);
+            await DocumentDBRepository<PushSubscriptionInformation>.DeleteItemAsync(sub.Id);
         }
 
-        [TestCleanup]
-        public async Task Cleanup()
+        [ClassCleanup]
+        public static void Cleanup()
         {
-            await DocumentDBRepository<PushSubscriptionInformation>.DeleteItemAsync(sub.Id);            
+            DocumentDBRepository<PushSubscriptionInformation>.Clean();
         }
     }
 }

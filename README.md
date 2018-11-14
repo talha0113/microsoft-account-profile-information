@@ -11,4 +11,4 @@ It is built using following frameworks and libraries
   - **TypeScript**
   - **Puppeteer** and **Jest** for Automated UI Test
 
-[Demo](https://ms-account-profile-info.azurewebsites.net)
+[Demo](https://msaccprofileinformation.z6.web.core.windows.net)

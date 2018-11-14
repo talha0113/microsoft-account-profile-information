@@ -41,7 +41,7 @@ namespace MSAccountPushSubscription.Tests
             Environment.SetEnvironmentVariable("CollectionId", TestContext.Properties["CollectionId"].ToString(), EnvironmentVariableTarget.Process);
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
-            DocumentDBRepository<PushSubscriptionInformation>.CreateItemAsync(sub).Wait();
+            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);            
         }
 
         [TestMethod]
@@ -59,6 +59,7 @@ namespace MSAccountPushSubscription.Tests
         [TestMethod]
         public async Task SubscriptionExistsTest()
         {
+            DocumentDBRepository<PushSubscriptionInformation>.CreateItemAsync(sub).Wait();
             var item = await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(sub.Id);
             Assert.AreEqual(item.Id, sub.Id);
         }
