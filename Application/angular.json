@@ -85,10 +85,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "Configurations/karma/karma.test.shim.ts",
+            "main": "Configurations/Karma/karma.test.shim.ts",
             "polyfills": "Source/polyfills.ts",
-            "tsConfig": "Configurations/karma/tsconfig.spec.json",
-            "karmaConfig": "Configurations/karma/karma.conf.js",
+            "tsConfig": "Configurations/Karma/tsconfig.spec.json",
+            "karmaConfig": "Configurations/Karma/karma.config.js",
             "styles": [
               "Styles/styles.css"
             ],

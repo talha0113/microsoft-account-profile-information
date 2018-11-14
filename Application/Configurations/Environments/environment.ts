@@ -4,8 +4,8 @@
 
 export const environment = {
     production: false,
-    PWASubscribeUrl: "http://localhost:7071/api/SubscriptionTriggerSubscribe",
-    PWAUnSubscribeUrl: "http://localhost:7071/api/SubscriptionTriggerUnSubscribe"
+    PWASubscribeUrl: 'http://localhost:7071/api/SubscriptionTriggerSubscribe',
+    PWAUnSubscribeUrl: 'http://localhost:7071/api/SubscriptionTriggerUnSubscribe'
 };
 
 /*
