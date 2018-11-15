@@ -15,10 +15,10 @@ export class ApplicationBase {
 
     public async loginPageProcess(loginPage: Page): Promise<void> {
         await loginPage.waitForSelector("input[name=loginfmt]");
-        await loginPage.type("input[name=loginfmt]", environmentConfiguration.userName, { delay: 20 });
+        await loginPage.type("input[name=loginfmt]", environmentConfiguration.userName, { delay: 40 });
         await loginPage.keyboard.press("Enter");
         await loginPage.waitForSelector("#idBtn_Back");
-        await (new Promise(resolve => setTimeout(resolve, 1000)));
+        await loginPage.waitFor(2000);
         await loginPage.type("input[name=passwd]", environmentConfiguration.password, { delay: 40 });
         await loginPage.focus("#idSIButton9");
         await loginPage.keyboard.press("Enter");

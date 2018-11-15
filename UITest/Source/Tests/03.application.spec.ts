@@ -27,7 +27,7 @@ describe('Microsoft Account Information Application', () => {
         await page.click('div > login > div > div > button');
         await page.waitForNavigation();
         await applicationBase.loginPageProcess(page);
-        await (new Promise(resolve => setTimeout(resolve, 3000)));
+        await page.waitFor(3000);
         expect(page.url()).toContain("/status");
     }, 30000);
 
