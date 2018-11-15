@@ -65,6 +65,7 @@ this.hideSubscription = this.notificationService.isDenied;
                     this.notificationsSubscribed = value;
                 }, (error) => {
                     this.notificationsSubscribed = !this.notificationsSubscribed;
+                    this.hideSubscription = true;
                 });
             }
             else {
