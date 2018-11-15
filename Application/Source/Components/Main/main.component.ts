@@ -27,7 +27,7 @@ export class MainComponent {
                 this.notificationsSubscribed = value;
                 if (this.swUpdate.isEnabled) {
                     this.swUpdate.available.subscribe(() => {
-                        if (value) {
+                        if (value && this.notificationService.isSupportNotification) {
                             this.notificationService.generalNotification(this.newVersionMessage, () => {
                                 window.location.reload();
                             });
