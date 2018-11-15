@@ -33,16 +33,27 @@ export class NotificationService {
         this.generalNotification("Application is Online");
     }
 
+    public get isSupportNotification(): boolean {
+        return ("Notification" in window);
+    }
+
     public generalNotification(body: string, eventCallBack?: () => void): void {
-        let options: NotificationOptions = {
-            body: body,
-            icon: NotificationManager.iconUrl
-        }
-        let notification = new Notification(NotificationManager.title, options);
-        notification.addEventListener("click", (event: Event) => {
-            if (eventCallBack) {
-                eventCallBack();
+
+        if (this.isSupportNotification) {
+            let options: NotificationOptions = {
+                body: body,
+                icon: NotificationManager.iconUrl
             }
-        });
+            let notification = new Notification(NotificationManager.title, options);
+            notification.addEventListener("click", (event: Event) => {
+                if (eventCallBack) {
+                    eventCallBack();
+                }
+            });
+        }
+        else {
+            alert(body);
+            eventCallBack();
+        }
     }
 }
