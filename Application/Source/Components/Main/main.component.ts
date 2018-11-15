@@ -14,6 +14,7 @@ export class MainComponent {
     public isOffline: boolean = !navigator.onLine;
     public offlineNotificationDone: boolean = false;
     public notificationsSubscribed: boolean = false;
+    public hideSubscription: boolean = false;
     private newVersionMessage: string = "A newer application version is available. Load New Version?";
 
 
@@ -21,7 +22,7 @@ export class MainComponent {
 
     ngOnInit() {
         this.isOffline = !navigator.onLine;
-
+this.hideSubscription = this.notificationService.isDenied;
         if (!this.isOffline) {
             this.pushService.isSubscribed.subscribe((value: boolean) => {
                 this.notificationsSubscribed = value;
