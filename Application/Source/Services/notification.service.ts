@@ -53,7 +53,9 @@ export class NotificationService {
         }
         else {
             alert(body);
-            eventCallBack();
+            if (eventCallBack) {
+                eventCallBack();
+            }
         }
     }
 }
