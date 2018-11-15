@@ -12,11 +12,16 @@ module.exports = async function () {
         timeout: 0,
         headless: true,
         slowMo: 20,
+        dumpio: true,
+        ignoreHTTPSErrors: true,
         args: [
             `--window-size=${width},${height}`,
             `--incognit`,
             `--no-sandbox`,
-            `--disable-setuid-sandbox`
+            `--disable-setuid-sandbox`,
+            `--disable-dev-shm-usage`,
+            `--disable-software-rasterizer`,
+            `--np-gpu`
         ]
     });
     global.__BROWSER__ = browser;
