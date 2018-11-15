@@ -128,6 +128,13 @@ phases:
     displayName: 'Cosmos DB Emulator'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
+  # Perform Tokens Replacement
+  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    displayName: Replace
+    inputs:
+      rootDirectory: NotificationService/MSAccountPushSubscription/Configurations
+      targetFiles: VAPIDConfiguration.cs
+
   # Perform .Net Core Restore
   - task: DotNetCoreCLI@2
     displayName: Restore
