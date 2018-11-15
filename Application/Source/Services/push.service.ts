@@ -17,7 +17,7 @@ export class PushService {
     public subscribe(): Observable<boolean> {
         if (this.swPush.isEnabled) {
             return from(this.swPush.requestSubscription({ serverPublicKey: VAPIDConfiguration.publicKey })).pipe(switchMap((value: PushSubscription) => {
-                console.log(JSON.stringify(value));
+                //console.log(JSON.stringify(value));
                 return this.httpClient.post(environment.PWASubscribeUrl, value.toJSON());
             }), map(() => {
                     this.notificationService.generalNotification("Successfully Subscribed to Web Push");
@@ -41,7 +41,7 @@ export class PushService {
     public get unSubscribe(): Observable<void> {
         if (this.swPush.isEnabled) {
             return this.swPush.subscription.pipe(switchMap((value: PushSubscription) => {
-                return this.httpClient.delete(`${environment.PWAUnSubscribeUrl}?endpoint=${value.endpoint}`);                
+                return this.httpClient.delete(`${environment.PWAUnSubscribeUrl}&endpoint=${value.endpoint}`);                
             }), switchMap(() => {
                     return from(this.swPush.unsubscribe());
                 }), map(() => {
