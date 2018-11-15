@@ -34,8 +34,8 @@ describe('Microsoft Account Information Application', () => {
     test("Should see profile", async () => {
         await page.waitForSelector('div > navigation > div > nav > a:nth-child(2)');
         await page.click('div > navigation > div > nav > a:nth-child(2)');
-        await page.waitForSelector('profile > div > div > div > h3');
-        let profileName: string = await page.evaluate(() => document.querySelector('profile > div > div > div > h3').textContent);
+        await page.waitForSelector('profile > div > div > div > div > h3');
+        let profileName: string = await page.evaluate(() => document.querySelector('profile > div > div > div > div > h3').textContent);
         expect(page.url()).toContain("/profile");
         expect(profileName).toContain("Talha");
     }, 30000);
