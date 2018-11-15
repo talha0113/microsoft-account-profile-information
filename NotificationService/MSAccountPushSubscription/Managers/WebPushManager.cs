@@ -1,6 +1,7 @@
 ﻿using MSAccountPushSubscription.Configurations;
 using MSAccountPushSubscription.Models;
 using Newtonsoft.Json;
+using System;
 using WebPush;
 
 namespace MSAccountPushSubscription.Managers
@@ -14,7 +15,7 @@ namespace MSAccountPushSubscription.Managers
                 var pushClient = new WebPushClient();
                 var vapidDetails = new VapidDetails(VAPIDConfiguration.Subject, VAPIDConfiguration.PublicKey, VAPIDConfiguration.PrivateKey);
                 pushClient.SetVapidDetails(vapidDetails);
-                var pushSubscription = new PushSubscription();
+                var pushSubscription = new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Authentication);
                 pushClient.SendNotification(pushSubscription, JsonConvert.SerializeObject(new RootNotification()));
             }
             catch { }
