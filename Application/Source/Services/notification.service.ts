@@ -13,6 +13,10 @@ export class NotificationService {
         return Notification.permission == "granted";
     }
 
+    public get isDenied(): boolean {
+        return Notification.permission == "denied";
+    }
+    
     public get isNotAsked(): boolean {
         return Notification.permission == "default";
     }
