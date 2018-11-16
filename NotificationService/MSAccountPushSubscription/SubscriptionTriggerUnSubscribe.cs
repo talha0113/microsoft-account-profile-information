@@ -46,6 +46,10 @@ namespace MSAccountPushSubscription
                 var exception = new ApplicationException("Error Occuered", ex);
                 return new BadRequestObjectResult(exception);
             }
+            finally
+            {
+                log.LogInformation("SubscriptionTriggerUnSubscribe Request Ended.");
+            }
         }
     }
 }
