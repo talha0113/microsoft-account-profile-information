@@ -30,6 +30,7 @@ import { ProfileStore } from '../Stores/profile.store';
 import { ProfileQuery } from '../Queries/profile.query';
 
 import { environment } from '../../Configurations/Environments/environment';
+import { InsightsManager } from '../Managers/insights.manager';
 
 
 @NgModule({
@@ -70,4 +71,8 @@ import { environment } from '../../Configurations/Environments/environment';
         MainComponent
     ]
 })
-export class MainModule { }
+export class MainModule {
+    constructor() {
+        InsightsManager.initialize();
+    }
+}

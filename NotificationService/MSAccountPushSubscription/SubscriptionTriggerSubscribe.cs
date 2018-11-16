@@ -27,13 +27,14 @@ namespace MSAccountPushSubscription
             ILogger log)
         {
             log.LogInformation("SubscriptionTriggerSubscribe Request Started.");
-            foreach (DictionaryEntry de in SettingsManager.GetAll())
-            {
-                log.LogInformation($"{de.Key}:{de.Value}");
-            }
+            //foreach (DictionaryEntry de in SettingsManager.GetAll())
+            //{
+            //    log.LogInformation($"{de.Key}:{de.Value}");
+            //}
             //log.LogInformation($"Connection String: {Environment..GetEnvironmentVariable("ConnectionStrings:ms-account-profile-informationDBConnection", EnvironmentVariableTarget.Process)}");
 
-            try {
+            try
+            {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var pushSubscription = JsonConvert.DeserializeObject<PushSubscriptionInformation>(requestBody);
 
@@ -45,14 +46,21 @@ namespace MSAccountPushSubscription
                 }
                 else
                 {
-                    return new BadRequestObjectResult("Empty Subscription in the Body");
+                    var emptyMessage = "Empty Subscription in the Body";
+                    log.LogWarning(emptyMessage);
+                    return new BadRequestObjectResult(emptyMessage);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 var exception = new ApplicationException("Error Occuered", ex);
+                log.LogCritical(exception, exception.Message);
                 return new BadRequestObjectResult(exception);
             }
-            
+            finally
+            {
+                log.LogInformation("SubscriptionTriggerSubscribe Request Ended.");
+            }
         }
     }
 }
