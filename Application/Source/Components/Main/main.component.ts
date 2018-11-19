@@ -4,6 +4,7 @@ import { SwUpdate } from '@angular/service-worker';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
     selector: 'main',
@@ -14,6 +15,7 @@ export class MainComponent {
     public isOffline: boolean = !navigator.onLine;
     public offlineNotificationDone: boolean = false;
     public notificationsSubscribed: boolean = false;
+    public isSubscriptionInProgress: boolean = false;
     public hideSubscription: boolean = false;
     private newVersionMessage: string = "A newer application version is available. Load New Version?";
 
@@ -60,16 +62,21 @@ this.hideSubscription = this.notificationService.isDenied;
     subscriptionChanged(): void {
 
         if (!this.isOffline) {
+            this.isSubscriptionInProgress = true;
             if (this.notificationsSubscribed) {
                 this.pushService.subscribe().subscribe((value: boolean) => {
                     this.notificationsSubscribed = value;
+                    this.isSubscriptionInProgress = false;
                 }, (error) => {
                     this.notificationsSubscribed = !this.notificationsSubscribed;
                     this.hideSubscription = true;
+                    this.isSubscriptionInProgress = false;
                 });
             }
             else {
-                this.pushService.unSubscribe.subscribe();
+                this.pushService.unSubscribe.subscribe(() => {
+                    alert("Success");
+                });
             }
         }
 
