@@ -75,7 +75,7 @@ this.hideSubscription = this.notificationService.isDenied;
             }
             else {
                 this.pushService.unSubscribe.subscribe(() => {
-                    alert("Success");
+                    this.isSubscriptionInProgress = false;
                 });
             }
         }
