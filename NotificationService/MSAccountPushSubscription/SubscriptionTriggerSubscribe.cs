@@ -40,7 +40,7 @@ namespace MSAccountPushSubscription
 
                 if (pushSubscription != null)
                 {
-                    var service = new PushNotificationService(client);
+                    var service = new SubscriptionService(client);
                     await service.Subscribe(pushSubscription);
                     return new OkResult();
                 }

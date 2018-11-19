@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MSAccountPushSubscription.Services
 {
-    interface IPushNotificationService
+    interface ISubscriptionService
     {
         Task Subscribe(PushSubscriptionInformation subscription);
         Task UnSubscribe(string endPoint);
