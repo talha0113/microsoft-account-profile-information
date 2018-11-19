@@ -49,7 +49,7 @@ export class PushService {
                 }), catchError((error: any) => {
                     // Bug
                     //return ErrorManager.generalError("PushService.unSubscribe", error);
-                    return null;
+                    return of(null);
             }));
         }
         return of(null);

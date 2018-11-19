@@ -34,7 +34,7 @@ namespace MSAccountPushSubscription.Services
 
             foreach (PushSubscriptionInformation sub in allSubscriptions)
             {
-                WebPushManager.SendNotification(sub);
+                WebPushManager.SendNotification(sub, $"{allSubscriptions.Count()} Subscriptions for Application");
             }
         }
         public async Task UnSubscribe(string endPoint)

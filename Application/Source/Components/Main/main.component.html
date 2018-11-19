@@ -12,7 +12,10 @@
         <router-outlet></router-outlet>
     </div>
     <div *ngIf="!isOffline && !hideSubscription">
-        <label>Subscribe to Notifications:</label> <input type="checkbox" [(ngModel)]="notificationsSubscribed" (change)="subscriptionChanged()" />
+        <label>Subscribe to Notifications:</label> <input type="checkbox" [disabled]="isSubscriptionInProgress" [(ngModel)]="notificationsSubscribed" (change)="subscriptionChanged()" />
+    </div>
+    <div *ngIf="isSubscriptionInProgress">
+        <img src="../../Assets/loader.gif" height="30" width="30" />
     </div>
     <div style="color:red" *ngIf="isOffline">
         <b>
