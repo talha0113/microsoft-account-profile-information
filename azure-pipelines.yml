@@ -135,6 +135,16 @@ phases:
       rootDirectory: NotificationService/MSAccountPushSubscription/Configurations
       targetFiles: VAPIDConfiguration.cs
 
+  # Storage Emulator
+  - script: |
+     sqllocaldb create MSSQLLocalDB
+     sqllocaldb start MSSQLLocalDB
+     sqllocaldb info MSSQLLocalDB
+   
+     "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
+    displayName: 'Storage Emulator'
+
+
   # Perform .Net Core Restore
   - task: DotNetCoreCLI@2
     displayName: Restore
