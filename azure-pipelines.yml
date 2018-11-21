@@ -143,7 +143,7 @@ phases:
    
      "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
     displayName: 'Storage Emulator'
-
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
   # Perform .Net Core Restore
   - task: DotNetCoreCLI@2
