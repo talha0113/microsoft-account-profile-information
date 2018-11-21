@@ -1,24 +1,15 @@
-﻿using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using MSAccountPushSubscription.Configurations;
-using MSAccountPushSubscription.Managers;
+﻿using Microsoft.Azure.Documents.Client;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Repositories;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using WebPush;
 
 namespace MSAccountPushSubscription.Services
 {
-    class PushNotificationService : IPushNotificationService
+    class SubscriptionService : ISubscriptionService
     {
         
-        public PushNotificationService(DocumentClient client)
+        public SubscriptionService(DocumentClient client)
         {
             DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);
         }
@@ -31,10 +22,13 @@ namespace MSAccountPushSubscription.Services
             }
 
             var allSubscriptions = await DocumentDBRepository<PushSubscriptionInformation>.GetItemsAsync(s => s.EndPoint != null);
-
+            var notificationQueueService = new NotificationQueueService();
             foreach (PushSubscriptionInformation sub in allSubscriptions)
             {
-                WebPushManager.SendNotification(sub, $"{allSubscriptions.Count()} Subscriptions for Application");
+                var notificationQueueItem = new NotificationQueueItem();
+                notificationQueueItem.subscription = sub;
+                notificationQueueItem.message = $"{allSubscriptions.Count()} Subscriptions for Application";
+                await notificationQueueService.Insert(notificationQueueItem);
             }
         }
         public async Task UnSubscribe(string endPoint)

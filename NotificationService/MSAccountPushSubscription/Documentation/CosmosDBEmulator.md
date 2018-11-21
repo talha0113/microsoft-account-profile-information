@@ -18,5 +18,5 @@ https://<emulator endpoint provided in response>/_explorer/index.html
 ````
 docker ps -all
 docker rmi $containerName -f
-((Get-ChildItem -Recurse Cert:) | ? {$_.Thumbprint -eq "9FB137E6F4D399B54BF75D9914664BDD66C64CE4"}) | Remove-Item
+((Get-ChildItem -Recurse Cert:) | ? {$_.Thumbprint -eq "E23FEB6A2266B85A4E980BB256B3EC64C917D759"}) | Remove-Item
 ````

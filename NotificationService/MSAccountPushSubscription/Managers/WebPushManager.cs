@@ -10,15 +10,11 @@ namespace MSAccountPushSubscription.Managers
     {
         public static void SendNotification(PushSubscriptionInformation subscription, string message)
         {
-            try
-            {
-                var pushClient = new WebPushClient();
-                var vapidDetails = new VapidDetails(VAPIDConfiguration.Subject, VAPIDConfiguration.PublicKey, VAPIDConfiguration.PrivateKey);
-                pushClient.SetVapidDetails(vapidDetails);
-                var pushSubscription = new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Authentication);
-                pushClient.SendNotification(pushSubscription, JsonConvert.SerializeObject(new RootNotification(message)));
-            }
-            catch { }
+            var pushClient = new WebPushClient();
+            var vapidDetails = new VapidDetails(VAPIDConfiguration.Subject, VAPIDConfiguration.PublicKey, VAPIDConfiguration.PrivateKey);
+            pushClient.SetVapidDetails(vapidDetails);
+            var pushSubscription = new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Authentication);
+            pushClient.SendNotification(pushSubscription, JsonConvert.SerializeObject(new RootNotification(message)));
         }
     }
 }

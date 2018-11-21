@@ -39,6 +39,7 @@ namespace MSAccountPushSubscription.Tests
 
             Environment.SetEnvironmentVariable("DatabaseId", TestContext.Properties["DatabaseId"].ToString(), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("CollectionId", TestContext.Properties["CollectionId"].ToString(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("AzureWebJobsStorage", TestContext.Properties["AzureWebJobsStorage"].ToString(), EnvironmentVariableTarget.Process);
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
         }
