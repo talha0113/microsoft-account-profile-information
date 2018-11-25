@@ -41,7 +41,7 @@ export class PushService {
     public get unSubscribe(): Observable<void> {
         if (this.swPush.isEnabled) {
             return this.swPush.subscription.pipe(switchMap((value: PushSubscription) => {
-                return this.httpClient.delete(`${environment.PWAUnSubscribeUrl}&endpoint=${value.endpoint}`);                
+                return this.httpClient.delete(`${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(value.endpoint)}`);                
             }), switchMap(() => {
                     return from(this.swPush.unsubscribe());
                 }), map(() => {
