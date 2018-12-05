@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --prod && node Tasks/Compression.js",
+    "build": "ng build --prod && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
     "test": "ng test --code-coverage",
+    "do": "",
     "lint": "ng lint"
   },
   "private": true,
