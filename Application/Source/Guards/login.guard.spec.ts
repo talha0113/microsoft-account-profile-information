@@ -2,7 +2,7 @@
 import { AuthenticationQuery } from '../Queries/authentication.query';
 import { AuthenticationStore } from '../Stores/authentication.store';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 
 import { LoginGuard } from './login.guard';
 import { AuthenticationService } from '../Services/authentication.service';
@@ -57,7 +57,7 @@ describe('Login Guard', () => {
     it('Should not allow for authenticated user', async () => {
         authenticationService.login();
         authenticationService.refreshToken().subscribe(() => {
-            expect(loginGuard.canActivate(null, null)).toBeFalsy();
+            expect(loginGuard.canActivate(null, null)).toEqual(router.parseUrl("status"));
         });
     });
 });
