@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
-import { SwUpdate } from '@angular/service-worker';
+import { SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
-import { error } from '@angular/compiler/src/util';
+import { Version } from 'Source/Models/version.model';
+import { VersionConstant } from 'Source/Constants/version.constant';
 
 @Component({
     selector: 'main',
@@ -17,26 +18,30 @@ export class MainComponent {
     public notificationsSubscribed: boolean = false;
     public isSubscriptionInProgress: boolean = false;
     public hideSubscription: boolean = false;
-    private newVersionMessage: string = "A newer application version is available. Load New Version?";
-
 
     constructor(private swUpdate: SwUpdate, private router: Router, private notificationService: NotificationService, private pushService: PushService) { }
 
     ngOnInit() {
         this.isOffline = !navigator.onLine;
-this.hideSubscription = this.notificationService.isDenied;
+        this.hideSubscription = this.notificationService.isDenied;
         if (!this.isOffline) {
             this.pushService.isSubscribed.subscribe((value: boolean) => {
                 this.notificationsSubscribed = value;
                 if (this.swUpdate.isEnabled) {
-                    this.swUpdate.available.subscribe(() => {
+                    this.swUpdate.available.subscribe((updateEventValue: UpdateAvailableEvent) => {
+                        let applicationVersionInformationNew: Version = <Version>updateEventValue.available.appData;
+                        let applicationVersionInformationOld: Version = <Version>updateEventValue.current.appData;
+                        if (applicationVersionInformationOld == null) {
+                            applicationVersionInformationOld.version = "0.0.0";
+                        }
+                        applicationVersionInformationNew.message = applicationVersionInformationNew.message.replace(VersionConstant.versionOld, applicationVersionInformationOld.version).replace(VersionConstant.versionNew, applicationVersionInformationNew.version);
                         if (value && this.notificationService.isSupportNotification) {
-                            this.notificationService.generalNotification(this.newVersionMessage, () => {
+                            this.notificationService.generalNotification(applicationVersionInformationNew.message, () => {
                                 window.location.reload();
                             });
                         }
                         else {
-                            if (confirm(this.newVersionMessage)) {
+                            if (confirm(applicationVersionInformationNew.message)) {
                                 window.location.reload();
                             }
                         }
