@@ -107,6 +107,7 @@ phases:
   # Perform Code Security Check
   - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
     displayName: 'Code Security Check'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
 
 - phase: Phase_2
@@ -209,3 +210,4 @@ phases:
   # Perform Code Security Check
   - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
     displayName: 'Code Security Check'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
