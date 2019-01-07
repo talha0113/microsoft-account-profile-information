@@ -31,7 +31,11 @@ phases:
     angular_version: '7.0.0'
 
   steps:
-  
+
+  # Perform Code Security Check
+  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
+    displayName: 'Code Security Check'
+
   # Perform Tokens Replacement
   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     displayName: Replace
@@ -122,6 +126,10 @@ phases:
   #  displayName: '.NET Core sdk 2.1.403'
   #  inputs:
   #    version: 2.1.403
+
+  # Perform Code Security Check
+  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
+    displayName: 'Code Security Check'
 
   # Start Cosmos DB Emulator
   - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
