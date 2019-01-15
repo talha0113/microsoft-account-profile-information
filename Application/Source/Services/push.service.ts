@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
-import { from, of, Observable } from 'rxjs';
+import { from, of, Observable, BehaviorSubject } from 'rxjs';
 import { VAPIDConfiguration } from '../Configurations/vapid.configuration';
 import { NotificationService } from './notification.service';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { environment } from 'Configurations/Environments/environment';
 
 @Injectable()
 export class PushService {
+
+    private subscriptionCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
     constructor(private swPush: SwPush, private notificationService: NotificationService, private httpClient: HttpClient ) { }
 
@@ -27,6 +29,15 @@ export class PushService {
             }));
         }
         return of(false);
+    }
+
+    public get count(): Observable<number> {
+        this.httpClient.get(`${environment.PWASubscribeCountUrl}`).pipe(catchError((error: any) => {
+            return ErrorManager.generalError("PushService.count", JSON.stringify(error));
+        })).subscribe((value: number) => {
+            this.subscriptionCount$.next(value);
+        });
+        return this.subscriptionCount$.asObservable();
     }
 
     public get isSubscribed(): Observable<boolean> {

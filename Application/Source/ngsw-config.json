@@ -39,6 +39,17 @@
         "strategy": "freshness",
         "maxSize": "10"
       }
+    },
+    {
+      "name": "Subscription Api Calls",
+      "urls": [
+        "https://ms-account-profile-info-notification-service.azurewebsites.net/api/**"
+      ],
+      "cacheConfig": {
+        "maxAge": "1d",
+        "strategy": "freshness",
+        "maxSize": "10"
+      }
     }
   ]
 }

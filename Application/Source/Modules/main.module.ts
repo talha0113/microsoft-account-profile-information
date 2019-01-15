@@ -31,6 +31,7 @@ import { ProfileQuery } from '../Queries/profile.query';
 
 import { environment } from '../../Configurations/Environments/environment';
 import { InsightsManager } from '../Managers/insights.manager';
+import { SignalRService } from 'Source/Services/signalr.service';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { InsightsManager } from '../Managers/insights.manager';
         ProfileService,
         AuthenticationService,
         NotificationService,
-        PushService
+        PushService,
+        SignalRService
     ],
     bootstrap: [
         MainComponent

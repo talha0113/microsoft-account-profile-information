@@ -79,7 +79,7 @@ namespace MSAccountPushSubscription.Tests
         [ClassCleanup]
         public static void Cleanup()
         {
-            DocumentDBRepository<PushSubscriptionInformation>.Clean();
+            //DocumentDBRepository<PushSubscriptionInformation>.Clean();
         }
     }
 }

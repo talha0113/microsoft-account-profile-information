@@ -1,7 +1,16 @@
-import { TestBed, ComponentFixture, ComponentFixtureAutoDetect } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 
 import { StatusComponent } from './status.component';
-import { setUpMock } from '../../Managers/storage.mock';
+import { PushService } from 'Source/Services/push.service';
+import { SignalRService } from 'Source/Services/signalr.service';
+import { SignalRServiceStub } from 'Source/Services/signalr.service.stub';
+import { environment } from 'Configurations/Environments/environment';
+import { NotificationService } from 'Source/Services/notification.service';
+import { By } from '@angular/platform-browser';
+
 
 let fixture: ComponentFixture<StatusComponent>;
 let component: StatusComponent
@@ -9,13 +18,22 @@ let component: StatusComponent
 describe('Status Component', () => {
 
     beforeAll(async () => {
-        setUpMock();
-    });
-
-    beforeAll(async () => {
         TestBed.configureTestingModule({
+            imports: [
+                HttpClientTestingModule,
+                FormsModule,
+                ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+            ],
             declarations: [
                 StatusComponent
+            ],
+            providers: [
+                PushService,
+                NotificationService,
+                {
+                    provide: SignalRService,
+                    useClass: SignalRServiceStub
+                }
             ]
         }).compileComponents();        
     });
@@ -23,6 +41,7 @@ describe('Status Component', () => {
     beforeAll(async () => {
         fixture = TestBed.createComponent(StatusComponent);
         component = fixture.componentInstance;
+        fixture.autoDetectChanges();
     });
 
     it('Should exist', async () => {
@@ -34,6 +53,25 @@ describe('Status Component', () => {
         let messageDiv: HTMLDivElement = nativeElement.querySelector('div');
 
         expect(messageDiv.textContent).toContain('You are');
+    });
+
+    it('Should render live stats input', async () => {
+        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+        let liveStatsLabel: HTMLLabelElement = nativeElement.querySelector('label');
+
+        expect(liveStatsLabel.textContent).toContain("Live Stats");
+    });
+
+    it('Should not render live stats number', async () => {
+        let nativeElement = fixture.debugElement.query(By.css(".stats-subscribed")).nativeElement;
+        expect(nativeElement.checked).toBeFalsy();
+    });
+
+    it('Should render live stats number', async () => {
+        let nativeElementCheckbox = fixture.debugElement.query(By.css(".stats-subscribed")).nativeElement;
+        nativeElementCheckbox.click();
+        expect(nativeElementCheckbox.checked).toBeTruthy();
+        nativeElementCheckbox.click();
     });
     
 });

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
 
@@ -11,7 +11,7 @@ import { VersionConstant } from 'Source/Constants/version.constant';
     selector: 'main',
     templateUrl: './main.component.html'
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
     public title: string = 'Profile Information!';
     public isOffline: boolean = !navigator.onLine;
     public offlineNotificationDone: boolean = false;
