@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace MSAccountPushSubscription.Tests
 {
     [TestClass]
-    public class SubscriptionTriggerUnSubscribeTest
+    public class SubscriptionTriggerCountTest
     {
         private ILogger log;
         private DefaultHttpRequest request;
@@ -45,46 +45,32 @@ namespace MSAccountPushSubscription.Tests
         }
 
         [TestMethod]
-        public async Task UnSubscribeEmptyQueryTest()
+        public async Task NoSubscriptionsTest()
         {
             request = new DefaultHttpRequest(new DefaultHttpContext())
             {
                 QueryString = QueryString.Create("", "")
             };
-            var response = await SubscriptionTriggerUnSubscribe.Run(request, client, log);
-            Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
-            Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
+            dynamic response = await SubscriptionTriggerCount.Run(request, client, log);
+            Assert.AreEqual(response.Value, 0);
         }
 
         [TestMethod]
-        public async Task SubscriptionExistsTest()
+        public async Task SubscriptionsExistTest()
         {
             DocumentDBRepository<PushSubscriptionInformation>.CreateItemAsync(sub).Wait();
-            var item = await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(sub.Id);
-            Assert.AreEqual(item.Id, sub.Id);
-        }
-
-        [TestMethod]
-        public async Task SubscriptionRemovedTest()
-        {
             request = new DefaultHttpRequest(new DefaultHttpContext())
             {
-                QueryString = QueryString.Create("endpoint", sub.EndPoint)
+                QueryString = QueryString.Create("", "")
             };
-            var response = await SubscriptionTriggerUnSubscribe.Run(request, client, log);
-            Assert.IsInstanceOfType(response, typeof(OkResult));
-        }
-
-        public async Task SubscriptionsEmptyTest()
-        {
-            var item = await DocumentDBRepository<PushSubscriptionInformation>.GetItemAsync(sub.Id);
-            Assert.AreEqual(item, null);
+            dynamic response = await SubscriptionTriggerCount.Run(request, client, log);
+            Assert.AreEqual(response.Value, 1);
         }
 
         [ClassCleanup]
         public static void Cleanup()
         {
-            //DocumentDBRepository<PushSubscriptionInformation>.Clean();
+            DocumentDBRepository<PushSubscriptionInformation>.Clean();
         }
     }
 }

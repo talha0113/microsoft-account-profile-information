@@ -39,5 +39,11 @@ namespace MSAccountPushSubscription.Services
                 await DocumentDBRepository<PushSubscriptionInformation>.DeleteItemAsync(allSubscriptions.ElementAt(0).Id);
             }
         }
+
+        public async Task<int> Count()
+        {
+            var allSubscriptions = await DocumentDBRepository<PushSubscriptionInformation>.GetItemsAsync(s => s.EndPoint != null);
+            return allSubscriptions.Count<PushSubscriptionInformation>();
+        }
     }
 }

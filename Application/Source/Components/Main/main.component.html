@@ -11,6 +11,7 @@
         <br />
         <router-outlet></router-outlet>
     </div>
+    <br />
     <div *ngIf="!isOffline && !hideSubscription">
         <label>Subscribe to Notifications:</label> <input type="checkbox" [disabled]="isSubscriptionInProgress" [(ngModel)]="notificationsSubscribed" (change)="subscriptionChanged()" />
     </div>

@@ -1,3 +1,13 @@
 <div>
-    You are Connected
+    <div>
+        You are Connected
+    </div>
+    <div *ngIf="!isOffline">
+        <div>
+            <label>Live Stats:</label> <input class="stats-subscribed" type="checkbox" [(ngModel)]="statsSubscribed" (change)="toogleStats()" />
+        </div>
+        <div *ngIf="statsSubscribed" class="stats-count">
+            Total Subscriptions: {{ subscriptionCount }}
+        </div>
+    </div>
 </div>
