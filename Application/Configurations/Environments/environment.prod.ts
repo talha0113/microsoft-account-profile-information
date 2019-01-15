@@ -1,10 +1,9 @@
-let functionKey = "CfDJ8AAAAAAAAAAAAAAAAAAAAACnscspKKpSKmUbEb8KgUitHfVIoErvKf44rsecKkTMHsdteerbkVgaKSZYYYXvpltqFzZGRt8tq6MMxK3iKJpi1VRinAmFZNtN3Vx0uuYqgliu2NBedDWfzPruBUM6xy-pfLzbRDCuS9QkyKKjjtL9S5FUpvx00TuIGJntclPYrQ";
 let functionBaseUrl = "https://ms-account-profile-info-notification-service.azurewebsites.net/api";
 
 export const environment = {
     production: true,
-    PWASubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerSubscribe?code=${functionKey}`,
-    PWAUnSubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerUnSubscribe?code=${functionKey}`,
-    PWASubscribeCountUrl: `${functionBaseUrl}/SubscriptionTriggerCount?code=${functionKey}`,
-    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation?code=${functionKey}`
+    PWASubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerSubscribe?code=836IVUEiGPE9TXAPiMqa7DQKn21HisOusPaiQBmbrcyFISUpa6as1w==`,
+    PWAUnSubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerUnSubscribe?code=sLWQABEIa0tjs3Gbwl45iD1W91tidoADfB7OY12mKOn8bfWvaZU40w==`,
+    PWASubscribeCountUrl: `${functionBaseUrl}/SubscriptionTriggerCount?code=/qhdmBE62z5awuPkByzOqTh4FqR/qzKYaBwMGHwMEZwxGdairfyWcw==`,
+    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation?code=9aF/gCsxEKrJbgaaxvAMGtrqgdZPCpkVhj92Wr70Un6JQKHrNGNR/w==`
 };
