@@ -10,7 +10,6 @@ import { SignalRService } from 'Source/Services/signalr.service';
 })
 export class StatusComponent implements OnInit, OnDestroy {
 
-    private subscriptionCountSubscription: Subscription = null;
     private subscriptionLiveCountSubscription: Subscription = null;
 
     public subscriptionCount: number = 0;
@@ -20,13 +19,10 @@ export class StatusComponent implements OnInit, OnDestroy {
     constructor(private pushService: PushService, private signalRService: SignalRService) { }
 
     ngOnInit(): void {
-        this.subscriptionCountSubscription = this.pushService.count.subscribe((value: number) => {
-            this.subscriptionCount = value;
-        });
+        
     }
 
     ngOnDestroy(): void {
-        this.subscriptionCountSubscription.unsubscribe();
         this.stopLiveCount();        
     }
 
@@ -42,6 +38,11 @@ export class StatusComponent implements OnInit, OnDestroy {
         this.stopLiveCount();
         
         if (this.statsSubscribed) {
+            const subscriptionCountSubscription = this.pushService.count.subscribe((value: number) => {
+                this.subscriptionCount = value;
+            }, null, () => {
+                subscriptionCountSubscription.unsubscribe();
+            });
             this.signalRService.renewConnection();
             this.subscriptionLiveCountSubscription = this.signalRService.liveCount.subscribe((value: number) => {
                 if (value > -1) {
