@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
     constructor(private profileService: ProfileService, private profileQuery: ProfileQuery) { }
 
     ngOnInit() {
-        if (this.profileQuery.isEmpty()) {
+        if (this.profileQuery.getCount() === 0) {
             this.profileService.information.subscribe();
         }
 

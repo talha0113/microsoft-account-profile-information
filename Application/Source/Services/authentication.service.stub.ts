@@ -10,7 +10,7 @@ export class AuthenticationServiceStub extends AuthenticationService {
         this.authenticationStore.login(new Authentication("Test_Token_Id", null));
     }
 
-    refreshToken(): Observable<string> {
+    refreshToken(): Observable<null> {
         return of<string>("Test_Token").pipe(
             tap((value: string) => {
                 this.authenticationStore.refreshToken(value);

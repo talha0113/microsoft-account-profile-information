@@ -91,7 +91,7 @@ describe('Main Component', () => {
         router = TestBed.get(Router);
         location = TestBed.get(Location);
         //router.initialNavigation();
-        routerSpy = spyOn(router, 'navigateByUrl').and.returnValue(true);
+        routerSpy = spyOn(router, 'navigateByUrl').and.returnValue(Promise.resolve(true));
     });
 
     it('should create the main', async () => {

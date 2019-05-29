@@ -1,7 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 import { NotificationManager } from '../Managers/notification.manager';
-import { BrowserDetection } from '@angular/platform-browser/testing/src/browser_util';
 import { BrowserManager } from '../Managers/browser.manager';
 
 

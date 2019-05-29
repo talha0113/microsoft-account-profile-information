@@ -16,6 +16,6 @@ export class AuthenticationQuery extends Query<AuthenticationState> {
     }
 
     getToken(): string {
-        return this.getSnapshot().authentication != null ? this.getSnapshot().authentication.accessToken : null;
+        return this.getValue().authentication != null ? this.getValue().authentication.accessToken : null;
     }
 }

@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
-import { UserAgentApplication } from 'msal';
+import { UserAgentApplication, AuthError, AuthResponse } from 'msal';
 
 import { AuthenticationConfiguration } from "../Configurations/authentication.configuration";
 import { ErrorManager } from '../Managers/error.manager';
@@ -13,23 +13,27 @@ export class AuthenticationService {
     private msalApp: UserAgentApplication;
 
     constructor(public authenticationStore: AuthenticationStore) {
-        this.msalApp = new UserAgentApplication(AuthenticationConfiguration.applicationId, AuthenticationConfiguration.authority,
-            (errorDesc: string, token: string, error: string, tokenType: string, userState: string) => {
-                console.log("Error Description:" + errorDesc);
-                console.log("Token:" + token);
-                console.log("Error:" + error);
-                console.log("Token Type:" + tokenType);
-                console.log("User State:" + userState);
-
-                if (tokenType == "id_token") {
-                    this.authenticationStore.login(new Authentication(token, null));
-                    this.msalApp.acquireTokenRedirect(AuthenticationConfiguration.scopes);
-                }
-            });
+        this.msalApp = new UserAgentApplication({
+            auth: {
+                authority: AuthenticationConfiguration.authority,
+                clientId: AuthenticationConfiguration.applicationId,
+                postLogoutRedirectUri: `${window.location.origin}/login`
+            }
+        });
+        this.msalApp.handleRedirectCallback((authenticationError: AuthError, authenticationResponse: AuthResponse) => {
+            if (authenticationResponse.tokenType === 'id_token') {
+                this.authenticationStore.login(new Authentication(authenticationResponse.idToken.rawIdToken, null));
+                this.msalApp.acquireTokenRedirect({
+                    scopes: AuthenticationConfiguration.scopes
+                });
+            }
+        });
     }
 
     login(): void {
-        this.msalApp.loginRedirect(AuthenticationConfiguration.scopes);
+        this.msalApp.loginRedirect({
+            scopes: AuthenticationConfiguration.scopes
+        });
     }
 
     logout(): void {
@@ -37,13 +41,15 @@ export class AuthenticationService {
         this.authenticationStore.logout();
     }
 
-    refreshToken(): Observable<string> {
-        return from<string>(this.msalApp.acquireTokenSilent(AuthenticationConfiguration.scopes)).pipe(
-            tap((value: string) => {
+    refreshToken(): Observable<null> {
+        return from(this.msalApp.acquireTokenSilent({
+            scopes: AuthenticationConfiguration.scopes
+        })).pipe(
+            tap((value: AuthResponse) => {
                 this.authenticationStore.setError(null);
-                this.authenticationStore.refreshToken(value);
+                this.authenticationStore.refreshToken(value.accessToken);
             }),
-            map((value: string, index: number) => {
+            map((value: AuthResponse) => {
                 return null; 
             }),
             catchError((error: any) => {
