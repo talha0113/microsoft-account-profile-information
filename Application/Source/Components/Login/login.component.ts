@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
         this.isInProgress = this.isOffline;
 
         if (!this.isOffline) {
-            this.authenticationQuery.select<AuthenticationState>().subscribe((value: AuthenticationState) => {
+            this.authenticationQuery.select().subscribe((value: AuthenticationState) => {
                 this.isInProgress = true;
                 if (value.authentication.tokenId != null && value.authentication.accessToken == null) {
                     this.authenticationService.refreshToken().subscribe(() => {

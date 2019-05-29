@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { StoreConfig, getInitialActiveState, transaction, ID, Store } from '@datorama/akita';
+import { StoreConfig, transaction, Store } from '@datorama/akita';
 
 import { Authentication } from '../Models/authentication.model';
 import { AuthenticationState } from '../States/authentication.state';

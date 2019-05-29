@@ -1,11 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
-import { EntityStore, StoreConfig, getInitialActiveState, transaction, ID } from '@datorama/akita';
+import { EntityStore, StoreConfig, getInitialEntitiesState } from '@datorama/akita';
 
 import { Profile } from '../Models/profile.model';
 import { ProfileState } from '../States/profile.state';
 
 const state = {
-    ...getInitialActiveState()
+    ...getInitialEntitiesState()
 };
 
 @Injectable()
