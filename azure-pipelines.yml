@@ -17,197 +17,196 @@ trigger:
         - /Application
         - /NotificationService
 
-phases:
+stages:
 
-- phase: Phase_1
-  displayName: Phase Angular Application
-  condition: succeeded()
+- stage: Build
+  displayName: Build
   
-  queue:
-    name: Hosted Ubuntu 1604
-    demands: npm
+  jobs:
 
-  variables:
-    angular_version: '7.0.0'
+  - job: Angular
+    displayName: 'Angular'
+    pool:
+        name: 'Hosted Ubuntu 1604'  
+    continueOnError: 'false'
+    workspace:
+      clean: all
+    
+    steps:
 
-  steps:
+    # Perform Tokens Replacement
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: Application/Source/Configurations
+        targetFiles: vapid.configuration.ts
 
-  # Perform Tokens Replacement
-  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-    displayName: Replace
-    inputs:
-      rootDirectory: Application/Source/Configurations
-      targetFiles: vapid.configuration.ts
+    # Perform npm Install
+    - task: Npm@1
+      displayName: 'Install'
+      inputs:
+        workingDir: Application
+        verbose: false
 
-  # Perform npm Install
-  - task: Npm@1
-    displayName: 'Install'
-    inputs:
-      workingDir: Application
-      verbose: false
+    # Perform Angular Tests
+    - task: Npm@1
+      displayName: 'Test'
+      inputs:
+        workingDir: Application
+        command: custom
+        verbose: false
+        customCommand: 'test'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
-  # Perform Angular Tests
-  - task: Npm@1
-    displayName: 'Test'
-    inputs:
-      workingDir: Application
-      command: custom
-      verbose: false
-      customCommand: 'test'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+    # Attach Test Report to Azure Pipeline
+    - task: PublishTestResults@2
+      displayName: 'Report Tests'
+      inputs:
+        testRunner: NUnit
+        testResultsFiles: Application/Reports/Results.xml
+        mergeTestResults: true
+        testRunTitle: 'Microsoft Account Profile Information'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
-  # Attach Test Report to Azure Pipeline
-  - task: PublishTestResults@2
-    displayName: 'Report Tests'
-    inputs:
-      testRunner: NUnit
-      testResultsFiles: Application/Reports/Results.xml
-      mergeTestResults: true
-      testRunTitle: 'Microsoft Account Profile Information'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+    # Attach Coverage Report to Azure Pipeline
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Report Coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage/cobertura-coverage.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
 
-  # Attach Coverage Report to Azure Pipeline
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Report Coverage'
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage/cobertura-coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+    # Perform Angular Build
+    - task: Npm@1
+      displayName: 'Build'
+      inputs:
+        workingDir: Application
+        command: custom
+        verbose: false
+        customCommand: 'run build'
 
-  # Perform Angular Build
-  - task: Npm@1
-    displayName: 'Build'
-    inputs:
-      workingDir: Application
-      command: custom
-      verbose: false
-      customCommand: 'run build'
+    # Copy Build Output
+    - task: CopyFiles@2
+      displayName: 'Copy'
+      inputs:
+        SourceFolder: Application/Distributions
+        Contents: |
+         **
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+        flattenFolders: false
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
-  # Copy Build Output
-  - task: CopyFiles@2
-    displayName: 'Copy'
-    inputs:
-      SourceFolder: Application/Distributions
-      Contents: |
-       **
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      CleanTargetFolder: true
-      flattenFolders: false
-    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+    # Attach Build Output to Azure Pipeline
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: Drop
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
-  # Attach Build Output to Azure Pipeline
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: Drop
-    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+    # Perform Code Security Check
+    - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
+      displayName: 'Code Security Check'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
-  # Perform Code Security Check
-  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
-    displayName: 'Code Security Check'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+  - job: Azure_Function
+    displayName: 'Azure Function'
+    pool:
+        name: 'Hosted Windows 2019 with VS2019'  
+    continueOnError: 'false'
+    workspace:
+      clean: all
+    
+    steps:
 
+    # Perform .Net Core Install 2.1.403
+    #- task: DotNetCoreInstaller@0
+    #  displayName: '.NET Core sdk 2.1.403'
+    #  inputs:
+    #    version: 2.1.403
 
-- phase: Phase_2
-  displayName: Phase Azure Function
-  condition: succeeded()
-  
-  queue:
-    name: Hosted VS2017
+    # Start Cosmos DB Emulator
+    - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
+      displayName: 'Cosmos DB Emulator'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
-  variables:
-    function_version: '2.0'
+    # Perform Tokens Replacement
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: NotificationService/MSAccountPushSubscription/Configurations
+        targetFiles: VAPIDConfiguration.cs
 
-  steps:
-  
-  # Perform .Net Core Install 2.1.403
-  #- task: DotNetCoreInstaller@0
-  #  displayName: '.NET Core sdk 2.1.403'
-  #  inputs:
-  #    version: 2.1.403
+    # Storage Emulator
+    - script: |
+       sqllocaldb create MSSQLLocalDB
+       sqllocaldb start MSSQLLocalDB
+       sqllocaldb info MSSQLLocalDB
 
-  # Start Cosmos DB Emulator
-  - task: azure-cosmosdb.emulator-public-preview.run-cosmosdbemulatorcontainer.CosmosDbEmulator@2
-    displayName: 'Cosmos DB Emulator'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+       "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
+      displayName: 'Storage Emulator'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
-  # Perform Tokens Replacement
-  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-    displayName: Replace
-    inputs:
-      rootDirectory: NotificationService/MSAccountPushSubscription/Configurations
-      targetFiles: VAPIDConfiguration.cs
+    # Perform .Net Core Restore
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
 
-  # Storage Emulator
-  - script: |
-     sqllocaldb create MSSQLLocalDB
-     sqllocaldb start MSSQLLocalDB
-     sqllocaldb info MSSQLLocalDB
-   
-     "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
-    displayName: 'Storage Emulator'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+    # Perform .Net Core Build
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-  # Perform .Net Core Restore
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: '**/*.csproj'
+    # Perform .Net Core Test
+    - task: VSTest@2
+      displayName: Test
+      inputs:
+        testAssemblyVer2: |
+         **\*Tests*.dll
+         !**\*TestAdapter.dll
+         !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
+        runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
+        overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+        runTestsInIsolation: true
+        codeCoverageEnabled: true
+        testRunTitle: 'Integration Tests'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
-  # Perform .Net Core Build
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: '**/*.csproj'
-      arguments: '--configuration $(BuildConfiguration)'
-  
-  # Perform .Net Core Test
-  - task: VSTest@2
-    displayName: Test
-    inputs:
-      testAssemblyVer2: |
-       **\*Tests*.dll
-       !**\*TestAdapter.dll
-       !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
-      runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
-      overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
-      runTestsInIsolation: true
-      codeCoverageEnabled: true
-      testRunTitle: 'Integration Tests'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+    # Perform .Net Core Test
+    #- task: DotNetCoreCLI@2
+    #  displayName: Test
+    #  inputs:
+    #    command: test
+    #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+    #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
+    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
-  # Perform .Net Core Test
-  #- task: DotNetCoreCLI@2
-  #  displayName: Test
-  #  inputs:
-  #    command: test
-  #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-  #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
-  #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+    # Perform .Net Core Publish
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: 'NotificationService/MSAccountPushSubscription/MSAccountPushSubscription.csproj'
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
-  # Perform .Net Core Publish
-  - task: DotNetCoreCLI@2
-    displayName: Publish
-    inputs:
-      command: publish
-      publishWebProjects: false
-      projects: 'NotificationService/MSAccountPushSubscription/MSAccountPushSubscription.csproj'
-      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
-  
-  # Publish Artifacts
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
-      ArtifactName: Drop
-    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+    # Publish Artifacts
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        ArtifactName: Drop
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
 
-  # Perform Code Security Check
-  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
-    displayName: 'Code Security Check'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+    # Perform Code Security Check
+    - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
+      displayName: 'Code Security Check'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
