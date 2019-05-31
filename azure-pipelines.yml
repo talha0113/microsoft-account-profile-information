@@ -17,6 +17,10 @@ trigger:
         - /Application
         - /NotificationService
 
+variables:
+  - group: 'Authentication'
+  - group: 'Release Annotations'
+
 stages:
 
 - stage: Build
@@ -210,3 +214,133 @@ stages:
     - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
       displayName: 'Code Security Check'
       condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+- stage: Deploy_Azure
+  displayName: 'Azure'
+  dependsOn: 'Build'  
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  jobs:
+
+  - deployment: Deployment
+    displayName: 'Angular'
+    environment: 'Azure Pilot'
+    pool:
+        name: 'Hosted Windows 2019 with VS2019'  
+    continueOnError: 'false'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          
+         - task: AzureRmWebAppDeployment@4
+           displayName: 'Deploy Notification Service'
+           inputs:
+             azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+             appType: functionApp
+             WebAppName: 'ms-account-profile-info-notification-service'
+             packageForLinux: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
+         
+         - powershell: '(Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", ''$(Build.BuildNumber)'.Split("-")[1]) | Set-Content .\ngsw.json'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+           displayName: 'Tag Angular Application'
+
+         - task: AzureCLI@1
+           displayName: 'Clean Angular Application'
+           inputs:
+             azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+             scriptLocation: inlineScript
+             inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
+           workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+
+         - task: AzureFileCopy@2
+           displayName: 'Deploy Angular Application'
+           inputs:
+             SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
+             azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+             Destination: AzureBlob
+             storage: '$(StorageAccountName)'
+             ContainerName: '$(BlobContainerName)'
+
+         - task: AzureCLI@1
+           displayName: 'Clean Notification Service Package'
+           inputs:
+             azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+             scriptLocation: inlineScript
+             inlineScript: |
+              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
+              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.config --output table
+              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.map.gz --output table
+           workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
+
+
+  - job: UI_Test
+    displayName: 'UI Test'
+    pool:
+        name: 'Hosted Ubuntu 1604'  
+    continueOnError: 'false'
+    workspace:
+      clean: all
+
+    steps:
+    
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest/Configurations'
+        targetFiles: environment.config.ts
+
+    - task: Npm@1
+      displayName: 'Install'
+      inputs:
+        workingDir: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest'
+        verbose: false
+
+    - task: Npm@1
+      displayName: Test
+      inputs:
+        command: custom
+        workingDir: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest'
+        verbose: false
+        customCommand: test
+
+    - task: PublishTestResults@2
+      displayName: Publish
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest/Reports/TestResults.trx'
+        testRunTitle: 'UI Automation Test'
+
+  - job: Stamp
+    displayName: 'Stamp'
+    pool:
+        name: 'Hosted Windows Container'  
+    continueOnError: 'false'
+    workspace:
+      clean: all
+
+    steps:
+    
+    - task: ms-appinsights.appinsightsreleaseannotations.release-task.ms-appinsights.ReleaseAnnotation@1
+      displayName: Stamp
+      inputs:
+        applicationId: '$(ApplicationId)'
+        apiKey: '$(ApplicationKey)'
+
+
+  - job: Stamp
+    displayName: 'Stamp'
+    pool:
+        name: 'Hosted Windows 2019 with VS2019'  
+    continueOnError: 'false'
+    workspace:
+      clean: all
+
+    steps:
+    
+    - task: QuickPerfTest@1
+      displayName: Performance
+      inputs:
+        websiteUrl: '$(Url)'
+        testName: Performance
+        runDuration: 30
