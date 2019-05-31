@@ -240,10 +240,11 @@ stages:
               appType: functionApp
               WebAppName: 'ms-account-profile-info-notification-service'
               packageForLinux: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
-         
-          - powershell: '(Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", ''$(Build.BuildNumber)'.Split("-")[1]) | Set-Content .\ngsw.json'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
-            displayName: 'Tag Angular Application'
+
+          - powershell: |
+              (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)'.Split("-")[1]) | Set-Content .\ngsw.json
+            displayName: Files
+            workingDirectory: '$(System.DefaultWorkingDirectory)/npm-publish/package'
 
           - task: AzureCLI@1
             displayName: 'Clean Angular Application'
