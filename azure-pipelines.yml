@@ -235,7 +235,7 @@ stages:
           
           - task: AzureFunctionApp@1
             inputs:
-              azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+              azureSubscription: 'Microsoft Account Profile Information'
               appType: 'functionApp'
               appName: 'ms-account-profile-info-notification-service'
               package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
@@ -249,7 +249,7 @@ stages:
           - task: AzureCLI@1
             displayName: 'Clean Angular Application'
             inputs:
-              azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+              azureSubscription: 'Microsoft Account Profile Information'
               scriptLocation: inlineScript
               inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
             workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
@@ -258,7 +258,7 @@ stages:
             displayName: 'Deploy Angular Application'
             inputs:
               SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
-              azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+              azureSubscription: 'Microsoft Account Profile Information'
               Destination: AzureBlob
               storage: '$(StorageAccountName)'
               ContainerName: '$(BlobContainerName)'
@@ -266,7 +266,7 @@ stages:
           - task: AzureCLI@1
             displayName: 'Clean Notification Service Package'
             inputs:
-              azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
+              azureSubscription: 'Microsoft Account Profile Information'
               scriptLocation: inlineScript
               inlineScript: |
                call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
@@ -344,4 +344,4 @@ stages:
       inputs:
         websiteUrl: '$(Url)'
         testName: Performance
-        runDuration: 30
+        runDuration: "60"
