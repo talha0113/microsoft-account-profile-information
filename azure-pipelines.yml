@@ -233,13 +233,13 @@ stages:
         deploy:
           steps:
           
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Deploy Notification Service'
+          - task: AzureFunctionApp@1
             inputs:
               azureSubscription: 'Visual Studio Enterprise – MPN (a4d62bf6-9f5d-45e4-abe3-e46df4ab1b74)'
-              appType: functionApp
-              WebAppName: 'ms-account-profile-info-notification-service'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
+              appType: 'functionApp'
+              appName: 'ms-account-profile-info-notification-service'
+              package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
+              deploymentMethod: 'auto'
 
           - powershell: |
               (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)'.Split("-")[1]) | Set-Content .\ngsw.json
