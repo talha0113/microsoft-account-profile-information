@@ -331,6 +331,8 @@ stages:
 
     steps:
     
+    - checkout: 'none'
+    
     - task: ms-appinsights.appinsightsreleaseannotations.release-task.ms-appinsights.ReleaseAnnotation@1
       displayName: Stamp
       inputs:
@@ -348,6 +350,8 @@ stages:
       clean: all
 
     steps:
+    
+    - checkout: 'none'
     
     - task: QuickPerfTest@1
       displayName: Performance
