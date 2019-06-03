@@ -117,8 +117,9 @@ stages:
 
   - job: Azure_Function
     displayName: 'Azure Function'
+    dependsOn: 'Angular'
     pool:
-        name: 'Hosted VS2017'  
+        name: 'Hosted Windows 2019 with VS2019'  
     continueOnError: 'false'
     workspace:
       clean: all
@@ -250,7 +251,7 @@ stages:
           - powershell: |
               (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)'.Split("-")[1]) | Set-Content .\ngsw.json
             displayName: Files
-            workingDirectory: '$(System.DefaultWorkingDirectory)/npm-publish/package'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
 
           - task: AzureCLI@1
             displayName: 'Clean Angular Application'
@@ -283,6 +284,7 @@ stages:
 
   - job: UI_Test
     displayName: 'UI Test'
+    dependsOn: 'Deployment'
     pool:
         name: 'Hosted Ubuntu 1604'  
     continueOnError: 'false'
@@ -294,20 +296,20 @@ stages:
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: Replace
       inputs:
-        rootDirectory: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest/Configurations'
+        rootDirectory: '$(System.DefaultWorkingDirectory)/UITest/Configurations'
         targetFiles: environment.config.ts
 
     - task: Npm@1
       displayName: 'Install'
       inputs:
-        workingDir: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest'
+        workingDir: '$(System.DefaultWorkingDirectory)/UITest'
         verbose: false
 
     - task: Npm@1
       displayName: Test
       inputs:
         command: custom
-        workingDir: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest'
+        workingDir: '$(System.DefaultWorkingDirectory)/UITest'
         verbose: false
         customCommand: test
 
@@ -315,11 +317,12 @@ stages:
       displayName: Publish
       inputs:
         testResultsFormat: VSTest
-        testResultsFiles: '$(System.DefaultWorkingDirectory)/UIAutomationTests/UITest/Reports/TestResults.trx'
+        testResultsFiles: '$(System.DefaultWorkingDirectory)/UITest/Reports/TestResults.trx'
         testRunTitle: 'UI Automation Test'
 
   - job: Stamp
     displayName: 'Stamp'
+    dependsOn: 'UI_Test'
     pool:
         name: 'Hosted Windows Container'  
     continueOnError: 'false'
@@ -337,6 +340,7 @@ stages:
 
   - job: Performance
     displayName: 'Performance'
+    dependsOn: 'Stamp'
     pool:
         name: 'Hosted Windows 2019 with VS2019'  
     continueOnError: 'false'
