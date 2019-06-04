@@ -1,7 +1,7 @@
 {
   "appData": {
     "message": "Current application version is '#VERSION_NUMBER_OLD#'. A newer application version '#VERSION_NUMBER_NEW#' is available. Load New Version?",
-    "version": "1.0.#RELEASE_NUMBER#"
+    "version": "#RELEASE_NUMBER#"
   },
   "index": "/index.html",
   "assetGroups": [
