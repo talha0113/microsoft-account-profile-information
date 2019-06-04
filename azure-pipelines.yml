@@ -249,7 +249,7 @@ stages:
               deploymentMethod: 'auto'
 
           - powershell: |
-              (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)'.Split("-")[1]) | Set-Content .\ngsw.json
+              (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)') | Set-Content .\ngsw.json
             displayName: Files
             workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
 
