@@ -7,52 +7,53 @@ parameters:
 jobs:
 
 - deployment: ${{ parameters.name }}
-    displayName: ${{ parameters.display_name }}
-    environment: ${{ parameters.environment_name }}
-    pool: ${{ parameters.pool }}  
-    continueOnError: 'false'
-    strategy:
-      runOnce:
-        deploy:  
-          steps:
+  displayName: ${{ parameters.display_name }}
+  environment: ${{ parameters.environment_name }}
+  pool: ${{ parameters.pool }}  
+  continueOnError: 'false'
+  strategy:
+    runOnce:
+      deploy:  
+        steps:
           
-          - task: AzureFunctionApp@1
-            inputs:
-              azureSubscription: 'Microsoft Account Profile Information'
-              appType: 'functionApp'
-              appName: 'ms-account-profile-info-notification-service'
-              package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
-              deploymentMethod: 'auto'
+        - task: AzureFunctionApp@1
+          displayName: 'Azure Function'
+          inputs:
+            azureSubscription: 'Microsoft Account Profile Information'
+            appType: 'functionApp'
+            appName: 'ms-account-profile-info-notification-service'
+            package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
+            deploymentMethod: 'auto'
 
-          - powershell: |
-              (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)') | Set-Content .\ngsw.json
-            displayName: Files
-            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+        - powershell: |
+            (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)') | Set-Content .\ngsw.json
+          displayName: Files
+          workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
 
-          - task: AzureCLI@1
-            displayName: 'Clean Angular Application'
-            inputs:
-              azureSubscription: 'Microsoft Account Profile Information'
-              scriptLocation: inlineScript
-              inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+        - task: AzureCLI@1
+          displayName: 'Clean Angular Application'
+          inputs:
+            azureSubscription: 'Microsoft Account Profile Information'
+            scriptLocation: inlineScript
+            inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
 
-          - task: AzureFileCopy@2
-            displayName: 'Deploy Angular Application'
-            inputs:
-              SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
-              azureSubscription: 'Microsoft Account Profile Information'
-              Destination: AzureBlob
-              storage: '$(StorageAccountName)'
-              ContainerName: '$(BlobContainerName)'
+        - task: AzureFileCopy@2
+          displayName: 'Deploy Angular Application'
+          inputs:
+            SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
+            azureSubscription: 'Microsoft Account Profile Information'
+            Destination: AzureBlob
+            storage: '$(StorageAccountName)'
+            ContainerName: '$(BlobContainerName)'
 
-          - task: AzureCLI@1
-            displayName: 'Clean Notification Service Package'
-            inputs:
-              azureSubscription: 'Microsoft Account Profile Information'
-              scriptLocation: inlineScript
-              inlineScript: |
-               call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
-               call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.config --output table
-               call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.map.gz --output table
-            workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
+        - task: AzureCLI@1
+          displayName: 'Clean Notification Service Package'
+          inputs:
+            azureSubscription: 'Microsoft Account Profile Information'
+            scriptLocation: inlineScript
+            inlineScript: |
+             call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
+             call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.config --output table
+             call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.map.gz --output table
+          workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
