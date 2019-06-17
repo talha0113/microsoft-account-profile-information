@@ -1,0 +1,27 @@
+parameters:
+  name: ''
+  pool: ''
+  display_name: ''
+  depends_on: 'Deployment'
+  
+
+jobs:
+- job: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  pool: ${{ parameters.pool }}
+  continueOnError: false
+  dependsOn: ${{ parameters.depends_on }}
+  workspace:
+    clean: all
+  
+  steps:
+    
+    - checkout: 'none'
+    
+    - task: QuickPerfTest@1
+      displayName: Performance
+      inputs:
+        websiteUrl: '$(Url)'
+        testName: Performance
+        runDuration: "60"
+
