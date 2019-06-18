@@ -7,8 +7,8 @@ parameters:
 jobs:
 
 - deployment: ${{ parameters.name }}
-  displayName: ${{ parameters.display_name }}
-  environment: ${{ parameters.environment_name }}
+  displayName: ${{ format('{0}', parameters.display_name) }}
+  environment: ${{ format('{0}', parameters.environment_name) }}
   pool: ${{ parameters.pool }}  
   continueOnError: 'false'
   strategy:
