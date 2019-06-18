@@ -28,199 +28,19 @@ stages:
   
   jobs:
 
-  - job: Angular
-    displayName: 'Angular'
-    pool:
-        name: 'Hosted Ubuntu 1604'  
-    continueOnError: 'false'
-    workspace:
-      clean: all
-    
-    steps:
+  - template: angular-build-job.yml
+    parameters:
+      name: Angular
+      display_name: 'Angular'
+      pool:
+        name: 'Hosted Ubuntu 1604'
 
-    # Perform Tokens Replacement
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: Replace
-      inputs:
-        rootDirectory: Application/Source/Configurations
-        targetFiles: vapid.configuration.ts
-
-    # Perform npm Install
-    - task: Npm@1
-      displayName: 'Install'
-      inputs:
-        workingDir: Application
-        verbose: false
-
-    # Perform Angular Tests
-    - task: Npm@1
-      displayName: 'Test'
-      inputs:
-        workingDir: Application
-        command: custom
-        verbose: false
-        customCommand: 'test'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
-
-    # Attach Test Report to Azure Pipeline
-    - task: PublishTestResults@2
-      displayName: 'Report Tests'
-      inputs:
-        testRunner: NUnit
-        testResultsFiles: Application/Reports/Results.xml
-        mergeTestResults: true
-        testRunTitle: 'Microsoft Account Profile Information'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
-
-    # Attach Coverage Report to Azure Pipeline
-    - task: PublishCodeCoverageResults@1
-      displayName: 'Report Coverage'
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage/cobertura-coverage.xml'
-        reportDirectory: '$(System.DefaultWorkingDirectory)/Application/Reports/Coverage'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
-
-    # Perform Angular Build
-    - task: Npm@1
-      displayName: 'Build'
-      inputs:
-        workingDir: Application
-        command: custom
-        verbose: false
-        customCommand: 'run build'
-
-    # Copy Build Output
-    - task: CopyFiles@2
-      displayName: 'Copy'
-      inputs:
-        SourceFolder: Application/Distributions
-        Contents: |
-         **
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        CleanTargetFolder: true
-        flattenFolders: false
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
-
-    # Attach Build Output to Azure Pipeline
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish'
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: Drop
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
-
-    # Perform Code Security Check
-    - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
-      displayName: 'Code Security Check'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-  - job: Azure_Function
-    displayName: 'Azure Function'
-    dependsOn: 'Angular'
-    pool:
-        name: 'Hosted Windows 2019 with VS2019'  
-    continueOnError: 'false'
-    workspace:
-      clean: all
-    
-    steps:
-
-    # Perform .Net Core Install 2.1.403
-    #- task: DotNetCoreInstaller@0
-    #  displayName: '.NET Core sdk 2.1.403'
-    #  inputs:
-    #    version: 2.1.403
-
-    # Start Cosmos DB Emulator
-    - task: CosmosDbEmulator@2
-      displayName: 'Cosmos DB Emulator'
-      inputs:
-        containerName: 'azure-cosmosdb-emulator'
-        enableAPI: 'SQL'
-        portMapping: '8081:8081, 8901:8901,  8902:8902, 8979:8979, 10250:10250, 10251:10251, 10252:10252, 10253:10253, 10254:10254, 10255:10255, 10256:10256, 10350:10350'
-        hostDirectory: '$(Build.BinariesDirectory)\azure-cosmosdb-emulator'
-        consistency: 'Session'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-    # Perform Tokens Replacement
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: Replace
-      inputs:
-        rootDirectory: NotificationService/MSAccountPushSubscription/Configurations
-        targetFiles: VAPIDConfiguration.cs
-
-    # Storage Emulator
-    - script: |
-       sqllocaldb create MSSQLLocalDB
-       sqllocaldb start MSSQLLocalDB
-       sqllocaldb info MSSQLLocalDB
-
-       "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
-      displayName: 'Storage Emulator'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-    # Perform .Net Core Restore
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: restore
-        projects: '**/*.csproj'
-
-    # Perform .Net Core Build
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        projects: '**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration)'
-
-    # Perform .Net Core Test
-    - task: VSTest@2
-      displayName: Test
-      inputs:
-        testAssemblyVer2: |
-         **\*Tests*.dll
-         !**\*TestAdapter.dll
-         !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
-        runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
-        overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
-        runTestsInIsolation: true
-        codeCoverageEnabled: true
-        testRunTitle: 'Integration Tests'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-    # Perform .Net Core Test
-    #- task: DotNetCoreCLI@2
-    #  displayName: Test
-    #  inputs:
-    #    command: test
-    #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-    #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
-    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
-
-    # Perform .Net Core Publish
-    - task: DotNetCoreCLI@2
-      displayName: Publish
-      inputs:
-        command: publish
-        publishWebProjects: false
-        projects: 'NotificationService/MSAccountPushSubscription/MSAccountPushSubscription.csproj'
-        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
-
-    # Publish Artifacts
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-        ArtifactName: Drop
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
-
-    # Perform Code Security Check
-    - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
-      displayName: 'Code Security Check'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+  - template: azure-function-build-job.yml
+    parameters:
+      name: 'Azure_Function'
+      display_name: 'Azure Function'
+      pool:
+        name: 'Hosted VS2017'
 
 - stage: Deploy_Azure
   displayName: 'Azure'
@@ -229,133 +49,34 @@ stages:
 
   jobs:
 
-  - deployment: Deployment
-    displayName: 'Angular'
-    environment: 'Azure Pilot'
-    pool:
-        name: 'Hosted Windows 2019 with VS2019'  
-    continueOnError: 'false'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          
-          - task: AzureFunctionApp@1
-            inputs:
-              azureSubscription: 'Microsoft Account Profile Information'
-              appType: 'functionApp'
-              appName: 'ms-account-profile-info-notification-service'
-              package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
-              deploymentMethod: 'auto'
+  - template: application-deploy-job.yml
+    parameters:
+      name: Deployment
+      display_name: 'Profile Information'
+      environment_name: 'Azure'
+      pool:
+        name: 'Hosted Windows 2019 with VS2019'
 
-          - powershell: |
-              (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)') | Set-Content .\ngsw.json
-            displayName: Files
-            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+  - template: ui-test-deploy-job.yml
+    parameters:
+      name: UI_Test
+      display_name: 'UI Test'
+      depends_on: 'Deployment'
+      pool:
+        name: 'Hosted Ubuntu 1604'
 
-          - task: AzureCLI@1
-            displayName: 'Clean Angular Application'
-            inputs:
-              azureSubscription: 'Microsoft Account Profile Information'
-              scriptLocation: inlineScript
-              inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+  - template: stamp-deploy-job.yml
+    parameters:
+      name: Stamp
+      display_name: 'Stamp'
+      depends_on: 'UI_Test'
+      pool:
+        name: 'Hosted Ubuntu 1604'
 
-          - task: AzureFileCopy@2
-            displayName: 'Deploy Angular Application'
-            inputs:
-              SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
-              azureSubscription: 'Microsoft Account Profile Information'
-              Destination: AzureBlob
-              storage: '$(StorageAccountName)'
-              ContainerName: '$(BlobContainerName)'
-
-          - task: AzureCLI@1
-            displayName: 'Clean Notification Service Package'
-            inputs:
-              azureSubscription: 'Microsoft Account Profile Information'
-              scriptLocation: inlineScript
-              inlineScript: |
-               call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
-               call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.config --output table
-               call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.map.gz --output table
-            workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
-
-
-  - job: UI_Test
-    displayName: 'UI Test'
-    dependsOn: 'Deployment'
-    pool:
-        name: 'Hosted Ubuntu 1604'  
-    continueOnError: 'false'
-    workspace:
-      clean: all
-
-    steps:
-    
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: Replace
-      inputs:
-        rootDirectory: '$(System.DefaultWorkingDirectory)/UITest/Configurations'
-        targetFiles: environment.config.ts
-
-    - task: Npm@1
-      displayName: 'Install'
-      inputs:
-        workingDir: '$(System.DefaultWorkingDirectory)/UITest'
-        verbose: false
-
-    - task: Npm@1
-      displayName: Test
-      inputs:
-        command: custom
-        workingDir: '$(System.DefaultWorkingDirectory)/UITest'
-        verbose: false
-        customCommand: test
-
-    - task: PublishTestResults@2
-      displayName: Publish
-      inputs:
-        testResultsFormat: VSTest
-        testResultsFiles: '$(System.DefaultWorkingDirectory)/UITest/Reports/TestResults.trx'
-        testRunTitle: 'UI Automation Test'
-
-  - job: Stamp
-    displayName: 'Stamp'
-    dependsOn: 'UI_Test'
-    pool:
-        name: 'Hosted Windows Container'  
-    continueOnError: 'false'
-    workspace:
-      clean: all
-
-    steps:
-    
-    - checkout: 'none'
-    
-    - task: ms-appinsights.appinsightsreleaseannotations.release-task.ms-appinsights.ReleaseAnnotation@1
-      displayName: Stamp
-      inputs:
-        applicationId: '$(ApplicationId)'
-        apiKey: '$(ApplicationKey)'
-
-
-  - job: Performance
-    displayName: 'Performance'
-    dependsOn: 'Stamp'
-    pool:
-        name: 'Hosted Windows 2019 with VS2019'  
-    continueOnError: 'false'
-    workspace:
-      clean: all
-
-    steps:
-    
-    - checkout: 'none'
-    
-    - task: QuickPerfTest@1
-      displayName: Performance
-      inputs:
-        websiteUrl: '$(Url)'
-        testName: Performance
-        runDuration: "60"
+  - template: performance-deploy-job.yml
+    parameters:
+      name: Performance
+      display_name: 'Performance'
+      depends_on: 'Stamp'
+      pool:
+        name: 'Hosted Windows 2019 with VS2019'

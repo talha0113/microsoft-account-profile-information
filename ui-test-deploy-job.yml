@@ -1,0 +1,45 @@
+parameters:
+  name: ''
+  pool: ''
+  display_name: ''
+  depends_on: 'Deployment'
+  
+
+jobs:
+- job: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  pool: ${{ parameters.pool }}
+  continueOnError: false
+  dependsOn: ${{ parameters.depends_on }}
+  workspace:
+    clean: all
+  
+  steps:
+    
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: '$(System.DefaultWorkingDirectory)/UITest/Configurations'
+        targetFiles: environment.config.ts
+
+    - task: Npm@1
+      displayName: 'Install'
+      inputs:
+        workingDir: '$(System.DefaultWorkingDirectory)/UITest'
+        verbose: false
+
+    - task: Npm@1
+      displayName: Test
+      inputs:
+        command: custom
+        workingDir: '$(System.DefaultWorkingDirectory)/UITest'
+        verbose: false
+        customCommand: test
+
+    - task: PublishTestResults@2
+      displayName: Publish
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '$(System.DefaultWorkingDirectory)/UITest/Reports/TestResults.trx'
+        testRunTitle: 'UI Automation Test'
+

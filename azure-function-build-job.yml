@@ -1,0 +1,111 @@
+parameters:
+  name: ''
+  pool: ''
+  display_name: ''
+  
+jobs:
+- job: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  pool: ${{ parameters.pool }}
+  condition: succeeded()
+  continueOnError: false
+  workspace:
+    clean: all
+  
+  steps:
+
+    # Perform .Net Core Install 2.1.403
+    #- task: DotNetCoreInstaller@0
+    #  displayName: '.NET Core sdk 2.1.403'
+    #  inputs:
+    #    version: 2.1.403
+
+    # Start Cosmos DB Emulator
+    - task: CosmosDbEmulator@2
+      displayName: 'Cosmos DB Emulator'
+      inputs:
+        containerName: 'azure-cosmosdb-emulator'
+        enableAPI: 'SQL'
+        portMapping: '8081:8081, 8901:8901,  8902:8902, 8979:8979, 10250:10250, 10251:10251, 10252:10252, 10253:10253, 10254:10254, 10255:10255, 10256:10256, 10350:10350'
+        hostDirectory: '$(Build.BinariesDirectory)\azure-cosmosdb-emulator'
+        consistency: 'Session'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    # Perform Tokens Replacement
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: NotificationService/MSAccountPushSubscription/Configurations
+        targetFiles: VAPIDConfiguration.cs
+
+    # Storage Emulator
+    - script: |
+       sqllocaldb create MSSQLLocalDB
+       sqllocaldb start MSSQLLocalDB
+       sqllocaldb info MSSQLLocalDB
+
+       "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
+      displayName: 'Storage Emulator'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    # Perform .Net Core Restore
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+
+    # Perform .Net Core Build
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    # Perform .Net Core Test
+    - task: VSTest@2
+      displayName: Test
+      inputs:
+        testAssemblyVer2: |
+         **\*Tests*.dll
+         !**\*TestAdapter.dll
+         !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
+        runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
+        overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+        runTestsInIsolation: true
+        codeCoverageEnabled: true
+        testRunTitle: 'Integration Tests'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    # Perform .Net Core Test
+    #- task: DotNetCoreCLI@2
+    #  displayName: Test
+    #  inputs:
+    #    command: test
+    #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+    #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
+    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+
+    # Perform .Net Core Publish
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: 'NotificationService/MSAccountPushSubscription/MSAccountPushSubscription.csproj'
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+
+    # Publish Artifacts
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        ArtifactName: Drop
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+
+    # Perform Code Security Check
+    - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@18
+      displayName: 'Code Security Check'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
