@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -32,6 +32,7 @@ import { ProfileQuery } from '../Queries/profile.query';
 import { environment } from '../../Configurations/Environments/environment';
 import { InsightsManager } from '../Managers/insights.manager';
 import { SignalRService } from 'Source/Services/signalr.service';
+import { GlobalErrorHandlerService } from '../Services/global-error-handler.service';
 
 
 @NgModule({
@@ -56,6 +57,10 @@ import { SignalRService } from 'Source/Services/signalr.service';
             provide: HTTP_INTERCEPTORS,
             useClass: ProfileInterceptor,
             multi: true
+        },
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandlerService
         },
         AuthenticationStore,
         AuthenticationQuery,

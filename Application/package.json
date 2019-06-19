@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --prod && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
+    "build": "ng build --prod --vendorChunk=true --statsJson=true && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
     "test": "ng test --code-coverage",
     "lint": "ng lint"
   },
