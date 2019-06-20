@@ -1,25 +1,51 @@
-﻿import { AppInsights } from "applicationinsights-js";
+﻿import { ApplicationInsights, SeverityLevel } from "@microsoft/applicationinsights-web";
+import { environment } from "../../Configurations/Environments/environment";
 
 export class InsightsManager {
-    
+    private static applicationInsights = new ApplicationInsights({
+        config: {
+            instrumentationKey: "516a22ac-808a-457b-8d69-0a25f2863bf9"
+        }
+    });
+
     static initialize() {
-        AppInsights.downloadAndSetup({ instrumentationKey: "516a22ac-808a-457b-8d69-0a25f2863bf9" });
+        InsightsManager.applicationInsights.loadAppInsights();
         InsightsManager.trackPageView("Profile Information Main");
     }
 
     static trackPageView(value: string): void
     {
-        AppInsights.trackPageView(value, null, null, null, null);
+        InsightsManager.applicationInsights.trackPageView({
+            name: value
+        });
+        InsightsManager.applicationInsights.trackPageViewPerformance({
+            name: value
+        });
+        InsightsManager.flush();
     }
 
     static trackException(message: string, stack: string): void {
         let error = new Error();
         error.message = message;
         error.stack = stack;
-        AppInsights.trackException(error, null, null, null, AI.SeverityLevel.Error);
+
+        InsightsManager.applicationInsights.trackException({
+            error: error,
+            severityLevel: SeverityLevel.Error
+        });
+        InsightsManager.flush();
     }
 
     static trackEvent(value: string): void {
-        AppInsights.trackEvent(value, null, null);
+        InsightsManager.applicationInsights.trackEvent({
+            name: value
+        });
+        InsightsManager.flush();
+    }
+
+    private static flush(): void {
+        if (!environment.production) {
+            InsightsManager.applicationInsights.flush(true);
+        }
     }
 }

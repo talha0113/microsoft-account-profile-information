@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --prod && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
+    "build": "ng build --prod --vendorChunk=true --statsJson=true && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
     "test": "ng test --code-coverage",
     "lint": "ng lint"
   },
@@ -24,7 +24,7 @@
     "msal": "~1.0.1",
     "rxjs": "~6.5.2",
     "zone.js": "~0.9.1",
-    "applicationinsights-js": "~1.0.20",
+    "@microsoft/applicationinsights-web": "~2.0.1",
     "@aspnet/signalr": "~1.1.4"
   },
   "devDependencies": {
