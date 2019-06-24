@@ -71,7 +71,7 @@ stages:
       display_name: 'Stamp'
       depends_on: 'UI_Test'
       pool:
-        name: 'Hosted Ubuntu 1604'
+        name: 'Hosted Windows 2019 with VS2019'
 
   - template: performance-deploy-job.yml
     parameters:
