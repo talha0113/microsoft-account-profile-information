@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -15,10 +13,16 @@ using MSAccountPushSubscription.Models;
 
 namespace MSAccountPushSubscription
 {
-    public static class SubscriptionTriggerSignalR
+    class SubscriptionTriggerSignalR
     {
+        private readonly SubscriptionService _subscriptionService;
+        public SubscriptionTriggerSignalR(SubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
+        }
+
         [FunctionName(nameof(GetSignalRInformation))]
-        public static IActionResult GetSignalRInformation(
+        public IActionResult GetSignalRInformation(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             [SignalRConnectionInfo(ConnectionStringSetting = "SignalRConnection", HubName = "msaccountprofileinformationhub")] SignalRConnectionInfo connectionInfo,
             ILogger log)
@@ -92,7 +96,7 @@ namespace MSAccountPushSubscription
         //}
 
         [FunctionName(nameof(SendSignalRMessage))]
-        public static async void SendSignalRMessage(
+        public async void SendSignalRMessage(
             [CosmosDBTrigger(
             databaseName: "Subscriptions",
             collectionName: "Items",
@@ -110,7 +114,8 @@ namespace MSAccountPushSubscription
 
             try
             {
-                var service = new SubscriptionService(client);
+                _subscriptionService.Client = client;
+                var service = this._subscriptionService;
                 var count = await service.Count();
                 await signalRMessages.AddAsync(
                     new SignalRMessage

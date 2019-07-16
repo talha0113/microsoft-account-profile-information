@@ -7,10 +7,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Repositories;
-using Newtonsoft.Json;
+using MSAccountPushSubscription.Services;
 using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MSAccountPushSubscription.Tests
@@ -22,6 +20,9 @@ namespace MSAccountPushSubscription.Tests
         private DefaultHttpRequest request;
         private PushSubscriptionInformation sub;
         private DocumentClient client;
+        private SubscriptionTriggerCount subscriptionTriggerCount;
+        private SubscriptionService subscriptionService;
+        private INotificationQueueService notificationQueueService;
 
         public TestContext TestContext { get; set; }
 
@@ -39,9 +40,14 @@ namespace MSAccountPushSubscription.Tests
 
             Environment.SetEnvironmentVariable("DatabaseId", TestContext.Properties["DatabaseId"].ToString(), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("CollectionId", TestContext.Properties["CollectionId"].ToString(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("AzureWebJobsStorage", TestContext.Properties["AzureWebJobsStorage"].ToString(), EnvironmentVariableTarget.Process);
+
+            notificationQueueService = new NotificationQueueService();
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
-            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);            
+            subscriptionService = new SubscriptionService(notificationQueueService);
+            subscriptionService.Client = client;
+            subscriptionTriggerCount = new SubscriptionTriggerCount(subscriptionService);
         }
 
         [TestMethod]
@@ -51,7 +57,7 @@ namespace MSAccountPushSubscription.Tests
             {
                 QueryString = QueryString.Create("", "")
             };
-            dynamic response = await SubscriptionTriggerCount.Run(request, client, log);
+            dynamic response = await subscriptionTriggerCount.Run(request, client, log);
             Assert.AreEqual(response.Value, 0);
         }
 
@@ -63,7 +69,7 @@ namespace MSAccountPushSubscription.Tests
             {
                 QueryString = QueryString.Create("", "")
             };
-            dynamic response = await SubscriptionTriggerCount.Run(request, client, log);
+            dynamic response = await subscriptionTriggerCount.Run(request, client, log);
             Assert.AreEqual(response.Value, 1);
         }
 

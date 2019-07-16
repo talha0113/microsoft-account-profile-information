@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Repositories;
+using MSAccountPushSubscription.Services;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -22,6 +23,9 @@ namespace MSAccountPushSubscription.Tests
         private DefaultHttpRequest request;
         private PushSubscriptionInformation sub;
         private DocumentClient client;
+        private SubscriptionTriggerSubscribe subscriptionTriggerSubscribe;
+        private SubscriptionService subscriptionService;
+        private INotificationQueueService notificationQueueService;
 
         public TestContext TestContext { get; set; }
 
@@ -42,6 +46,9 @@ namespace MSAccountPushSubscription.Tests
             Environment.SetEnvironmentVariable("AzureWebJobsStorage", TestContext.Properties["AzureWebJobsStorage"].ToString(), EnvironmentVariableTarget.Process);
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
+            notificationQueueService = new NotificationQueueService();
+            subscriptionService = new SubscriptionService(notificationQueueService);
+            subscriptionTriggerSubscribe = new SubscriptionTriggerSubscribe(subscriptionService);
         }
 
         [TestMethod]
@@ -51,7 +58,7 @@ namespace MSAccountPushSubscription.Tests
             {
                 Body = new MemoryStream(Encoding.ASCII.GetBytes(""))
             };
-            var response = await SubscriptionTriggerSubscribe.Run(request, client, log);
+            var response = await subscriptionTriggerSubscribe.Run(request, client, log);
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
             Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
         }
@@ -64,7 +71,7 @@ namespace MSAccountPushSubscription.Tests
                 Body = new MemoryStream(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(sub)))
             };
 
-            var response = await SubscriptionTriggerSubscribe.Run(request, client, log);
+            var response = await subscriptionTriggerSubscribe.Run(request, client, log);
             Assert.IsInstanceOfType(response, typeof(OkResult));
         }
 

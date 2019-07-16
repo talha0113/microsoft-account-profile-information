@@ -12,10 +12,16 @@ using MSAccountPushSubscription.Services;
 
 namespace MSAccountPushSubscription
 {
-    public static class SubscriptionTriggerCount
+    public class SubscriptionTriggerCount
     {
+        private readonly ISubscriptionService _subscriptionService;
+        public SubscriptionTriggerCount(ISubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
+        }
+
         [FunctionName("SubscriptionTriggerCount")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             [CosmosDB(
                 databaseName: "Subscriptions",
@@ -27,7 +33,8 @@ namespace MSAccountPushSubscription
 
             try
             {
-                var service = new SubscriptionService(client);
+                _subscriptionService.Client = client;
+                var service = this._subscriptionService;
                 var count = await service.Count();
                 return new OkObjectResult(count);
             }

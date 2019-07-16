@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MSAccountPushSubscription.Services
 {
-    interface INotificationQueueService
+    public interface INotificationQueueService
     {
         Task Insert(NotificationQueueItem item);
     }

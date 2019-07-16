@@ -13,10 +13,16 @@ using Microsoft.Azure.Documents.Client;
 
 namespace MSAccountPushSubscription
 {
-    public static class SubscriptionTriggerUnSubscribe
+    public class SubscriptionTriggerUnSubscribe
     {
+        private readonly ISubscriptionService _subscriptionService;
+        public SubscriptionTriggerUnSubscribe(ISubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
+        }
+
         [FunctionName("SubscriptionTriggerUnSubscribe")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = null)] HttpRequest req,
             [CosmosDB(
                 databaseName: "Subscriptions",
@@ -32,7 +38,8 @@ namespace MSAccountPushSubscription
 
                 if (endPoint != null)
                 {
-                    var service = new SubscriptionService(client);
+                    _subscriptionService.Client = client;
+                    var service = this._subscriptionService;
                     await service.UnSubscribe(endPoint);
                     return new OkResult();
                 }

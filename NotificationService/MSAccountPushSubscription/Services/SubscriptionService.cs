@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 
 namespace MSAccountPushSubscription.Services
 {
-    class SubscriptionService : ISubscriptionService
+    public class SubscriptionService : ISubscriptionService
     {
-        
-        public SubscriptionService(DocumentClient client)
+        private INotificationQueueService notificationQueueService;
+        public DocumentClient Client
         {
-            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);
+            set
+            {
+                DocumentDBRepository<PushSubscriptionInformation>.Initialize(value);
+            }
+        }
+
+        public SubscriptionService(INotificationQueueService notificationQueueService)
+        {
+            this.notificationQueueService = notificationQueueService;
         }
 
         public async Task Subscribe(PushSubscriptionInformation subscription)
@@ -22,7 +30,6 @@ namespace MSAccountPushSubscription.Services
             }
 
             var allSubscriptions = await DocumentDBRepository<PushSubscriptionInformation>.GetItemsAsync(s => s.EndPoint != null);
-            var notificationQueueService = new NotificationQueueService();
             foreach (PushSubscriptionInformation sub in allSubscriptions)
             {
                 var notificationQueueItem = new NotificationQueueItem();

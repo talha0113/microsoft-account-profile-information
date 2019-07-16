@@ -15,10 +15,16 @@ using System.Collections;
 
 namespace MSAccountPushSubscription
 {
-    public static class SubscriptionTriggerSubscribe
+    public class SubscriptionTriggerSubscribe
     {
+        private readonly ISubscriptionService _subscriptionService;
+        public SubscriptionTriggerSubscribe(ISubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
+        }
+
         [FunctionName("SubscriptionTriggerSubscribe")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             [CosmosDB(
                 databaseName: "Subscriptions",
@@ -40,7 +46,8 @@ namespace MSAccountPushSubscription
 
                 if (pushSubscription != null)
                 {
-                    var service = new SubscriptionService(client);
+                    _subscriptionService.Client = client;
+                    var service = this._subscriptionService;
                     await service.Subscribe(pushSubscription);
                     return new OkResult();
                 }

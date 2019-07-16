@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Repositories;
+using MSAccountPushSubscription.Services;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -22,6 +23,9 @@ namespace MSAccountPushSubscription.Tests
         private DefaultHttpRequest request;
         private PushSubscriptionInformation sub;
         private DocumentClient client;
+        private SubscriptionTriggerUnSubscribe subscriptionTriggerUnSubscribe;
+        private SubscriptionService subscriptionService;
+        private INotificationQueueService notificationQueueService;
 
         public TestContext TestContext { get; set; }
 
@@ -39,9 +43,12 @@ namespace MSAccountPushSubscription.Tests
 
             Environment.SetEnvironmentVariable("DatabaseId", TestContext.Properties["DatabaseId"].ToString(), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("CollectionId", TestContext.Properties["CollectionId"].ToString(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("AzureWebJobsStorage", TestContext.Properties["AzureWebJobsStorage"].ToString(), EnvironmentVariableTarget.Process);
 
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
-            DocumentDBRepository<PushSubscriptionInformation>.Initialize(client);            
+            notificationQueueService = new NotificationQueueService();
+            subscriptionService = new SubscriptionService(notificationQueueService);
+            subscriptionTriggerUnSubscribe = new SubscriptionTriggerUnSubscribe(subscriptionService);
         }
 
         [TestMethod]
@@ -51,7 +58,7 @@ namespace MSAccountPushSubscription.Tests
             {
                 QueryString = QueryString.Create("", "")
             };
-            var response = await SubscriptionTriggerUnSubscribe.Run(request, client, log);
+            var response = await subscriptionTriggerUnSubscribe.Run(request, client, log);
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
             Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
         }
@@ -71,7 +78,7 @@ namespace MSAccountPushSubscription.Tests
             {
                 QueryString = QueryString.Create("endpoint", sub.EndPoint)
             };
-            var response = await SubscriptionTriggerUnSubscribe.Run(request, client, log);
+            var response = await subscriptionTriggerUnSubscribe.Run(request, client, log);
             Assert.IsInstanceOfType(response, typeof(OkResult));
         }
 
