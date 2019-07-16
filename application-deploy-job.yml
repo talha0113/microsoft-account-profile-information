@@ -36,7 +36,7 @@ jobs:
             azureSubscription: 'Microsoft Account Profile Information'
             scriptLocation: inlineScript
             inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
 
         - task: AzureFileCopy@2
           displayName: 'Deploy Angular Application'
