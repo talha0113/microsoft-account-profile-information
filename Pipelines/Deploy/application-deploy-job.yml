@@ -56,4 +56,4 @@ jobs:
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.config --output table
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.map.gz --output table
-          workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
