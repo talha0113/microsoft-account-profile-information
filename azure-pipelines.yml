@@ -28,14 +28,14 @@ stages:
   
   jobs:
 
-  - template: angular-build-job.yml
+  - template: Pipelines/Build/angular-build-job.yml
     parameters:
       name: Angular
       display_name: 'Angular'
       pool:
         name: 'Hosted Ubuntu 1604'
 
-  - template: azure-function-build-job.yml
+  - template: Pipelines/Build/azure-function-build-job.yml
     parameters:
       name: 'Azure_Function'
       display_name: 'Azure Function'
@@ -49,7 +49,7 @@ stages:
 
   jobs:
 
-  - template: application-deploy-job.yml
+  - template: Pipelines/Deploy/application-deploy-job.yml
     parameters:
       name: Deployment
       display_name: 'Profile Information'
@@ -57,7 +57,7 @@ stages:
       pool:
         name: 'Hosted Windows 2019 with VS2019'
 
-  - template: ui-test-deploy-job.yml
+  - template: Pipelines/Deploy/ui-test-deploy-job.yml
     parameters:
       name: UI_Test
       display_name: 'UI Test'
@@ -65,7 +65,7 @@ stages:
       pool:
         name: 'Hosted Ubuntu 1604'
 
-  - template: stamp-deploy-job.yml
+  - template: Pipelines/Deploy/stamp-deploy-job.yml
     parameters:
       name: Stamp
       display_name: 'Stamp'
@@ -73,7 +73,7 @@ stages:
       pool:
         name: 'Hosted Windows 2019 with VS2019'
 
-  - template: performance-deploy-job.yml
+  - template: Pipelines/Deploy/performance-deploy-job.yml
     parameters:
       name: Performance
       display_name: 'Performance'

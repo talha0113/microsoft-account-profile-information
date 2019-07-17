@@ -4,8 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace MSAccountPushSubscription
 {
-    public static class SubscriptionTriggerPushNotificationPoison
+    public class SubscriptionTriggerPushNotificationPoison
     {
+        public SubscriptionTriggerPushNotificationPoison()
+        { }
+
         [FunctionName("SubscriptionTriggerPushNotificationPoison")]
         [StorageAccount("AzureWebJobsStorage")]// Application Setting Contains Storage Account Connection String
         public static void Run([QueueTrigger("process-notifications-poison")]string notificationPoisonQueueItem, ILogger log)

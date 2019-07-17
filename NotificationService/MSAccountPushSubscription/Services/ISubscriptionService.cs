@@ -1,14 +1,17 @@
-﻿using MSAccountPushSubscription.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Azure.Documents.Client;
+using MSAccountPushSubscription.Models;
 using System.Threading.Tasks;
 
 namespace MSAccountPushSubscription.Services
 {
-    interface ISubscriptionService
+    public interface ISubscriptionService
     {
+        DocumentClient Client
+        {
+            set;
+        }
         Task Subscribe(PushSubscriptionInformation subscription);
         Task UnSubscribe(string endPoint);
+        Task<int> Count();
     }
 }

@@ -8,11 +8,14 @@ using Newtonsoft.Json;
 
 namespace MSAccountPushSubscription
 {
-    public static class SubscriptionTriggerPushNotification
+    public class SubscriptionTriggerPushNotification
     {
+        public SubscriptionTriggerPushNotification()
+        { }
+
         [FunctionName("SubscriptionTriggerPushNotification")]
         [StorageAccount("AzureWebJobsStorage")]// Application Setting Contains Storage Account Connection String
-        public static void Run([QueueTrigger("process-notifications")]string notificationQueueItem, ILogger log)
+        public void Run([QueueTrigger("process-notifications")]string notificationQueueItem, ILogger log)
         {
             log.LogInformation("SubscriptionTriggerPushNotification Request Started.");
             var queueItem = JsonConvert.DeserializeObject<NotificationQueueItem>(notificationQueueItem);
