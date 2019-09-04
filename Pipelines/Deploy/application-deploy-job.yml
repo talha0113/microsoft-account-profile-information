@@ -21,7 +21,7 @@ jobs:
           inputs:
             azureSubscription: 'Azure MPN'
             appType: 'functionApp'
-            appName: 'ms-account-profile-info-notification-service'
+            appName: 'ms-account-profile-info-notification-service-fa'
             package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
             deploymentMethod: 'auto'
 
