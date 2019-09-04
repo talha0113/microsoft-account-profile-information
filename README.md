@@ -1,9 +1,10 @@
 [![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status/MicrosoftAccountProfileInformation)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=36)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Microsoft Account Information Application
 - A basic progressive web application with front end and backend to utilize major concepts of **Angular**, **Serverless** and **Telemetry**
 Application display user profile like image, email and name of Azure AD or personal account
-- [Demo](https://msaccprofileinformation.z6.web.core.windows.net)
+- [Demo](https://ms-account-profile-information.azureedge.net)
 
 ### Frontend
 Built with **Angular** and host in **Azure Storage Blob** utilize following concepts and tools

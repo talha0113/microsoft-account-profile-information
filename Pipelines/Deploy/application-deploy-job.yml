@@ -19,7 +19,7 @@ jobs:
         - task: AzureFunctionApp@1
           displayName: 'Azure Function'
           inputs:
-            azureSubscription: 'Microsoft Account Profile Information'
+            azureSubscription: 'Azure MPN'
             appType: 'functionApp'
             appName: 'ms-account-profile-info-notification-service'
             package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
@@ -33,7 +33,7 @@ jobs:
         - task: AzureCLI@1
           displayName: 'Clean Angular Application'
           inputs:
-            azureSubscription: 'Microsoft Account Profile Information'
+            azureSubscription: 'Azure MPN'
             scriptLocation: inlineScript
             inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
             workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
@@ -42,7 +42,7 @@ jobs:
           displayName: 'Deploy Angular Application'
           inputs:
             SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
-            azureSubscription: 'Microsoft Account Profile Information'
+            azureSubscription: 'Azure MPN'
             Destination: AzureBlob
             storage: '$(StorageAccountName)'
             ContainerName: '$(BlobContainerName)'
@@ -50,7 +50,7 @@ jobs:
         - task: AzureCLI@1
           displayName: 'Clean Notification Service Package'
           inputs:
-            azureSubscription: 'Microsoft Account Profile Information'
+            azureSubscription: 'Azure MPN'
             scriptLocation: inlineScript
             inlineScript: |
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table

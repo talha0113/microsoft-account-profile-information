@@ -1,4 +1,4 @@
-var builder = require('jest-trx-results-processor');
+var builder = require("jest-trx-results-processor/dist/testResultsProcessor");
 var fs = require('fs');
 if (!fs.existsSync("./Reports")) {
     fs.mkdirSync("./Reports");
