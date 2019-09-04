@@ -43,7 +43,7 @@
     {
       "name": "Subscription Api Calls",
       "urls": [
-        "https://ms-account-profile-info-notification-service.azurewebsites.net/api/**"
+        "https://ms-account-profile-info-notification-service-fa.azurewebsites.net/api/**"
       ],
       "cacheConfig": {
         "maxAge": "1d",
