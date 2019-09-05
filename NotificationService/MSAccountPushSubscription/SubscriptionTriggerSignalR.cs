@@ -23,7 +23,7 @@ namespace MSAccountPushSubscription
 
         [FunctionName(nameof(GetSignalRInformation))]
         public IActionResult GetSignalRInformation(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             [SignalRConnectionInfo(ConnectionStringSetting = "SignalRConnection", HubName = "msaccountprofileinformationhub")] SignalRConnectionInfo connectionInfo,
             ILogger log)
         {
