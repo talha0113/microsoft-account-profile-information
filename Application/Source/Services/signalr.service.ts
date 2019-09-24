@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { HubConnectionBuilder, HubConnection, HubConnectionState } from "@aspnet/signalr";
+import { HubConnectionBuilder, HubConnection, HubConnectionState } from "@microsoft/signalr";
 
 import { catchError, tap } from 'rxjs/operators';
 import { ErrorManager } from '../Managers/error.manager';
