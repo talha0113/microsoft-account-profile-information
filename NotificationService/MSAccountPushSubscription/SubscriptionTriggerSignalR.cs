@@ -13,7 +13,7 @@ using MSAccountPushSubscription.Models;
 
 namespace MSAccountPushSubscription
 {
-    class SubscriptionTriggerSignalR
+    public class SubscriptionTriggerSignalR
     {
         private readonly SubscriptionService _subscriptionService;
         public SubscriptionTriggerSignalR(SubscriptionService subscriptionService)
