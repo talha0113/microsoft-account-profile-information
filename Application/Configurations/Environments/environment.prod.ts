@@ -5,5 +5,5 @@ export const environment = {
     PWASubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerSubscribe?code=6ZkKhYhLakxFbhu4pSufcaLhmP7CKD1oBrvkHKjFDbyBTNMI/xgynQ==`,
     PWAUnSubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerUnSubscribe?code=KKCazhqqjROnYGkzZ5neeWVptjGIeiKktargagI3bOTel7urtViYww==`,
     PWASubscribeCountUrl: `${functionBaseUrl}/SubscriptionTriggerCount?code=vY/mHKofax5qaD8nmCIqoVKSdJ2YVAIS6Q64irMa5X2pxyivSq31dA==`,
-    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation`
+    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation?code=lXZDxdCNFyXlFumieN4RMZVnr8676O9NPOxFyPJm0tSWyaaQ0N6viA==`
 };
