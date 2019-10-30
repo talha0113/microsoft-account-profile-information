@@ -15,8 +15,8 @@ namespace MSAccountPushSubscription
 {
     public class SubscriptionTriggerSignalR
     {
-        private readonly SubscriptionService _subscriptionService;
-        public SubscriptionTriggerSignalR(SubscriptionService subscriptionService)
+        private readonly ISubscriptionService _subscriptionService;
+        public SubscriptionTriggerSignalR(ISubscriptionService subscriptionService)
         {
             _subscriptionService = subscriptionService ?? throw new ArgumentNullException(nameof(subscriptionService));
         }
