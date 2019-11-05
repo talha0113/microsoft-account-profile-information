@@ -20,7 +20,7 @@ jobs:
       displayName: 'Core Version 3.x'
       inputs:
         packageType: sdk
-        version: 3.0.0
+        version: 3.0.x
 
     # Start Cosmos DB Emulator
     - task: CosmosDbEmulator@2
