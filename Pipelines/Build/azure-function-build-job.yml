@@ -27,7 +27,6 @@ jobs:
       inputs:
         packageType: sdk
         version: 3.x
-        installationPath: $(Agent.ToolsDirectory)/dotnet
 
     # Start Cosmos DB Emulator
     - task: CosmosDbEmulator@2
