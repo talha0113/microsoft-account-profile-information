@@ -79,4 +79,4 @@ stages:
       display_name: 'Performance'
       depends_on: 'Stamp'
       pool:
-        name: vmImage: 'windows-latest'
+        vmImage: 'windows-latest'
