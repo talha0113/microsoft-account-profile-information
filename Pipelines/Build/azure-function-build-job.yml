@@ -106,8 +106,9 @@ jobs:
       displayName: Test
       inputs:
         command: test
+        publishTestResults: true
         projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://localhost:8081"'
+        arguments: '--configuration $(BuildConfiguration) --collect "code coverage" --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings"'
       condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
     # Perform .Net Core Publish
