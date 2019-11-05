@@ -11,6 +11,8 @@ jobs:
   continueOnError: false
   workspace:
     clean: all
+  variables:
+    BuildConfiguration: 'Release'
   
   steps:
 
