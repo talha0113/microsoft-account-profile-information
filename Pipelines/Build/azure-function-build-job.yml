@@ -23,14 +23,34 @@ jobs:
     #    version: 3.0.x
 
     # Start Cosmos DB Emulator
-    - task: CosmosDbEmulator@2
+    #- task: CosmosDbEmulator@2
+    #  displayName: 'Cosmos DB Emulator'
+    #  inputs:
+    #    containerName: 'azure-cosmosdb-emulator'
+    #    enableAPI: 'SQL'
+    #    portMapping: '8081:8081, 8901:8901,  8902:8902, 8979:8979, 10250:10250, 10251:10251, 10252:10252, 10253:10253, 10254:10254, 10255:10255, 10256:10256, 10350:10350'
+    #    hostDirectory: '$(Build.BinariesDirectory)\azure-cosmosdb-emulator'
+    #    consistency: 'Session'
+    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    - pwsh: |
+        Write-Host "Starting Comsos DB Emulator" -ForegroundColor green
+        # Start-Process "$env:ProgramFiles\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong /enableRio /overrides=sqlAllowGroupByClause:true" -Verb RunAs
+        Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+        Start-CosmosDbEmulator -NoUI -DefaultPartitionCount 100
+        # Get-Item env:* | Sort-Object -Property Name
+        # for ($i=0; $i -lt 10; $i++) {
+        # $status = Get-CosmosDbEmulatorStatus
+        # if ($status -ne "Running") {
+        #  sleep 30;
+        #  Write-Host "Cosmos DB Emulator Status: $status" -ForegroundColor yellow
+        # } else {
+        #  break;
+        # }
+        # }
       displayName: 'Cosmos DB Emulator'
-      inputs:
-        containerName: 'azure-cosmosdb-emulator'
-        enableAPI: 'SQL'
-        portMapping: '8081:8081, 8901:8901,  8902:8902, 8979:8979, 10250:10250, 10251:10251, 10252:10252, 10253:10253, 10254:10254, 10255:10255, 10256:10256, 10350:10350'
-        hostDirectory: '$(Build.BinariesDirectory)\azure-cosmosdb-emulator'
-        consistency: 'Session'
+      failOnStderr: true
+      errorActionPreference: stop
       condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
     # Perform Tokens Replacement
@@ -65,29 +85,31 @@ jobs:
         arguments: '--configuration $(BuildConfiguration)'
 
     # Perform .Net Core Test
-    - task: VSTest@2
-      displayName: Test
-      inputs:
-        testAssemblyVer2: |
-         **\*Tests*.dll
-         !**\*TestAdapter.dll
-         !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
-        runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
-        overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
-        runTestsInIsolation: true
-        codeCoverageEnabled: true
-        testRunTitle: 'Integration Tests'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-    # Perform .Net Core Test
-    #- task: DotNetCoreCLI@2
+    #- task: VSTest@2
     #  displayName: Test
     #  inputs:
-    #    command: test
-    #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-    #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
-    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+    #    testAssemblyVer2: |
+    #     **\*Tests*.dll
+    #     !**\*TestAdapter.dll
+    #     !**\obj\**
+    #    searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
+    #    runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
+    #    #overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+    #    overrideTestrunParameters: '-AccountEndpoint https://localhost:8081'
+    #    runTestsInIsolation: true
+    #    codeCoverageEnabled: true
+    #    testRunTitle: 'Integration Tests'
+    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    # Perform .Net Core Test
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        publishTestResults: true
+        projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --collect "code coverage" --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings"'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
     # Perform .Net Core Publish
     - task: DotNetCoreCLI@2
