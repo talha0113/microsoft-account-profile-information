@@ -47,9 +47,10 @@ jobs:
           break;
          }
         }
-      displayName: Starting Installed Cosmos DB Emulator
+      displayName: 'Cosmos DB Emulator'
       failOnStderr: true
       errorActionPreference: stop
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
     # Perform Tokens Replacement
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -92,7 +93,8 @@ jobs:
          !**\obj\**
         searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
         runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
-        overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+        #overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+        overrideTestrunParameters: '-AccountEndpoint https://localhost:8081'
         runTestsInIsolation: true
         codeCoverageEnabled: true
         testRunTitle: 'Integration Tests'
