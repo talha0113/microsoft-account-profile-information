@@ -11,14 +11,16 @@ jobs:
   continueOnError: false
   workspace:
     clean: all
+  variables:
+    BuildConfiguration: 'Release'
   
   steps:
 
-    # Perform .Net Core Install 2.1.403
-    #- task: DotNetCoreInstaller@0
-    #  displayName: '.NET Core sdk 2.1.403'
+    #- task: UseDotNet@2
+    #  displayName: 'Core Version 3.x'
     #  inputs:
-    #    version: 2.1.403
+    #    packageType: sdk
+    #    version: 3.0.x
 
     # Start Cosmos DB Emulator
     - task: CosmosDbEmulator@2

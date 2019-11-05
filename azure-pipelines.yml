@@ -33,14 +33,14 @@ stages:
       name: Angular
       display_name: 'Angular'
       pool:
-        name: 'Hosted Ubuntu 1604'
+        vmImage: 'ubuntu-latest'
 
   - template: Pipelines/Build/azure-function-build-job.yml
     parameters:
       name: 'Azure_Function'
       display_name: 'Azure Function'
       pool:
-        name: 'Hosted VS2017'
+        vmImage: 'vs2017-win2016'
 
 - stage: Deploy_Azure
   displayName: 'Azure'
@@ -55,7 +55,7 @@ stages:
       display_name: 'Profile Information'
       environment_name: 'Azure'
       pool:
-        name: 'Hosted Windows 2019 with VS2019'
+        vmImage: 'windows-latest'
 
   - template: Pipelines/Deploy/ui-test-deploy-job.yml
     parameters:
@@ -63,7 +63,7 @@ stages:
       display_name: 'UI Test'
       depends_on: 'Deployment'
       pool:
-        name: 'Hosted Ubuntu 1604'
+        vmImage: 'ubuntu-latest'
 
   - template: Pipelines/Deploy/stamp-deploy-job.yml
     parameters:
@@ -71,7 +71,7 @@ stages:
       display_name: 'Stamp'
       depends_on: 'UI_Test'
       pool:
-        name: 'Hosted Windows 2019 with VS2019'
+        vmImage: 'windows-latest'
 
   - template: Pipelines/Deploy/performance-deploy-job.yml
     parameters:
@@ -79,4 +79,4 @@ stages:
       display_name: 'Performance'
       depends_on: 'Stamp'
       pool:
-        name: 'Hosted Windows 2019 with VS2019'
+        vmImage: 'windows-latest'

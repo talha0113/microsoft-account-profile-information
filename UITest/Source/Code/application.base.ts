@@ -22,6 +22,9 @@ export class ApplicationBase {
         await loginPage.type("input[name=passwd]", environmentConfiguration.password, { delay: 40 });
         await loginPage.focus("#idSIButton9");
         await loginPage.keyboard.press("Enter");
+        await loginPage.waitForSelector('.row #idBtn_Back');
+        await loginPage.click('.row #idBtn_Back');
+        await loginPage.waitForNavigation();
         return;
     }
 }

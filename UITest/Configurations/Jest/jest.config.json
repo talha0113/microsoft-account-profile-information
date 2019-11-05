@@ -23,6 +23,6 @@
   "globalSetup": "<rootDir>/Configurations/Jest/jest.setup.js",
   "globalTeardown": "<rootDir>/Configurations/Jest/jest.teardown.js",
   "testEnvironment": "<rootDir>/Configurations/Jest/jest.environment.js",
-  "setupTestFrameworkScriptFile": "<rootDir>/Configurations/Jest/jest.init.js",
+  "setupFilesAfterEnv": [ "<rootDir>/Configurations/Jest/jest.init.js" ],
   "testResultsProcessor": "<rootDir>/Configurations/Jest/jest.trx.processor"
 }

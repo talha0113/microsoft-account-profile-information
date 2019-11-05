@@ -4,7 +4,7 @@
 ## Microsoft Account Information Application
 - A basic progressive web application with front end and backend to utilize major concepts of **Angular**, **Serverless** and **Telemetry**
 Application display user profile like image, email and name of Azure AD or personal account
-- [Demo](https://msaccprofileinfo.z16.web.core.windows.net)
+- [Demo](https://ms-profile-information.azurefd.net)
 
 ### Frontend
 Built with **Angular** and host in **Azure Storage Blob** utilize following concepts and tools
@@ -24,7 +24,7 @@ In order to save browser subscription and send push notification following tools
   - **Storage Queue** to add notifications in the queue and Azure Function Trigger to send notification
   - **Azure Application Insights** to store all the logs and expception from applications
 
-![Architecture Diagram](./Diagrams/Architecture.png)
+![Architecture Diagram](./Diagrams/Stack.png)
 
 ### Development Lifecycle
   - **Github Project and Issues** to Store all the tasks and issues
