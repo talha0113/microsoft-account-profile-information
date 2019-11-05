@@ -85,30 +85,30 @@ jobs:
         arguments: '--configuration $(BuildConfiguration)'
 
     # Perform .Net Core Test
-    - task: VSTest@2
-      displayName: Test
-      inputs:
-        testAssemblyVer2: |
-         **\*Tests*.dll
-         !**\*TestAdapter.dll
-         !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
-        runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
-        #overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
-        overrideTestrunParameters: '-AccountEndpoint https://localhost:8081'
-        runTestsInIsolation: true
-        codeCoverageEnabled: true
-        testRunTitle: 'Integration Tests'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-    # Perform .Net Core Test
-    #- task: DotNetCoreCLI@2
+    #- task: VSTest@2
     #  displayName: Test
     #  inputs:
-    #    command: test
-    #    projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
-    #    arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://$(CosmosDbEmulator.IPAddress):8081"'
-    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+    #    testAssemblyVer2: |
+    #     **\*Tests*.dll
+    #     !**\*TestAdapter.dll
+    #     !**\obj\**
+    #    searchFolder: '$(System.DefaultWorkingDirectory)/NotificationService'
+    #    runSettingsFile: NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings
+    #    #overrideTestrunParameters: '-AccountEndpoint $(CosmosDbEmulator.Endpoint)'
+    #    overrideTestrunParameters: '-AccountEndpoint https://localhost:8081'
+    #    runTestsInIsolation: true
+    #    codeCoverageEnabled: true
+    #    testRunTitle: 'Integration Tests'
+    #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    # Perform .Net Core Test
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: 'NotificationService/MSAccountPushSubscription.Tests/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --settings "$(System.DefaultWorkingDirectory)/NotificationService/MSAccountPushSubscription.Tests/Environment.runsettings" -- AccountEndpoint="https://localhost:8081"'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
 
     # Perform .Net Core Publish
     - task: DotNetCoreCLI@2
