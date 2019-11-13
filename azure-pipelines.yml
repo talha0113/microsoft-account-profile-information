@@ -16,6 +16,7 @@ trigger:
         include:
         - /Application
         - /NotificationService
+        - /Infrastructure
 
 variables:
   - group: 'Authentication'
