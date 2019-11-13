@@ -1,0 +1,14 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationInsightsName": { "value": "deleteme" },
+    "storageAccountName": { "value": "deleteme" },
+    "signalRName": { "value": "deleteme" },
+    "cosmosDBName": { "value": "deleteme" },
+    "frontDoorName": { "value": "deleteme" },
+    "appServicePlanName": { "value": "deleteme" },
+    "functionAppName": { "value": "deleteme" },
+    "keyVaultName": { "value": "deleteme" }
+  }
+}

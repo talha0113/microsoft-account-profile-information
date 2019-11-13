@@ -34,7 +34,6 @@ jobs:
     #  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
     - pwsh: |
-        Write-Host "Starting Comsos DB Emulator" -ForegroundColor green
         # Start-Process "$env:ProgramFiles\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong /enableRio /overrides=sqlAllowGroupByClause:true" -Verb RunAs
         Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
         Start-CosmosDbEmulator -NoUI -DefaultPartitionCount 100

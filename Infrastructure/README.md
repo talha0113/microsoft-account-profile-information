@@ -1,0 +1,1 @@
+﻿.\Deploy-AzureResourceGroup.ps1 -ResourceGroupLocation 'westeurope' -ResourceGroupName 'deleteme-rg' -TemplateFile azuredeploy.json -TemplateParametersFile azuredeploy.parameters.json

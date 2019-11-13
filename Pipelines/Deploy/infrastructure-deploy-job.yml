@@ -1,0 +1,61 @@
+parameters:
+  name: ''
+  pool: ''
+  display_name: ''
+  environment_name: ''
+  
+jobs:
+
+- deployment: ${{ parameters.name }}
+  displayName: ${{ format('{0}', parameters.display_name) }}
+  environment: ${{ format('{0}', parameters.environment_name) }}
+  pool: ${{ parameters.pool }}  
+  continueOnError: 'false'
+  variables:
+    resource_group_name: 'ms-account-profile-information-rg'
+    resource_location: 'West Europe'
+  strategy:
+    runOnce:
+      deploy:  
+        steps:
+          
+        #- task: AzurePowerShell@4
+        #  displayName: 'Resource Group'
+        #  inputs:
+        #    azureSubscription: 'Azure MPN'
+        #    ScriptType: 'InlineScript'
+        #    Inline: |
+        #      $resourceGroup = Get-AzResourceGroup -Name '$(resource_group_name)' -ErrorAction SilentlyContinue
+        #      if($resourceGroup -eq $null) {
+        #        New-AzResourceGroup -Name '$(resource_group_name)' -Location '$(resource_location)'
+        #      }
+        #    azurePowerShellVersion: 'LatestVersion'
+        #    pwsh: true
+        #    workingDirectory: '$(Pipeline.Workspace)/Drop'
+
+        - task: AzureResourceManagerTemplateDeployment@3
+          displayName: 'ARM Deployment'
+          inputs:
+            deploymentScope: 'Resource Group'
+            ConnectedServiceName: 'Azure MPN'
+            subscriptionName: '35c927c9-0bbc-4d32-a1ce-e6ef500af13f'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(resource_group_name)'
+            location: '$(resource_location)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(Pipeline.Workspace)/Drop/azuredeploy.json'
+            csmParametersFile: '$(Pipeline.Workspace)/Drop/azuredeploy.parameters.json'
+            deploymentMode: 'Incremental'
+
+        - task: AzurePowerShell@4
+          displayName: 'Addons'
+          inputs:
+            azureSubscription: 'Azure MPN'
+            ScriptType: 'InlineScript'
+            Inline: |
+              Enable-AzStorageStaticWebsite -Context (Get-AzStorageAccount -ResourceGroupName '$(resource_group_name)').Context -IndexDocument 'index.html' -ErrorDocument404Path 'index.html'
+              #$parameters = (Get-Content -Path .\azuredeploy.parameters.json -Raw:$true) | ConvertFrom-Json
+              Set-AzKeyVaultAccessPolicy -VaultName (Get-AzKeyVault -ResourceGroupName '$(resource_group_name)').VaultName -UserPrincipalName '$(UserPrincipalName)' -PermissionsToSecrets set,delete,get,list
+            azurePowerShellVersion: 'LatestVersion'
+            pwsh: true
+            workingDirectory: '$(Pipeline.Workspace)/Drop'
