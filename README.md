@@ -4,7 +4,7 @@
 ## Microsoft Account Information Application
 - A basic progressive web application with front end and backend to utilize major concepts of **Angular**, **Serverless** and **Telemetry**
 Application display user profile like image, email and name of Azure AD or personal account
-- [Demo](https://ms-profile-information.azurefd.net)
+- [Demo](https://ms-profile-information-fd.azurefd.net)
 
 ### Frontend
 Built with **Angular** and host in **Azure Storage Blob** utilize following concepts and tools
