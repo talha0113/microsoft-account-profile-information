@@ -3,6 +3,7 @@ parameters:
   pool: ''
   display_name: ''
   environment_name: ''
+  depends_on: ''
   
 jobs:
 
@@ -11,6 +12,7 @@ jobs:
   environment: ${{ format('{0}', parameters.environment_name) }}
   pool: ${{ parameters.pool }}  
   continueOnError: 'false'
+  dependsOn: ${{ parameters.depends_on }}
   strategy:
     runOnce:
       deploy:  
@@ -22,13 +24,13 @@ jobs:
             azureSubscription: 'Azure MPN'
             appType: 'functionApp'
             appName: 'ms-account-profile-info-notification-service-fa'
-            package: '$(System.DefaultWorkingDirectory)/../Drop/MSAccountPushSubscription.zip'
+            package: '$(Pipeline.Workspace)/Drop/MSAccountPushSubscription.zip'
             deploymentMethod: 'auto'
 
         - powershell: |
             (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)') | Set-Content .\ngsw.json
           displayName: Files
-          workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+          workingDirectory: '$(Pipeline.Workspace)/Drop'
 
         - task: AzureCLI@1
           displayName: 'Clean Angular Application'
@@ -36,12 +38,12 @@ jobs:
             azureSubscription: 'Azure MPN'
             scriptLocation: inlineScript
             inlineScript: 'az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.* --output table'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/../Drop'
+            workingDirectory: '$(Pipeline.Workspace)/Drop'
 
         - task: AzureFileCopy@2
           displayName: 'Deploy Angular Application'
           inputs:
-            SourcePath: '$(System.DefaultWorkingDirectory)/../Drop'
+            SourcePath: '$(Pipeline.Workspace)/Drop'
             azureSubscription: 'Azure MPN'
             Destination: AzureBlob
             storage: '$(StorageAccountName)'
@@ -56,4 +58,6 @@ jobs:
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.zip --output table
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.config --output table
              call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.map.gz --output table
-            workingDirectory: '$(System.DefaultWorkingDirectory)/MicrosoftAccountProfileInformation/Drop'
+             call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *.parameters.json --output table
+             call az storage blob delete-batch --source $(BlobContainerName) --account-name $(StorageAccountName) --pattern *deploy.json --output table
+            workingDirectory: '$(Pipeline.Workspace)/Drop'
