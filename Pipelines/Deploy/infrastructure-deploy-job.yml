@@ -53,10 +53,10 @@ jobs:
             azureSubscription: 'Azure MPN'
             ScriptType: 'InlineScript'
             Inline: |
-              Write-Host ('UPN: ' + '$(UserPrincipalName)')
+              (Get-AzADUser -UserPrincipalName '$(UserPrincipalName)')
               Enable-AzStorageStaticWebsite -Context (Get-AzStorageAccount -ResourceGroupName '$(resource_group_name)').Context -IndexDocument 'index.html' -ErrorDocument404Path 'index.html'
               #$parameters = (Get-Content -Path .\azuredeploy.parameters.json -Raw:$true) | ConvertFrom-Json
-              Set-AzKeyVaultAccessPolicy -VaultName (Get-AzKeyVault -ResourceGroupName '$(resource_group_name)').VaultName -UserPrincipalName '$(UserPrincipalName)' -PermissionsToSecrets set,delete,get,list
+              Set-AzKeyVaultAccessPolicy -VaultName (Get-AzKeyVault -ResourceGroupName '$(resource_group_name)').VaultName -UserPrincipalName (Get-AzADUser -UserPrincipalName '$(UserPrincipalName)').UserPrincipalName -PermissionsToSecrets set,delete,get,list
             azurePowerShellVersion: 'LatestVersion'
             pwsh: true
             workingDirectory: '$(Pipeline.Workspace)/Drop'
