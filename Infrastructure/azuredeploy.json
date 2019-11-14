@@ -374,12 +374,12 @@
             "properties": {
               "backends": [
                 {
-                  "address": "[concat(variables('frontDoorName'), '.z16.web.core.windows.net')]",
+                  "address": "[concat(variables('storageAccountName'), '.z16.web.core.windows.net')]",
                   "httpPort": 80,
                   "httpsPort": 443,
                   "priority": 1,
                   "weight": 50,
-                  "backendHostHeader": "[concat(variables('frontDoorName'), '.z16.web.core.windows.net')]",
+                  "backendHostHeader": "[concat(variables('storageAccountName'), '.z16.web.core.windows.net')]",
                   "enabledState": "Enabled"
                 }
               ],
