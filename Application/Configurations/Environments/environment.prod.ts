@@ -2,8 +2,8 @@ let functionBaseUrl = "https://ms-account-profile-info-notification-service-fa.a
 
 export const environment = {
     production: true,
-    PWASubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerSubscribe?code=6ZkKhYhLakxFbhu4pSufcaLhmP7CKD1oBrvkHKjFDbyBTNMI/xgynQ==`,
-    PWAUnSubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerUnSubscribe?code=KKCazhqqjROnYGkzZ5neeWVptjGIeiKktargagI3bOTel7urtViYww==`,
-    PWASubscribeCountUrl: `${functionBaseUrl}/SubscriptionTriggerCount?code=vY/mHKofax5qaD8nmCIqoVKSdJ2YVAIS6Q64irMa5X2pxyivSq31dA==`,
-    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation?code=lXZDxdCNFyXlFumieN4RMZVnr8676O9NPOxFyPJm0tSWyaaQ0N6viA==`
+    PWASubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerSubscribe?code=aAvgBB0pE45IAtERMcCOz8wmCr7U2g38Weoi/iwb4X18e1rfTqprDQ==`,
+    PWAUnSubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerUnSubscribe?code=WESaag72MxpXVM1QY3XscrDkR0SaD2zcA0Q6Lwqp3JD/IZaNxcpalA==`,
+    PWASubscribeCountUrl: `${functionBaseUrl}/SubscriptionTriggerCount?code=ILCG7M3kP7/x3utoUYO28wrQ9svrayAzxmIpOmt1XaytM244HUHxEw==`,
+    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation?code=RP4Qu4XtZB28NEBqNppAeabpdDOJZ1m0sBopjcpK958wWQaTKfq3rw==`
 };
