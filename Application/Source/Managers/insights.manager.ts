@@ -4,7 +4,7 @@ import { environment } from "../../Configurations/Environments/environment";
 export class InsightsManager {
     private static applicationInsights = new ApplicationInsights({
         config: {
-            instrumentationKey: "dc86a0f3-1d13-4fa5-b1ed-2d8e4c2ed49a"
+            instrumentationKey: "de2949b3-07c8-474a-978c-58538e4e4d10"
         }
     });
 
