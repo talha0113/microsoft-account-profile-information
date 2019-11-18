@@ -47,7 +47,7 @@
     "keyVaultName": "[concat(parameters('keyVaultName'), '-kv')]",
     "frontDoorName": "[concat(parameters('frontDoorName'), '-fd')]",
     "signalRConnectionSecretName": "signalr-connection",
-    "cosmosDBSecretName": "cosmosdb-connection"
+    "cosmosDBSecretName": "cosmosdb-connection",
     "siteAddressPostfix": ".z6.web.core.windows.net"
   },
   "resources": [
