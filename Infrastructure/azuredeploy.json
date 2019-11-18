@@ -349,7 +349,7 @@
         "use32BitWorkerProcess": false,
         "cors": {
           "allowedOrigins": [
-            "https://ms-profile-information.azurefd.net"
+            "[concat('https://', variables('frontDoorName'), '.azurefd.net')]"
           ],
           "supportCredentials": false
         },
