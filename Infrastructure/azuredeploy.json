@@ -48,6 +48,7 @@
     "frontDoorName": "[concat(parameters('frontDoorName'), '-fd')]",
     "signalRConnectionSecretName": "signalr-connection",
     "cosmosDBSecretName": "cosmosdb-connection"
+    "siteAddressPostfix": ".z6.web.core.windows.net"
   },
   "resources": [
     {
@@ -374,12 +375,12 @@
             "properties": {
               "backends": [
                 {
-                  "address": "[concat(variables('storageAccountName'), '.z16.web.core.windows.net')]",
+                  "address": "[concat(variables('storageAccountName'), variables('siteAddressPostfix'))]",
                   "httpPort": 80,
                   "httpsPort": 443,
                   "priority": 1,
                   "weight": 50,
-                  "backendHostHeader": "[concat(variables('storageAccountName'), '.z16.web.core.windows.net')]",
+                  "backendHostHeader": "[concat(variables('storageAccountName'), variables('siteAddressPostfix'))]",
                   "enabledState": "Enabled"
                 }
               ],
