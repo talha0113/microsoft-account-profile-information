@@ -3,18 +3,20 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
-import { StatusComponent } from './status.component';
+import { FlagComponent } from './flag.component';
 import { PushService } from 'Source/Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { SignalRServiceStub } from 'Source/Services/signalr.service.stub';
 import { environment } from 'Configurations/Environments/environment';
 import { NotificationService } from 'Source/Services/notification.service';
-import { By } from '@angular/platform-browser';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
+import { TranslocoService } from '@ngneat/transloco';
+import { TranslationConfiguration } from '../../Transloco/translation.configuration';
 
 
-let fixture: ComponentFixture<StatusComponent>;
-let component: StatusComponent
+let fixture: ComponentFixture<FlagComponent>;
+let component: FlagComponent;
+let translocoService: TranslocoService;
 
 describe('Status Component', () => {
 
@@ -27,7 +29,7 @@ describe('Status Component', () => {
                 getTranslationTestingModule()
             ],
             declarations: [
-                StatusComponent
+                FlagComponent
             ],
             providers: [
                 PushService,
@@ -40,8 +42,12 @@ describe('Status Component', () => {
         }).compileComponents();        
     });
 
+    beforeAll(() => {
+        translocoService = TestBed.get(TranslocoService);
+    });
+
     beforeAll(async () => {
-        fixture = TestBed.createComponent(StatusComponent);
+        fixture = TestBed.createComponent(FlagComponent);
         component = fixture.componentInstance;
         fixture.autoDetectChanges();
     });
@@ -50,30 +56,15 @@ describe('Status Component', () => {
         expect(component).toBeTruthy();
     });
 
-    it('Should render message', async () => {
+    it('Should render flag', async () => {
         let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let messageDiv: HTMLDivElement = nativeElement.querySelector('div');
-
-        expect(messageDiv.textContent).toBeTruthy();
+        let flagImg: HTMLImageElement = nativeElement.querySelector('img');
+        expect(flagImg.src).toBeTruthy();
     });
 
-    it('Should render live stats input', async () => {
-        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let liveStatsLabel: HTMLLabelElement = nativeElement.querySelector('label');
-
-        expect(liveStatsLabel.textContent).toBeTruthy();
+    it('Should switch language', async () => {
+        expect(translocoService.getActiveLang()).toBe(TranslationConfiguration.availableLanguages[0]);
+        component.switchLanguage();
+        expect(translocoService.getActiveLang()).toBe(TranslationConfiguration.availableLanguages[1]);
     });
-
-    it('Should not render live stats number', async () => {
-        let nativeElement = fixture.debugElement.query(By.css(".stats-subscribed")).nativeElement;
-        expect(nativeElement.checked).toBeFalsy();
-    });
-
-    it('Should render live stats number', async () => {
-        let nativeElementCheckbox = fixture.debugElement.query(By.css(".stats-subscribed")).nativeElement;
-        nativeElementCheckbox.click();
-        expect(nativeElementCheckbox.checked).toBeTruthy();
-        nativeElementCheckbox.click();
-    });
-    
 });

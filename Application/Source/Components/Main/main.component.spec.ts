@@ -27,6 +27,8 @@ import { NotificationService } from "../../Services/notification.service";
 import { PushService } from "../../Services/push.service";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { getTranslationTestingModule } from "../../Transloco/translation-testing.module";
+import { FlagComponent } from "../Flag/flag.component";
 
 
 describe('Main Component', () => {
@@ -47,9 +49,11 @@ describe('Main Component', () => {
                 HttpClientModule,
                 FormsModule,
                 RouterTestingModule.withRoutes(appRoutes),
-                ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+                ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+                getTranslationTestingModule()
             ],
             declarations: [
+                FlagComponent,
                 MainComponent,
                 NavigationComponent,
                 LoginComponent,
@@ -100,7 +104,7 @@ describe('Main Component', () => {
 
     it('should render title in a h1 tag', async () => {
         let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        expect(nativeElement.querySelector('h1').textContent).toContain('Profile Information!');
+        expect(nativeElement.querySelector('h1').textContent).toBeTruthy();
     });
 
     it('navigate to "" redirects you to /login', async () => {

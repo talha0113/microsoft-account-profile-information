@@ -8,6 +8,7 @@ import { AuthenticationStore } from "../../Stores/authentication.store";
 import { AuthenticationQuery } from "../../Queries/authentication.query";
 import { AuthenticationService } from "../../Services/authentication.service";
 import { AuthenticationServiceStub } from "../../Services/authentication.service.stub";
+import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 
 let fixture: ComponentFixture<NavigationComponent>;
 let component: NavigationComponent
@@ -24,7 +25,8 @@ describe('Navigation Component', () => {
     beforeAll(async () => {
         TestBed.configureTestingModule({
             imports: [
-                RouterTestingModule.withRoutes([])
+                RouterTestingModule.withRoutes([]),
+                getTranslationTestingModule()
             ],
             declarations: [
                 NavigationComponent

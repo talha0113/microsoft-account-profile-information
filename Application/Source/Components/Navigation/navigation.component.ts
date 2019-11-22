@@ -21,8 +21,8 @@ export class NavigationComponent implements OnInit {
             }
         });
 
-        this.navigationLinks.push(new NavigationLink(1, "Status", "/status"));
-        this.navigationLinks.push(new NavigationLink(2, "Profile", "/profile"));
-        this.navigationLinks.push(new NavigationLink(2, "Log Out", "/logout"));
+        this.navigationLinks.push(new NavigationLink(1, "NAVIGATION.STATUS", "/status"));
+        this.navigationLinks.push(new NavigationLink(2, "NAVIGATION.PROFILE", "/profile"));
+        this.navigationLinks.push(new NavigationLink(3, "NAVIGATION.LOGOUT", "/logout"));
     }
 }

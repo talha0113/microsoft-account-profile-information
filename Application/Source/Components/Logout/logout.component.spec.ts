@@ -11,6 +11,7 @@ import { setUpMock } from '../../Managers/storage.mock';
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationStore } from '../../Stores/authentication.store';
 import { AuthenticationQuery } from '../../Queries/authentication.query';
+import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 
 describe('Logout Component', () => {
 
@@ -27,7 +28,8 @@ describe('Logout Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule.withRoutes([]),
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                getTranslationTestingModule()
             ],
             declarations: [
                 LogoutComponent
