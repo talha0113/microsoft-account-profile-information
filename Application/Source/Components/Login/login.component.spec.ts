@@ -9,6 +9,7 @@ import { AuthenticationQuery } from '../../Queries/authentication.query';
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { from } from 'rxjs';
+import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 
 describe('Login Component', () => {
 
@@ -27,7 +28,8 @@ describe('Login Component', () => {
     beforeAll(async () => {
         TestBed.configureTestingModule({
             imports: [
-                RouterTestingModule.withRoutes([])
+                RouterTestingModule.withRoutes([]),
+                getTranslationTestingModule()
             ],
             declarations: [
                 LoginComponent

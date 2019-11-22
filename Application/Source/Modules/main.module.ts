@@ -33,11 +33,15 @@ import { environment } from '../../Configurations/Environments/environment';
 import { InsightsManager } from '../Managers/insights.manager';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { GlobalErrorHandlerService } from '../Services/global-error-handler.service';
+import { TranslationModule } from '../Transloco/translation.module';
+import { FlagComponent } from '../Components/Flag/flag.component';
+import { applicationInitializationProvider } from '../Initialization/app.initialization';
 
 
 @NgModule({
     declarations: [
         MainComponent,
+        FlagComponent,
         NavigationComponent,
         LoginComponent,
         StatusComponent,
@@ -50,9 +54,11 @@ import { GlobalErrorHandlerService } from '../Services/global-error-handler.serv
         FormsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
+        TranslationModule
     ],
     providers: [        
+        applicationInitializationProvider,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ProfileInterceptor,

@@ -1,0 +1,5 @@
+<ng-container *transloco="let translate; read: 'LANGUAGE'">
+    <a (click)="switchLanguage()">
+        <img [attr.alt]="translate('TEXT')" [attr.src]="safeFlag(translate('FLAG'))" height="30" />
+    </a>
+</ng-container>
