@@ -430,8 +430,8 @@
         ],
         "routingRules": [
           {
-            "id": "[concat(resourceId('Microsoft.Network/frontdoors', variables('frontDoorName')), '/RoutingRules/https-route')]",
-            "name": "https-route",
+            "id": "[concat(resourceId('Microsoft.Network/frontdoors', variables('frontDoorName')), '/RoutingRules/site-route')]",
+            "name": "site-route",
             "properties": {
               "frontendEndpoints": [
                 {
