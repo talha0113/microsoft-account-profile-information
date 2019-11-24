@@ -63,7 +63,7 @@
       },
       "kind": "StorageV2",
       "properties": {
-        "supportsHttpsTrafficOnly": true,
+        "supportsHttpsTrafficOnly": false,
         "networkAcls": {
           "bypass": "AzureServices",
           "virtualNetworkRules": [],
@@ -430,8 +430,8 @@
         ],
         "routingRules": [
           {
-            "id": "[concat(resourceId('Microsoft.Network/frontdoors', variables('frontDoorName')), '/RoutingRules/ms-account-profile-information-route')]",
-            "name": "ms-account-profile-information-route",
+            "id": "[concat(resourceId('Microsoft.Network/frontdoors', variables('frontDoorName')), '/RoutingRules/https-route')]",
+            "name": "https-route",
             "properties": {
               "frontendEndpoints": [
                 {
@@ -444,7 +444,7 @@
               "patternsToMatch": [
                 "/*"
               ],
-              "forwardingProtocol": "HttpOnly",
+              "forwardingProtocol": "HttpsOnly",
               "cacheConfiguration": {
                 "queryParameterStripDirective": "StripNone",
                 "dynamicCompression": "Enabled"
