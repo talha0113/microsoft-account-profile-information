@@ -1,4 +1,4 @@
-﻿import { Page, ElementHandle } from "puppeteer";
+import { Page, ElementHandle } from "puppeteer";
 import { ApplicationBase } from "../Code/application.base";
 import { environmentConfiguration } from "../../Configurations/environment.config";
 
@@ -16,6 +16,14 @@ describe('Microsoft Account Information Application', () => {
     test("Should be on login page", async () => {
         expect(page.url()).toContain("/login");
     }, 30000);
+    
+    test("Should render language flag", async () => {
+        await page.waitForSelector('div > flag > a > img');        
+        let imageSourceOriginal: string = await page.evaluate(() => document.querySelector('div > flag > a > img').src);
+        await page.click('div > flag > a > img');
+        let imageSourceChanged: string = await page.evaluate(() => document.querySelector('div > flag > a > img').src);
+        expect(imageSourceOriginal).not.toBe(imageSourceChanged);
+    }, 30000);
 
     test("Should not access protected pages", async () => {
         await page.goto(`${environmentConfiguration.url}/status`);
@@ -32,8 +40,8 @@ describe('Microsoft Account Information Application', () => {
     }, 30000);
 
     test("Should see profile", async () => {
-        await page.waitForSelector('div > navigation > div > nav > a:nth-child(2)');
-        await page.click('div > navigation > div > nav > a:nth-child(2)');
+        await page.waitForSelector('div > navigation > div > nav > span > a:nth-child(2)');
+        await page.click('div > navigation > div > nav > span > a:nth-child(2)');
         await page.waitForSelector('profile > div > div > div > div > h3');
         let profileName: string = await page.evaluate(() => document.querySelector('profile > div > div > div > div > h3').textContent);
         expect(page.url()).toContain("/profile");
@@ -41,8 +49,8 @@ describe('Microsoft Account Information Application', () => {
     }, 30000);
 
     test("Should logout", async () => {
-        await page.waitForSelector('div > navigation > div > nav > a:nth-child(3)');
-        await page.click('div > navigation > div > nav > a:nth-child(3)');
+        await page.waitForSelector('div > navigation > div > nav > span > a:nth-child(3)');
+        await page.click('div > navigation > div > nav > span > a:nth-child(3)');
         await page.waitForSelector('div > div > logout > div > button');
         await page.click('div > div > logout > div > button');
         expect(page.url()).toContain("/login");
