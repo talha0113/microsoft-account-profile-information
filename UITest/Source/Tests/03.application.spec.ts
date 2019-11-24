@@ -20,7 +20,7 @@ describe('Microsoft Account Information Application', () => {
     test("Should render language flag", async () => {
         await page.waitForSelector('div > flag > a > img');        
         let imageSourceOriginal: string = await page.evaluate(() => document.querySelector('div > flag > a > img').getAttribute('src'));
-        await page.click('div > flag > a > img');
+        await page.click('div > flag > a');
         let imageSourceChanged: string = await page.evaluate(() => document.querySelector('div > flag > a > img').getAttribute('src'));
         expect(imageSourceOriginal).not.toBe(imageSourceChanged);
     }, 30000);
