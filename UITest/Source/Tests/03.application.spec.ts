@@ -18,11 +18,13 @@ describe('Microsoft Account Information Application', () => {
     }, 30000);
     
     test("Should render language flag", async () => {
-        await page.waitForSelector('div > flag > a > img');        
-        let imageSourceOriginal: string = await page.evaluate(() => document.querySelector('div > flag > a > img').getAttribute('src'));
-        await page.click('div > flag > a');
-        let imageSourceChanged: string = await page.evaluate(() => document.querySelector('div > flag > a > img').getAttribute('src'));
-        expect(imageSourceOriginal).not.toBe(imageSourceChanged);
+        await page.waitForSelector('div > div > flag > a > img');        
+        let altOriginal: string = await page.evaluate(() => document.querySelector('div > div > flag > a > img').getAttribute('alt'));
+        await page.click('div > div > flag > a');
+        await page.waitFor(250);
+        await page.waitForSelector('div > div > flag > a > img');        
+        let alChanged: string = await page.evaluate(() => document.querySelector('div > div > flag > a > img').getAttribute('alt'));
+        expect(altOriginal).not.toBe(alChanged);
     }, 30000);
 
     test("Should not access protected pages", async () => {
@@ -40,8 +42,8 @@ describe('Microsoft Account Information Application', () => {
     }, 30000);
 
     test("Should see profile", async () => {
-        await page.waitForSelector('div > navigation > div > nav > span > a:nth-child(2)');
-        await page.click('div > navigation > div > nav > span > a:nth-child(2)');
+        await page.waitForSelector('navigation > div > nav > span:nth-child(2) > a');
+        await page.click('navigation > div > nav > span:nth-child(2) > a');
         await page.waitForSelector('profile > div > div > div > div > h3');
         let profileName: string = await page.evaluate(() => document.querySelector('profile > div > div > div > div > h3').textContent);
         expect(page.url()).toContain("/profile");
@@ -49,8 +51,8 @@ describe('Microsoft Account Information Application', () => {
     }, 30000);
 
     test("Should logout", async () => {
-        await page.waitForSelector('div > navigation > div > nav > span > a:nth-child(3)');
-        await page.click('div > navigation > div > nav > span > a:nth-child(3)');
+        await page.waitForSelector('navigation > div > nav > span:nth-child(3) > a');
+        await page.click('navigation > div > nav > span:nth-child(3) > a');
         await page.waitForSelector('div > div > logout > div > button');
         await page.click('div > div > logout > div > button');
         expect(page.url()).toContain("/login");
