@@ -283,7 +283,7 @@
             "FUNCTIONS_WORKER_RUNTIME": "dotnet",
             "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
             "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
-            "FUNCTIONS_EXTENSION_VERSION": "~2",
+            "FUNCTIONS_EXTENSION_VERSION": "~3",
             "WEBSITE_CONTENTSHARE": "[toLower(variables('functionAppName'))]",
             "CollectionId": "Items",
             "DatabaseId": "Subscriptions",
