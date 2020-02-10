@@ -1,9 +1,11 @@
 ﻿import { Observable, of } from 'rxjs';
 
 import { AuthenticationService } from './authentication.service';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Authentication } from '../Models/authentication.model';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class AuthenticationServiceStub extends AuthenticationService {
 
     login(): void {

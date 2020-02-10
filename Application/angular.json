@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "Distributions",
             "index": "Source/index.html",
             "main": "Source/main.ts",
@@ -23,12 +24,6 @@
               "Source/Assets",
               "Source/Web.Config",
               "Source/robots.txt",
-              // Only for Windows
-              //{
-              //  "glob": "robots.txt",
-              //  "input": "Source/Assets",
-              //  "output": "/"
-              //},
               "Source/manifest.json"
             ],
             "styles": [
@@ -60,6 +55,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -115,5 +114,8 @@
       }
     }
   },
-  "defaultProject": "MicrosoftAccountProfileInformation"
+  "defaultProject": "MicrosoftAccountProfileInformation",
+  "cli": {
+    "analytics": "555dc42f-6732-45dd-8fc9-c8d6ba9d2c2b"
+  }
 }

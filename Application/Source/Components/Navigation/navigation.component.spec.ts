@@ -52,9 +52,9 @@ describe('Navigation Component', () => {
     });
 
     beforeAll(async () => {
-        authenticationService = TestBed.get(AuthenticationService);
-        authenticationStore = TestBed.get(AuthenticationStore);
-        authenticationQuery = TestBed.get(AuthenticationQuery);
+        authenticationService = TestBed.inject(AuthenticationService);
+        authenticationStore = TestBed.inject(AuthenticationStore);
+        authenticationQuery = TestBed.inject(AuthenticationQuery);
     });
 
     it('Should exist', async () => {

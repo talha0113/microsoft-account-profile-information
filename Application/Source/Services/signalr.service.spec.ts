@@ -23,7 +23,7 @@ describe('SignalR Service', () => {
     });
 
     beforeAll(async () => {
-        signalRService = TestBed.get(SignalRService);
+        signalRService = TestBed.inject(SignalRService);
     });
 
 

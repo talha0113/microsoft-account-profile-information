@@ -37,9 +37,9 @@ describe('Authentication Guard', () => {
     });
 
     beforeAll(async () => {
-        authenticationGuard = TestBed.get(AuthenticationGuard);
-        authenticationService = TestBed.get(AuthenticationService);
-        router = TestBed.get(Router);
+        authenticationGuard = TestBed.inject(AuthenticationGuard);
+        authenticationService = TestBed.inject(AuthenticationService);
+        router = TestBed.inject(Router);
         spyOn(router, 'navigateByUrl');
         authenticationService.logout();
     });
