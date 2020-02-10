@@ -43,7 +43,7 @@ describe('Status Component', () => {
     });
 
     beforeAll(() => {
-        translocoService = TestBed.get(TranslocoService);
+        translocoService = TestBed.inject(TranslocoService);
     });
 
     beforeAll(async () => {

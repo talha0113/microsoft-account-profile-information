@@ -23,7 +23,7 @@ describe('Safe Url Pipe', () => {
     });
 
     beforeAll(async () => {
-        domSanitizer = TestBed.get(DomSanitizer);
+        domSanitizer = TestBed.inject(DomSanitizer);
         safeUrlPipe = new SafeUrlPipe(domSanitizer);        
     });
 

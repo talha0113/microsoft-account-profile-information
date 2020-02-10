@@ -50,7 +50,7 @@ describe('Login Component', () => {
     });
 
     beforeAll(async () => {
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
         spyOn(router, 'navigateByUrl');
 
         fixture = TestBed.createComponent(LoginComponent);
@@ -59,9 +59,9 @@ describe('Login Component', () => {
     });
 
     beforeAll(async () => {
-        authenticationService = TestBed.get(AuthenticationService);
-        authenticationStore = TestBed.get(AuthenticationStore);
-        authenticationQuery = TestBed.get(AuthenticationQuery);
+        authenticationService = TestBed.inject(AuthenticationService);
+        authenticationStore = TestBed.inject(AuthenticationStore);
+        authenticationQuery = TestBed.inject(AuthenticationQuery);
     });
 
     it('Should exist', async () => {

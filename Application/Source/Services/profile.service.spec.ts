@@ -40,10 +40,10 @@ describe('Profile Service', () => {
     });
 
     beforeAll(async () => {
-        profileService = TestBed.get(ProfileService);
-        profileStore = TestBed.get(ProfileStore);
-        profileQuery = TestBed.get(ProfileQuery);
-        httpClientMock = TestBed.get(HttpTestingController);
+        profileService = TestBed.inject(ProfileService);
+        profileStore = TestBed.inject(ProfileStore);
+        profileQuery = TestBed.inject(ProfileQuery);
+        httpClientMock = TestBed.inject(HttpTestingController);
     });
     
     it('Should exist', async () => {

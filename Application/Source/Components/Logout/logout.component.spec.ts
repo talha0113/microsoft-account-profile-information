@@ -50,7 +50,7 @@ describe('Logout Component', () => {
     });   
 
     beforeAll(async () => {
-        authenticationQuery = TestBed.get(AuthenticationQuery);
+        authenticationQuery = TestBed.inject(AuthenticationQuery);
 
         router = TestBed.get(Router);
         spyOn(router, 'navigateByUrl');
