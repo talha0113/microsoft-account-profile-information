@@ -24,11 +24,15 @@ describe('Microsoft Account Information Application', () => {
         await page.waitFor(250);
         await page.waitForSelector('div > div > flag > a > img');        
         let alChanged: string = await page.evaluate(() => document.querySelector('div > div > flag > a > img').getAttribute('alt'));
-        expect(altOriginal).not.toBe(alChanged);
+        expect(altOriginal).not.toEqual(alChanged);
     }, 30000);
 
     test("Should not access protected pages", async () => {
+        //await page.goto(`${environmentConfiguration.url}/status`, {
+        //    waitUntil: "networkidle2"
+        //});
         await page.goto(`${environmentConfiguration.url}/status`);
+        await page.waitForNavigation();
         expect(page.url()).toContain("/login");
     }, 30000);
 
