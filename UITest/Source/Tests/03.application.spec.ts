@@ -20,10 +20,12 @@ describe('Microsoft Account Information Application', () => {
     test("Should render language flag", async () => {
         await page.waitForSelector('div > div > flag > a > img');        
         let altOriginal: string = await page.evaluate(() => document.querySelector('div > div > flag > a > img').getAttribute('alt'));
+console.log(altOriginal);
         await page.click('div > div > flag > a');
         await page.waitFor(250);
         await page.waitForSelector('div > div > flag > a > img');        
         let alChanged: string = await page.evaluate(() => document.querySelector('div > div > flag > a > img').getAttribute('alt'));
+console.log(alChanged);
         expect(altOriginal).not.toEqual(alChanged);
     }, 30000);
 
