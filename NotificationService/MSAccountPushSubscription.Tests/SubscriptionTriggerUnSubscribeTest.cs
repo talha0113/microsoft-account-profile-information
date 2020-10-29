@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +11,9 @@ using MSAccountPushSubscription.Repositories;
 using MSAccountPushSubscription.Services;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,6 +50,7 @@ namespace MSAccountPushSubscription.Tests
             client = new DocumentClient(new Uri(TestContext.Properties["AccountEndpoint"].ToString()), TestContext.Properties["AccountKey"].ToString());
             notificationQueueService = new NotificationQueueService();
             subscriptionService = new SubscriptionService(notificationQueueService);
+            subscriptionService.Client = client;
             subscriptionTriggerUnSubscribe = new SubscriptionTriggerUnSubscribe(subscriptionService);
         }
 
@@ -57,7 +61,6 @@ namespace MSAccountPushSubscription.Tests
             mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
             var response = await subscriptionTriggerUnSubscribe.Run(mockRequest.Object, client, log);
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
-            Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
         }
 
         [TestMethod]
@@ -71,10 +74,15 @@ namespace MSAccountPushSubscription.Tests
         [TestMethod]
         public async Task SubscriptionRemovedTest()
         {
+            var queryCollection = new QueryCollection();
+            queryCollection.Append(new System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("endpoint", new Microsoft.Extensions.Primitives.StringValues(sub.EndPoint)));
             var mockRequest = new Mock<HttpRequest>();
-            mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            //mockRequest.SetupGet(x => x.Query).Returns(queryCollection);
+            //mockRequest.SetupGet(x => x.QueryString).Returns(QueryString.Create("endpoint", sub.EndPoint));
+
+            mockRequest.Object.Query = queryCollection;
             var response = await subscriptionTriggerUnSubscribe.Run(mockRequest.Object, client, log);
-            Assert.IsInstanceOfType(response, typeof(OkResult));
+            Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
         }
 
         public async Task SubscriptionsEmptyTest()

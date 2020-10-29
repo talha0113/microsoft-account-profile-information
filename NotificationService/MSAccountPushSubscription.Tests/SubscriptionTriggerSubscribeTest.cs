@@ -11,6 +11,7 @@ using MSAccountPushSubscription.Services;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,17 +55,20 @@ namespace MSAccountPushSubscription.Tests
         public async Task SubscribeEmptyBodyTest()
         {
             var mockRequest = new Mock<HttpRequest>();
-            mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            mockRequest.Setup(x => x.Body).Returns(new MemoryStream());
             var response = await subscriptionTriggerSubscribe.Run(mockRequest.Object, client, log);
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
-            Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
         }
 
         [TestMethod]
         public async Task SubscribeTest()
         {
+            byte[] byteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(sub));
+            MemoryStream stream = new MemoryStream(byteArray);
+
             var mockRequest = new Mock<HttpRequest>();
             mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            mockRequest.Setup(x => x.Body).Returns(stream);
             var response = await subscriptionTriggerSubscribe.Run(mockRequest.Object, client, log);
             Assert.IsInstanceOfType(response, typeof(OkResult));
         }
