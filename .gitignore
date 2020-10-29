@@ -334,3 +334,4 @@ ASALocalRun/
 /Application/Distributions/**/*.*
 /Application/Reports
 /Application/package-lock.json
+/UITest/package-lock.json

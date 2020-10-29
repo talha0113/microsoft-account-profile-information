@@ -17,14 +17,21 @@ export class AuthenticationService {
             auth: {
                 authority: AuthenticationConfiguration.authority,
                 clientId: AuthenticationConfiguration.applicationId,
+                redirectUri: `${window.location.origin}/login`,
                 postLogoutRedirectUri: `${window.location.origin}/login`
+            },
+            cache: {
+                cacheLocation: "sessionStorage",
+                storeAuthStateInCookie: true
             }
         });
         this.msalApp.handleRedirectCallback((authenticationError: AuthError, authenticationResponse: AuthResponse) => {
+            debugger;
             if (authenticationResponse.tokenType === 'id_token') {
                 this.authenticationStore.login(new Authentication(authenticationResponse.idToken.rawIdToken, null));
                 this.msalApp.acquireTokenRedirect({
-                    scopes: AuthenticationConfiguration.scopes
+                    scopes: AuthenticationConfiguration.scopes,
+                    sid: authenticationResponse.idTokenClaims["sid"]
                 });
             }
         });
@@ -37,7 +44,7 @@ export class AuthenticationService {
     }
 
     logout(): void {
-        //this.msalApp.logout();
+        this.msalApp.logout();
         this.authenticationStore.logout();
     }
 
