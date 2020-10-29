@@ -358,13 +358,52 @@
       }
     },
     {
+      "type": "Microsoft.Network/frontdoors/rulesengines",
+      "apiVersion": "2020-05-01",
+      "name": "[concat(variables('frontDoorName'), '/Redirect')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/frontdoors', variables('frontDoorName'))]"
+      ],
+      "properties": {
+        "resourceState": "Enabled",
+        "rules": [
+          {
+            "priority": 0,
+            "name": "Redirect",
+            "matchProcessingBehavior": "Stop",
+            "action": {
+              "requestHeaderActions": [],
+              "responseHeaderActions": [],
+              "routeConfigurationOverride": {
+                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration",
+                "redirectProtocol": "HttpsOnly",
+                "redirectType": "Found"
+              }
+            },
+            "matchConditions": [
+              {
+                "rulesEngineMatchValue": [
+                  "HTTP"
+                ],
+                "rulesEngineMatchVariable": "RequestScheme",
+                "rulesEngineOperator": "Equal",
+                "transforms": [],
+                "negateCondition": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "type": "Microsoft.Network/frontdoors",
-      "apiVersion": "2018-08-01",
+      "apiVersion": "2020-05-01",
       "name": "[variables('frontDoorName')]",
       "location": "Global",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Network/frontdoors/rulesengines', variables('frontDoorName'), 'Redirect')]"
       ],
       "properties": {
         "resourceState": "Enabled",
@@ -439,21 +478,28 @@
                 }
               ],
               "acceptedProtocols": [
+                "Http",
                 "Https"
               ],
               "patternsToMatch": [
                 "/*"
               ],
-              "forwardingProtocol": "HttpsOnly",
-              "cacheConfiguration": {
-                "queryParameterStripDirective": "StripNone",
-                "dynamicCompression": "Enabled"
-              },
-              "backendPool": {
-                "id": "[concat(resourceId('Microsoft.Network/frontdoors', variables('frontDoorName')), '/BackendPools/ms-account-profile-information-site')]"
-              },
               "enabledState": "Enabled",
-              "resourceState": "Enabled"
+              "resourceState": "Enabled",
+              "routeConfiguration": {
+                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+                "forwardingProtocol": "HttpsOnly",
+                "cacheConfiguration": {
+                  "queryParameterStripDirective": "StripNone",
+                  "dynamicCompression": "Enabled"
+                },
+                "backendPool": {
+                  "id": "[concat(resourceId('Microsoft.Network/frontdoors', variables('frontDoorName')), '/BackendPools/ms-account-profile-information-site')]"
+                }
+              },
+              "rulesEngine": {
+                "id": "[resourceId('Microsoft.Network/frontdoors/rulesengines', variables('frontDoorName'), 'Redirect')]"
+              }
             }
           }
         ],
