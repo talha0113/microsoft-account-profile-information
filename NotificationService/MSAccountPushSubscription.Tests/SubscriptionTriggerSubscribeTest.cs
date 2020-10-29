@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Repositories;
 using MSAccountPushSubscription.Services;
@@ -20,7 +20,6 @@ namespace MSAccountPushSubscription.Tests
     public class SubscriptionTriggerSubscribeTest
     {
         private ILogger log;
-        private DefaultHttpRequest request;
         private PushSubscriptionInformation sub;
         private DocumentClient client;
         private SubscriptionTriggerSubscribe subscriptionTriggerSubscribe;
@@ -54,11 +53,9 @@ namespace MSAccountPushSubscription.Tests
         [TestMethod]
         public async Task SubscribeEmptyBodyTest()
         {
-            request = new DefaultHttpRequest(new DefaultHttpContext())
-            {
-                Body = new MemoryStream(Encoding.ASCII.GetBytes(""))
-            };
-            var response = await subscriptionTriggerSubscribe.Run(request, client, log);
+            var mockRequest = new Mock<HttpRequest>();
+            mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            var response = await subscriptionTriggerSubscribe.Run(mockRequest.Object, client, log);
             Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
             Assert.IsTrue((((BadRequestObjectResult)response).Value as string).Contains("Empty"));
         }
@@ -66,12 +63,9 @@ namespace MSAccountPushSubscription.Tests
         [TestMethod]
         public async Task SubscribeTest()
         {
-            request = new DefaultHttpRequest(new DefaultHttpContext())
-            {
-                Body = new MemoryStream(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(sub)))
-            };
-
-            var response = await subscriptionTriggerSubscribe.Run(request, client, log);
+            var mockRequest = new Mock<HttpRequest>();
+            mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            var response = await subscriptionTriggerSubscribe.Run(mockRequest.Object, client, log);
             Assert.IsInstanceOfType(response, typeof(OkResult));
         }
 

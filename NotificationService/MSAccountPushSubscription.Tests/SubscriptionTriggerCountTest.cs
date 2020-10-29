@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using MSAccountPushSubscription.Models;
 using MSAccountPushSubscription.Repositories;
 using MSAccountPushSubscription.Services;
@@ -17,7 +16,6 @@ namespace MSAccountPushSubscription.Tests
     public class SubscriptionTriggerCountTest
     {
         private ILogger log;
-        private DefaultHttpRequest request;
         private PushSubscriptionInformation sub;
         private DocumentClient client;
         private SubscriptionTriggerCount subscriptionTriggerCount;
@@ -53,11 +51,9 @@ namespace MSAccountPushSubscription.Tests
         [TestMethod]
         public async Task NoSubscriptionsTest()
         {
-            request = new DefaultHttpRequest(new DefaultHttpContext())
-            {
-                QueryString = QueryString.Create("", "")
-            };
-            dynamic response = await subscriptionTriggerCount.Run(request, client, log);
+            var mockRequest = new Mock<HttpRequest>();
+            mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            dynamic response = await subscriptionTriggerCount.Run(mockRequest.Object, client, log);
             Assert.AreEqual(response.Value, 0);
         }
 
@@ -65,11 +61,9 @@ namespace MSAccountPushSubscription.Tests
         public async Task SubscriptionsExistTest()
         {
             DocumentDBRepository<PushSubscriptionInformation>.CreateItemAsync(sub).Wait();
-            request = new DefaultHttpRequest(new DefaultHttpContext())
-            {
-                QueryString = QueryString.Create("", "")
-            };
-            dynamic response = await subscriptionTriggerCount.Run(request, client, log);
+            var mockRequest = new Mock<HttpRequest>();
+            mockRequest.Setup(x => x.QueryString).Returns(new QueryString(""));
+            dynamic response = await subscriptionTriggerCount.Run(mockRequest.Object, client, log);
             Assert.AreEqual(response.Value, 1);
         }
 
