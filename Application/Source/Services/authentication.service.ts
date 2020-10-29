@@ -22,11 +22,10 @@ export class AuthenticationService {
             },
             cache: {
                 cacheLocation: "sessionStorage",
-                storeAuthStateInCookie: true
+                storeAuthStateInCookie: true,
             }
         });
         this.msalApp.handleRedirectCallback((authenticationError: AuthError, authenticationResponse: AuthResponse) => {
-            debugger;
             if (authenticationResponse.tokenType === 'id_token') {
                 this.authenticationStore.login(new Authentication(authenticationResponse.idToken.rawIdToken, null));
                 this.msalApp.acquireTokenRedirect({
