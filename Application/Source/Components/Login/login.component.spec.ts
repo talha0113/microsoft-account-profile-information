@@ -73,10 +73,9 @@ describe('Login Component', () => {
         const loginButton: HTMLButtonElement = nativeElement.querySelector('button');
         const progressImage: HTMLImageElement = nativeElement.querySelector('img');
 
-        // expect(loginButton.textContent).toContain('Login');
-        // expect(loginButton.disabled).toBeFalsy();
-        expect(component.isInProgress).toBeFalsy();
-        // expect(progressImage).toBeNull();
+        expect(loginButton.textContent.toLowerCase()).toContain('login');
+        expect(loginButton.disabled).toBeFalsy();
+        expect(progressImage).toBeNull();
     });
 
     it('Should render login success process', async () => {

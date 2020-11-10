@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
-import { UserAgentApplication, AuthError, AuthResponse } from 'msal';
+import { AuthError, IPublicClientApplication, PublicClientApplication, LogLevel, AuthenticationResult } from '@azure/msal-browser';
 
 import { AuthenticationConfiguration } from "../Configurations/authentication.configuration";
 import { ErrorManager } from '../Managers/error.manager';
@@ -10,10 +10,10 @@ import { Authentication } from '../Models/authentication.model';
 
 @Injectable()
 export class AuthenticationService {
-    private msalApp: UserAgentApplication;
+    private msalApp: IPublicClientApplication;
 
     constructor(public authenticationStore: AuthenticationStore) {
-        this.msalApp = new UserAgentApplication({
+        this.msalApp = new PublicClientApplication({
             auth: {
                 authority: AuthenticationConfiguration.authority,
                 clientId: AuthenticationConfiguration.applicationId,
@@ -22,17 +22,45 @@ export class AuthenticationService {
             },
             cache: {
                 cacheLocation: "sessionStorage",
-                storeAuthStateInCookie: true,
+                storeAuthStateInCookie: false,
+            },
+            system: {
+                loggerOptions: {
+                    loggerCallback: (level, message, containsPii) => {
+                        if (containsPii) {
+                            return;
+                        }
+                        switch (level) {
+                            case LogLevel.Error:
+                                console.error(message);
+                                return;
+                            case LogLevel.Info:
+                                console.info(message);
+                                return;
+                            case LogLevel.Verbose:
+                                console.debug(message);
+                                return;
+                            case LogLevel.Warning:
+                                console.warn(message);
+                                return;
+                        }
+                    }
+                }
             }
         });
-        this.msalApp.handleRedirectCallback((authenticationError: AuthError, authenticationResponse: AuthResponse) => {
-            if (authenticationResponse.tokenType === 'id_token') {
-                this.authenticationStore.login(new Authentication(authenticationResponse.idToken.rawIdToken, null));
-                this.msalApp.acquireTokenRedirect({
-                    scopes: AuthenticationConfiguration.scopes,
-                    sid: authenticationResponse.idTokenClaims["sid"]
-                });
+        from(this.msalApp.handleRedirectPromise()).subscribe((value: AuthenticationResult) => {
+            if (value === null) {
+                return;
             }
+            if (value.tokenType === 'Bearer') {
+                this.authenticationStore.login(new Authentication(value.idToken, value.accessToken));
+                //this.msalApp.acquireTokenRedirect({
+                //    scopes: AuthenticationConfiguration.scopes,
+                //    sid: value.idTokenClaims["sid"]
+                //});
+            }
+        }, (error: AuthError) => {
+            console.error(error);
         });
     }
 
@@ -48,19 +76,17 @@ export class AuthenticationService {
     }
 
     refreshToken(): Observable<null> {
-        return from(this.msalApp.acquireTokenSilent({
-            scopes: AuthenticationConfiguration.scopes
-        })).pipe(
-            tap((value: AuthResponse) => {
+        return from(this.msalApp.ssoSilent({ scopes: AuthenticationConfiguration.scopes })).pipe(
+            tap((value: AuthenticationResult) => {
                 this.authenticationStore.setError(null);
                 this.authenticationStore.refreshToken(value.accessToken);
             }),
-            map((value: AuthResponse) => {
+            map((value: AuthenticationResult) => {
                 return null; 
             }),
-            catchError((error: any) => {
+            catchError((error: AuthError) => {
                 this.authenticationStore.setError(error);
-                return ErrorManager.generalError("AuthenticationService.refreshToken", error);
+                return ErrorManager.generalError("AuthenticationService.refreshToken", JSON.stringify(error));
             })
         );
     }
