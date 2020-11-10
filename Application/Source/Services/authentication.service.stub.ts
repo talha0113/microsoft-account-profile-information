@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 export class AuthenticationServiceStub extends AuthenticationService {
 
     login(): void {
-        this.authenticationStore.login(new Authentication("Test_Token_Id", null));
+        this.authenticationStore.login(new Authentication("Test_Token_Id", "Test_Access_Token"));
     }
 
     refreshToken(): Observable<null> {
@@ -21,5 +21,9 @@ export class AuthenticationServiceStub extends AuthenticationService {
                 return null;
             })
         );
+    }
+
+    logout(): void {
+        this.authenticationStore.logout();
     }
 }

@@ -19,12 +19,12 @@
     "@angular/platform-browser-dynamic": "^10.2.0",
     "@angular/router": "^10.2.0",
     "@angular/service-worker": "^10.2.0",
+    "@azure/msal-browser": "^2.5.1",
     "@datorama/akita": "^5.2.5",
     "@microsoft/applicationinsights-web": "^2.5.9",
     "@microsoft/signalr": "^3.1.9",
     "@ngneat/transloco": "^2.19.1",
     "core-js": "^3.4.1",
-    "msal": "^1.4.2",
     "rxjs": "^6.5.3",
     "tslib": "^1.10.0",
     "zone.js": "^0.10.2"

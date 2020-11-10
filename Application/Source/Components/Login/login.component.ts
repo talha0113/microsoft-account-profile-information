@@ -23,10 +23,11 @@ export class LoginComponent implements OnInit {
         if (!this.isOffline) {
             this.authenticationQuery.select().subscribe((value: AuthenticationState) => {
                 this.isInProgress = true;
-                if (value.authentication.tokenId != null && value.authentication.accessToken == null) {
-                    this.authenticationService.refreshToken().subscribe(() => {
-                        this.router.navigateByUrl("/status");
-                    });
+                if (value.authentication.tokenId != null && value.authentication.accessToken != null) {
+                    //this.authenticationService.refreshToken().subscribe(() => {
+                        
+                    //});
+                    this.router.navigateByUrl("/status");
                 }
                 else {
                     this.isInProgress = false;
