@@ -2,7 +2,7 @@
   "name": "ms-account-profile-info-base",
   "version": "0.0.0",
   "scripts": {
-    "commit": "cz"
+    "commit": "git-cz"
   },
   "private": true,
   "devDependencies": {
