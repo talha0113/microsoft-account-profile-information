@@ -11,7 +11,7 @@ module.exports = function (config) {
           require('karma-chrome-launcher'),
           require('karma-nunit2-reporter'),
           require('karma-jasmine-html-reporter'),
-          require('karma-coverage-istanbul-reporter'),
+          require('karma-coverage'),
           require('@angular-devkit/build-angular/plugins/karma')
       ],
       client: {
@@ -21,7 +21,7 @@ module.exports = function (config) {
           outputFile: require('path').join(__dirname, "../../Reports/Results.xml"),
           suite: ''
       },
-      coverageIstanbulReporter: {
+      coverageReporter: {
           dir: require('path').join(__dirname, '../../Reports/Coverage'),
           reports: [
               'html',
@@ -32,7 +32,7 @@ module.exports = function (config) {
           ],
           fixWebpackSourcePaths: true
       },
-      reporters: ['progress', 'kjhtml', 'nunit'],
+      reporters: ['progress', 'kjhtml', 'nunit', 'coverage'],
       port: 9876,
       colors: true,
       logLevel: config.LOG_INFO,
