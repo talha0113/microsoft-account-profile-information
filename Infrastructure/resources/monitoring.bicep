@@ -45,7 +45,7 @@ module applicationInsightsInstrumentationKeySecret './key-vault/secret.bicep' = 
     applicationName: applicationName
     environment: environment
     index: index
-    secretName: 'APPLICATIONINSIGHTS-INSTRUMENTATION-KEY'
+    secretName: 'APPLICATION-INSIGHTS-INSTRUMENTATION-KEY'
     secretValue: applicationInsights.properties.InstrumentationKey
   }
 }
@@ -56,7 +56,7 @@ module applicationInsightsConnectionStringSecret './key-vault/secret.bicep' = {
     applicationName: applicationName
     environment: environment
     index: index
-    secretName: 'APPLICATIONINSIGHTS-CONNECTION-STRING'
+    secretName: 'APPLICATION-INSIGHTS-CONNECTION-STRING'
     secretValue: applicationInsights.properties.ConnectionString
   }
 }
