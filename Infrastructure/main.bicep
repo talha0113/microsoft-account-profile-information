@@ -71,3 +71,42 @@ module monitoring './resources/monitoring.bicep' = {
     keyVault
   ]
 }
+
+module signalR './resources/signalr.bicep' = {
+  name: 'signalRDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+	location: location
+    environment: environment
+    index: index
+  }
+  dependsOn: [
+    keyVault
+  ]
+}
+
+module cosmosDB './resources/cosmosdb.bicep' = {
+  name: 'cosmosDBDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+	location: location
+    environment: environment
+    index: index
+  }
+  dependsOn: [
+    keyVault
+  ]
+}
+
+module storageAccount './resources/storage-account.bicep' = {
+  name: 'storageAccountDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+	location: location
+    environment: environment
+    index: index
+  }
+}
