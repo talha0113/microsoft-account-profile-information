@@ -1,9 +1,11 @@
 {
+  "//": "https://dev.to/ghacosta/definitive-guide-for-commitizen-commitlint-husky-3of9",
   "name": "ms-account-profile-info-base",
   "version": "0.0.0",
   "scripts": {
     "commit": "cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": ""
   },
   "private": true,
   "devDependencies": {
