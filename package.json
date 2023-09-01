@@ -2,7 +2,8 @@
   "name": "ms-account-profile-info-base",
   "version": "0.0.0",
   "scripts": {
-    "commit": "git-cz"
+    "commit": "cz",
+    "prepare": "husky install"
   },
   "private": true,
   "devDependencies": {
@@ -10,6 +11,6 @@
     "@commitlint/config-conventional": "^17.7.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "husky": "^8.0.3"
+    "husky": "^8.0.0"
   }
 }
