@@ -110,3 +110,19 @@ module storageAccount './resources/storage-account.bicep' = {
     index: index
   }
 }
+
+module functionApplication './resources/func-app/resource.bicep' = {
+  name: 'functionApplicationDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+	location: location
+    environment: environment
+    index: index
+    userAssignedIdentityId: managedIdentity.outputs.userAssignedIdentityId
+  }
+  dependsOn: [
+    storageAccount
+    keyVault
+  ]
+}

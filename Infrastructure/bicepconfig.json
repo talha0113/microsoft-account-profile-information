@@ -69,9 +69,12 @@
         "use-protectedsettings-for-commandtoexecute-secrets": {
           "level": "warning"
         },
+
+        // Custom
         "use-recent-api-versions": {
-          "level": "warning"
+          "level": "ignore"
         },
+
         "use-resource-id-functions": {
           "level": "warning"
         },

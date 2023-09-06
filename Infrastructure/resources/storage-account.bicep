@@ -64,3 +64,14 @@ resource storageQueuePoison 'Microsoft.Storage/storageAccounts/queueServices/que
   name: '${queueName}-poison'
   parent: storageQueues
 }
+
+module storageAccountConnectionStringSecret './key-vault/secret.bicep' = {
+  name: 'storageAccountConnectionStringSecret'
+  params: {
+    applicationName: applicationName
+    environment: environment
+    index: index
+    secretName: 'STORAGE-ACCOUNT-CONNECTION-STRING'
+    secretValue: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+  }
+}
