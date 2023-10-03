@@ -126,3 +126,14 @@ module functionApplication './resources/func-app/resource.bicep' = {
     keyVault
   ]
 }
+
+module staticWebApplication './resources/static-web.bicep' = {
+  name: 'staticWebApplicationDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+	location: location
+    environment: environment
+    index: index    
+  }  
+}
