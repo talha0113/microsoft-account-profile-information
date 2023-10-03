@@ -31,5 +31,6 @@ output appSettings object = {
   XDT_MicrosoftApplicationInsights_BaseExtensions: '~1'
   XDT_MicrosoftApplicationInsights_Mode: 'recommended'
   XDT_MicrosoftApplicationInsights_PreemptSdk: '~1'
-  FUNCTIONS_WORKER_RUNTIME: applicationRuntime  
+  FUNCTIONS_WORKER_RUNTIME: applicationRuntime
+  SignalRConnection: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SIGNALR-CONNECTION-STRING)'
 }
