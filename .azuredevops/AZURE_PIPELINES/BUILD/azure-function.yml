@@ -1,0 +1,139 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: source_directory
+  type: string
+  default: ''
+- name: projects_list
+  type: object
+
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  variables:
+  - name: BuildConfiguration 
+    value: 'Release'
+  - name: ArtifactDirectory 
+    value: '$(Build.ArtifactStagingDirectory)'
+  - name: BuildNumber 
+    value: '$(Build.BuildNumber)'
+  
+  jobs:
+
+  - job: package
+    displayName: 'Package'
+    pool:
+      vmImage: 'windows-latest' 
+    continueOnError: 'false'
+    workspace:
+      clean: all
+    variables:
+    - name: NUGET_PACKAGES 
+      value: '$(Pipeline.Workspace)/.nuget/packages'
+    - name: PROJECT_ALL 
+      value: '${{parameters.source_directory}}/**/*.csproj'
+
+    steps:
+
+    - pwsh: |
+        # Start-Process "$env:ProgramFiles\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong /enableRio /overrides=sqlAllowGroupByClause:true" -Verb RunAs
+        Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+        Start-CosmosDbEmulator -NoUI -DefaultPartitionCount 100
+        # Get-Item env:* | Sort-Object -Property Name
+        # for ($i=0; $i -lt 10; $i++) {
+        # $status = Get-CosmosDbEmulatorStatus
+        # if ($status -ne "Running") {
+        #  sleep 30;
+        #  Write-Host "Cosmos DB Emulator Status: $status" -ForegroundColor yellow
+        # } else {
+        #  break;
+        # }
+        # }
+      displayName: 'Cosmos DB Emulator'
+      failOnStderr: true
+      errorActionPreference: stop
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    - script: |
+       sqllocaldb create MSSQLLocalDB
+       sqllocaldb start MSSQLLocalDB
+       sqllocaldb info MSSQLLocalDB
+
+       "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
+      displayName: 'Storage Emulator'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+        
+    - task: Cache@2
+      displayName: 'Cache'
+      inputs:
+        key: 'nuget | "$(Agent.OS)" | **/packages.lock.json,!**/bin/**,!**/obj/**,!**/publish/packages.lock.json'
+        restoreKeys: |
+           nuget | "$(Agent.OS)"
+           nuget
+        path: $(NUGET_PACKAGES)
+        cacheHitVar: 'CACHE_RESTORED'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: 'restore'
+        projects: |
+          $(PROJECT_ALL)
+        feedsToUse: 'select'
+        noCache: false
+        arguments: '--locked-mode'
+      condition: ne(variables.CACHE_RESTORED, true)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Lint'
+      inputs:
+        command: 'custom'
+        projects: |
+          $(PROJECT_ALL)          
+        custom: 'format'
+        arguments: 'style --verify-no-changes --verbosity diagnostic --report $(ArtifactDirectory)/$(BuildNumber).json'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build'
+      inputs:
+        command: 'build'
+        projects: |
+          $(PROJECT_ALL)
+        arguments: '--configuration $(BuildConfiguration) /p:SourceRevisionId="$(BuildNumber)"'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Test'
+      inputs:
+        command: 'test'        
+        projects: '${{parameters.source_directory}}/**/*.tests.csproj'
+        arguments: '--configuration $(BuildConfiguration) --environment DatabaseId="Subscriptions" --environment CollectionId="Items" --environment ms-account-profile-informationDBConnection="AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" --collect:"XPlat Code Coverage" --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Coverage'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    - ${{ each project in parameters.projects_list }}:
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish: ${{project.name}}'
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          zipAfterPublish: true
+          projects: |
+            ${{parameters.source_directory}}/**/${{project.name}}.csproj          
+          arguments: '--configuration $(BuildConfiguration) --output $(ArtifactDirectory)'
+
+    - publish: '$(ArtifactDirectory)'
+      displayName: Artifact
+      artifact: 'drop'
