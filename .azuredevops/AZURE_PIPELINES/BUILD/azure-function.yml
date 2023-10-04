@@ -43,20 +43,17 @@ stages:
     steps:
 
     - pwsh: |
-        # Start-Process "$env:ProgramFiles\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong /enableRio /overrides=sqlAllowGroupByClause:true" -Verb RunAs
+        npm install -g azurite
+        azurite --silent --location /tmp --debug /tmp/debug.log
+      displayName: 'Emulator: Storage'
+      failOnStderr: true
+      errorActionPreference: stop
+      #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    - pwsh: |
         Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
         Start-CosmosDbEmulator -NoUI -DefaultPartitionCount 100
-        # Get-Item env:* | Sort-Object -Property Name
-        # for ($i=0; $i -lt 10; $i++) {
-        # $status = Get-CosmosDbEmulatorStatus
-        # if ($status -ne "Running") {
-        #  sleep 30;
-        #  Write-Host "Cosmos DB Emulator Status: $status" -ForegroundColor yellow
-        # } else {
-        #  break;
-        # }
-        # }
-      displayName: 'Cosmos DB Emulator'
+      displayName: 'Emulator: Cosmos DB'
       failOnStderr: true
       errorActionPreference: stop
       #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
