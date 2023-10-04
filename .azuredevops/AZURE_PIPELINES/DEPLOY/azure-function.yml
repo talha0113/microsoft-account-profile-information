@@ -51,6 +51,6 @@ stages:
               connectedServiceNameARM: ${{ format('{0}', parameters.environment_name) }}
               appType: 'functionAppLinux'
               appName: ${{ format('{0}', parameters.azure_function_name) }}
-              package: '$(DropRoot)/${{ main_project }}.zip'
+              package: '$(DropRoot)/${{ parameters.main_project }}.zip'
               runtimeStack: 'DOTNET-ISOLATED|7.0'
               deploymentMethod: 'auto'
