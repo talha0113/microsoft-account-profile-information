@@ -1,0 +1,49 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: source_directory
+  type: string
+  default: ''
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  variables:
+  - name: ArtifactDirectory 
+    value: '$(Build.ArtifactStagingDirectory)'
+
+  jobs:
+
+  - job: package
+    displayName: 'Package'
+    pool:
+      vmImage: 'ubuntu-latest' 
+    continueOnError: 'false'
+    workspace:
+      clean: all
+  
+    steps:
+        
+    - script: |
+        az bicep build --file iac/main.bicep
+      displayName: 'Lint'
+
+    - task: CopyFiles@2
+      displayName: 'Copy'
+      inputs:
+        SourceFolder: '${{parameters.source_directory}}'
+        Contents: |
+          **/*.bicep
+          *.json
+          !bicepconfig.json
+        TargetFolder: '$(ArtifactDirectory)'
+        OverWrite: true
+    
+    - publish: '$(ArtifactDirectory)'
+      displayName: Artifact
+      artifact: 'drop'

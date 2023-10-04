@@ -1,0 +1,52 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: depends_on
+  type: string
+  default: ''
+- name: environment_name
+  type: string
+  default: ''
+- name: branch_name
+  type: string
+  default: 'main'
+
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  dependsOn: ${{ parameters.depends_on }}
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+  variables:  
+  - name: DropRoot 
+    value: '$(Pipeline.Workspace)/drop'  
+
+  jobs:
+  
+  - deployment: deploy
+    displayName: 'Deploy'
+    environment: ${{ format('{0}', parameters.environment_name) }}
+    pool:
+      vmImage: 'ubuntu-latest'
+    continueOnError: 'false'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: ${{ format('{0}', parameters.environment_name) }}
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: '$(DropRoot)'
+              inlineScript: |
+                az --version                
+                az deployment sub create --location westeurope --template-file main.bicep --parameters main.parameters.json
+            displayName: 'Resources'
