@@ -44,7 +44,8 @@ stages:
 
     - pwsh: |
         npm install -g azurite
-        azurite --silent --location /tmp --debug /tmp/debug.log
+        mkdir c:/azurite
+        azurite --silent --location c:\azurite --debug c:\azurite\debug.log
       displayName: 'Emulator: Storage'
       failOnStderr: true
       errorActionPreference: stop
@@ -56,15 +57,6 @@ stages:
       displayName: 'Emulator: Cosmos DB'
       failOnStderr: true
       errorActionPreference: stop
-      #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-    - script: |
-       sqllocaldb create MSSQLLocalDB
-       sqllocaldb start MSSQLLocalDB
-       sqllocaldb info MSSQLLocalDB
-
-       "C:\Program Files (x86)\Microsoft SDKs\Azure\Storage Emulator\AzureStorageEmulator.exe" start
-      displayName: 'Storage Emulator'
       #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
         
     - task: Cache@2
