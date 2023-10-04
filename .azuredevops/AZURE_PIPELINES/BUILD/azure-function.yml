@@ -8,8 +8,9 @@ parameters:
 - name: source_directory
   type: string
   default: ''
-- name: projects_list
-  type: object
+- name: main_project
+  type: string
+  default: ''
 
 
 stages:
@@ -123,16 +124,15 @@ stages:
         summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
       condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
-    - ${{ each project in parameters.projects_list }}:
-      - task: DotNetCoreCLI@2
-        displayName: 'Publish: ${{project.name}}'
-        inputs:
-          command: 'publish'
-          publishWebProjects: false
-          zipAfterPublish: true
-          projects: |
-            ${{parameters.source_directory}}/**/${{project.name}}.csproj          
-          arguments: '--configuration $(BuildConfiguration) --output $(ArtifactDirectory)'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish'
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        zipAfterPublish: true
+        projects: |
+          ${{parameters.source_directory}}/**/${{main_project}}.csproj          
+        arguments: '--configuration $(BuildConfiguration) --output $(ArtifactDirectory)'
 
     - publish: '$(ArtifactDirectory)'
       displayName: Artifact

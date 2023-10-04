@@ -14,8 +14,12 @@ parameters:
 - name: branch_name
   type: string
   default: 'main'
-- name: projects_list
-  type: object
+- name: main_project
+  type: string
+  default: ''
+- name: azure_function_name
+  type: string
+  default: ''
 
 stages:
 
@@ -29,26 +33,24 @@ stages:
 
   jobs:
   
-  - ${{ each project in parameters.projects_list }}:
+  - deployment: ${{ replace(project, '.', '_') }}
+    displayName: ${{ project.name }}
+    environment: ${{ format('{0}', parameters.environment_name) }}
+    pool:
+      vmImage: 'ubuntu-latest'
+    continueOnError: 'false'
 
-    - deployment: ${{ replace(project.name, '.', '_') }}
-      displayName: ${{ project.name }}
-      environment: ${{ format('{0}', parameters.environment_name) }}
-      pool:
-        vmImage: 'ubuntu-latest'
-      continueOnError: 'false'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
 
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-
-            - task: AzureFunctionApp@2
-              displayName: 'Azure Function'
-              inputs:
-                connectedServiceNameARM: ${{ format('{0}', parameters.environment_name) }}
-                appType: 'functionAppLinux'
-                appName: 'func-msaccprofinfo-dev-001'
-                package: '$(DropRoot)/${{ project.name }}.zip'
-                runtimeStack: 'DOTNET-ISOLATED|7.0'
-                deploymentMethod: 'auto'
+          - task: AzureFunctionApp@2
+            displayName: 'Azure Function'
+            inputs:
+              connectedServiceNameARM: ${{ format('{0}', parameters.environment_name) }}
+              appType: 'functionAppLinux'
+              appName: ${{ format('{0}', parameters.azure_function_name) }}
+              package: '$(DropRoot)/${{ main_project }}.zip'
+              runtimeStack: 'DOTNET-ISOLATED|7.0'
+              deploymentMethod: 'auto'
