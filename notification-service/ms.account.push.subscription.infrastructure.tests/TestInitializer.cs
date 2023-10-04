@@ -12,7 +12,7 @@ public abstract class TestInitializer
     protected readonly IFixture fixture = new Fixture().Customize(new AutoMoqCustomization());
     protected IRepository<PushSubscriptionInformation> repository;
 
-    protected const string TEST_CATEGORY = "Unit";
+    protected const string TEST_CATEGORY = "Integration";
 
     [TestInitialize]
     public async Task SetupAsync()

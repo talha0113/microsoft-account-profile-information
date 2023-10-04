@@ -1,0 +1,40 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth).$(rev:r)
+
+resources:
+- repo: self
+  clean: true
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - feature/*
+    - bug/*        
+  paths:
+    include:
+    - /notification-service        
+
+variables:
+  - group: 'Authentication'
+  - group: 'Release Annotations'
+
+stages:
+
+- template: ../.azuredevops/AZURE_PIPELINES/BUILD/azure-function.yml
+  parameters:
+    name: build
+    display_name: 'Build'
+    source_directory: '$(Build.SourcesDirectory)/notification-service'
+    projects_list:
+    - "ms.account.push.subscription.func"
+
+- template: ../.azuredevops/AZURE_PIPELINES/DEPLOY/azure-function.yml
+  parameters:
+    name: 'development'
+    display_name: 'Development'
+    depends_on: 'build'    
+    environment_name: 'app-msaccprofinfo-dev-001'
+    branch_name: 'main'
+    projects_list:
+    - "ms.account.push.subscription.func"

@@ -1,0 +1,54 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: depends_on
+  type: string
+  default: ''
+- name: environment_name
+  type: string
+  default: ''
+- name: branch_name
+  type: string
+  default: 'main'
+- name: projects_list
+  type: object
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  dependsOn: ${{ parameters.depends_on }}
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+  variables:
+  - name: DropRoot 
+    value: '$(Pipeline.Workspace)/drop'  
+
+  jobs:
+  
+  - ${{ each project in parameters.projects_list }}:
+
+    - deployment: ${{ replace(project.name, '.', '_') }}
+      displayName: ${{ project.name }}
+      environment: ${{ format('{0}', parameters.environment_name) }}
+      pool:
+        vmImage: 'ubuntu-latest'
+      continueOnError: 'false'
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+
+            - task: AzureFunctionApp@2
+              displayName: 'Azure Function'
+              inputs:
+                connectedServiceNameARM: ${{ format('{0}', parameters.environment_name) }}
+                appType: 'functionAppLinux'
+                appName: 'func-msaccprofinfo-dev-001'
+                package: '$(DropRoot)/${{ project.name }}.zip'
+                runtimeStack: 'DOTNET-ISOLATED|7.0'
+                deploymentMethod: 'auto'
