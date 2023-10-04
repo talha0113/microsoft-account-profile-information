@@ -26,8 +26,7 @@ stages:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/notification-service'
-    projects_list:
-    - "ms.account.push.subscription.func"
+    main_project: "ms.account.push.subscription.func"
 
 - template: ../.azuredevops/AZURE_PIPELINES/DEPLOY/azure-function.yml
   parameters:
@@ -36,5 +35,5 @@ stages:
     depends_on: 'build'    
     environment_name: 'app-msaccprofinfo-dev-001'
     branch_name: 'main'
-    projects_list:
-    - "ms.account.push.subscription.func"
+    main_project: "ms.account.push.subscription.func"
+    azure_function_name: 'func-msaccprofinfo-dev-001'
