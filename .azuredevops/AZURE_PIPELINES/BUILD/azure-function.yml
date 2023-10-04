@@ -48,8 +48,8 @@ stages:
         targetType: 'inline'
         script: |
           npm install -g azurite
-          mkdir c:/azurite
-          azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+          mkdir azurite
+          azurite --silent --location azurite --debug azurite\debug.log &
       #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
     - pwsh: |
