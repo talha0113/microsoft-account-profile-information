@@ -30,7 +30,7 @@ stages:
     steps:
         
     - script: |
-        az bicep build --file iac/main.bicep
+        az bicep build --file ${{parameters.source_directory}}/main.bicep
       displayName: 'Lint'
 
     - task: CopyFiles@2
