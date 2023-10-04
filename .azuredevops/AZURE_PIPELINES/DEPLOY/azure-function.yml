@@ -17,9 +17,6 @@ parameters:
 - name: main_project
   type: string
   default: ''
-- name: azure_function_name
-  type: string
-  default: ''
 
 stages:
 
@@ -33,8 +30,8 @@ stages:
 
   jobs:
   
-  - deployment: ${{ replace(project, '.', '_') }}
-    displayName: ${{ project.name }}
+  - deployment: ${{ replace(parameters.main_project, '.', '_') }}
+    displayName: ${{ parameters.main_project }}
     environment: ${{ format('{0}', parameters.environment_name) }}
     pool:
       vmImage: 'ubuntu-latest'
@@ -50,7 +47,7 @@ stages:
             inputs:
               connectedServiceNameARM: ${{ format('{0}', parameters.environment_name) }}
               appType: 'functionAppLinux'
-              appName: ${{ format('{0}', parameters.azure_function_name) }}
+              appName: ${{ format('{0}', replace(parameters.environment_name, 'app', 'func')) }}
               package: '$(DropRoot)/${{ parameters.main_project }}.zip'
               runtimeStack: 'DOTNET-ISOLATED|7.0'
               deploymentMethod: 'auto'

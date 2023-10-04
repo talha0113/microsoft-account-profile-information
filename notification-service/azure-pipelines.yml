@@ -36,4 +36,3 @@ stages:
     environment_name: 'app-msaccprofinfo-dev-001'
     branch_name: 'main'
     main_project: "ms.account.push.subscription.func"
-    azure_function_name: 'func-msaccprofinfo-dev-001'
