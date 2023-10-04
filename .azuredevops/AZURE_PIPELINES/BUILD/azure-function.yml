@@ -42,13 +42,14 @@ stages:
 
     steps:
 
-    - pwsh: |
-        npm install -g azurite
-        mkdir c:/azurite
-        azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+    - task: Bash@3
       displayName: 'Emulator: Storage'
-      failOnStderr: true
-      errorActionPreference: stop
+      inputs:
+        targetType: 'inline'
+        script: |
+          npm install -g azurite
+          mkdir c:/azurite
+          azurite --silent --location c:\azurite --debug c:\azurite\debug.log
       #condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
     - pwsh: |
