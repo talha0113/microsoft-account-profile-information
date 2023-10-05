@@ -40,4 +40,7 @@ output appSettings object = {
   FUNCTIONS_WORKER_RUNTIME: applicationRuntime
   linuxFxVersion: '${toUpper(applicationRuntime)}|7.0'
   SignalRConnection: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SIGNALR-CONNECTION-STRING)'
+  VAPID_Subject: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Subject)'
+  VAPID_PublicKey: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Public-Key)'
+  VAPID_PrivateKey: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Private-Key)'
 }

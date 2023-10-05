@@ -11,7 +11,7 @@ public static class PersistanceExtension
     public static IServiceCollection AddPersistanceAsync(this IServiceCollection services)
     {
         var configuration = services.BuildServiceProvider().GetService<IConfiguration>() ?? throw new Exception($"{nameof(IConfiguration)} is null");
-        var dataBaseSettings = new DatabaseSetting { Id = configuration["DatabaseId"] ?? "", CollectionId = configuration["CollectionId"] ?? "", ConnectionString = ConnectionStringManager.GetCustomConnectionString("ms-account-profile-informationDBConnection") };
+        var dataBaseSettings = new DatabaseSetting { Id = configuration["DatabaseId"] ?? "", CollectionId = configuration["CollectionId"] ?? "", ConnectionString = ConnectionStringManager.GetCustomConnectionString("cosmosdb_connection") };
         _ = services.AddSingleton<DatabaseSetting>(dataBaseSettings);
 
         var cosmosClient = new CosmosClient(dataBaseSettings.ConnectionString,
