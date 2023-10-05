@@ -15,7 +15,7 @@ param userAssignedIdentityId string
 
 var functionApplicationName = 'func-${applicationName}-${environment}-${index}'
 
-resource applicationServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+resource applicationServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
   name: 'asp-${applicationName}-${environment}-${index}'
   location: location
   kind: 'functionapp'
@@ -31,7 +31,7 @@ resource applicationServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource functionApplication 'Microsoft.Web/sites@2022-03-01' = {
+resource functionApplication 'Microsoft.Web/sites@2022-09-01' = {
   name: functionApplicationName
   location: location
   kind: 'functionapp,linux'
@@ -76,9 +76,26 @@ module functionApplicationSettings './app-settings.bicep' = {
   ]
 }
 
-resource applicationSettings 'Microsoft.Web/sites/config@2022-03-01' = {
+resource applicationSettings 'Microsoft.Web/sites/config@2022-09-01' = {
   name: 'appsettings'
   parent: functionApplication
   properties: functionApplicationSettings.outputs.appSettings
 }
 
+module functionApplicationConnectionStrings './connection-strings.bicep' = {
+  name: 'functionApplicationConnectionStringsDeployment'
+  params: {
+    applicationName: applicationName
+    environment: environment
+    index: index
+  }
+  dependsOn: [
+    functionApplication
+  ]
+}
+
+resource connectionStrings 'Microsoft.Web/sites/config@2022-09-01' = {
+  name: 'connectionstrings'
+  parent: functionApplication
+  properties: functionApplicationConnectionStrings.outputs.connectionStrings
+}
