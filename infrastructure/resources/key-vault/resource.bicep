@@ -13,6 +13,9 @@ param index string = '001'
 @description('Managed Identity Principal ID')
 param userAssignedIdentityServicePrincipalId string
 
+@description('Secrets')
+param secrets array
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'kv-${applicationName}-${environment}-${index}'
   location: location
@@ -46,3 +49,17 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
   } 
 }
+
+module commonSecrets './secret.bicep' = [for secretItem in secrets: {
+  name: '${secretItem.name}SecretDeployment'
+  params: {
+    applicationName: applicationName
+    environment: environment
+    index: index
+    secretName: secretItem.name
+    secretValue: secretItem.value
+  }
+  dependsOn: [
+    keyVault
+  ]
+}]

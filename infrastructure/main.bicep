@@ -19,6 +19,9 @@ param environment string = 'dev'
 @description('Index')
 param index string = '001'
 
+@description('VAPID Configuration')
+param vapId object
+
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${applicationName}-${environment}-${index}'
   location: location
@@ -52,6 +55,20 @@ module keyVault './resources/key-vault/resource.bicep' = {
     environment: environment
     index: index
     userAssignedIdentityServicePrincipalId: managedIdentity.outputs.userAssignedIdentityServicePrincipalId
+    secrets: [
+        {
+            name: 'VAPID-Subject'
+            value: vapId.subject
+        }
+        {
+            name: 'VAPID-Public-Key'
+            value: vapId.publicKey
+        }
+        {
+            name: 'VAPID-Private-Key'
+            value: vapId.privateKey
+        }
+    ]
   }
   dependsOn: [
     managedIdentity

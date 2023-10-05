@@ -22,7 +22,7 @@ public abstract class TestInitializer
             .ForEach(b => fixture.Behaviors.Remove(b));
         fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
 
-        var dataBaseSettings = new DatabaseSetting { Id = Environment.GetEnvironmentVariable("DatabaseId") ?? "", CollectionId = Environment.GetEnvironmentVariable("CollectionId") ?? "", ConnectionString = Environment.GetEnvironmentVariable("ms-account-profile-informationDBConnection") ?? "" };
+        var dataBaseSettings = new DatabaseSetting { Id = Environment.GetEnvironmentVariable("DatabaseId") ?? "", CollectionId = Environment.GetEnvironmentVariable("CollectionId") ?? "", ConnectionString = Environment.GetEnvironmentVariable("cosmosdb_connection") ?? "" };
         //var dataBaseSettings = new DatabaseSetting { Id = "Subscriptions", CollectionId = "Items", ConnectionString = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" };
         var cosmosClient = new CosmosClient(dataBaseSettings.ConnectionString, new CosmosClientOptions
         {
