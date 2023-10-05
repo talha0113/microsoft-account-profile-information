@@ -32,5 +32,6 @@ output appSettings object = {
   XDT_MicrosoftApplicationInsights_Mode: 'recommended'
   XDT_MicrosoftApplicationInsights_PreemptSdk: '~1'
   FUNCTIONS_WORKER_RUNTIME: applicationRuntime
+  linuxFxVersion: '${toUpper(applicationRuntime)}|7.0'
   SignalRConnection: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SIGNALR-CONNECTION-STRING)'
 }
