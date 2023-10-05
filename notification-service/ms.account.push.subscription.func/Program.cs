@@ -3,7 +3,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +14,7 @@ internal class Program
     internal static async Task Main()
     {
         var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults((IFunctionsWorkerApplicationBuilder builder) => { })
+            .ConfigureFunctionsWorkerDefaults()
             .ConfigureServices((IServiceCollection services) =>
             {
                 _ = services.AddCore();
