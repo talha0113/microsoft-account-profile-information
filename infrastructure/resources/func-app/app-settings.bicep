@@ -15,9 +15,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: 'kv-${applicationName}-${environment}-${index}'
 }
 
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
+  name: 'stg${applicationName}${environment}${index}'
+}
+
+var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+
 output appSettings object = {
-  AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=STORAGE-ACCOUNT-CONNECTION-STRING)'
-  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=STORAGE-ACCOUNT-CONNECTION-STRING)'
+  AzureWebJobsStorage: storageAccountConnectionString
+  WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccountConnectionString
   WEBSITE_CONTENTSHARE: toLower(functionApplicationName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
   APPINSIGHTS_INSTRUMENTATIONKEY: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=APPLICATION-INSIGHTS-INSTRUMENTATION-KEY)'
