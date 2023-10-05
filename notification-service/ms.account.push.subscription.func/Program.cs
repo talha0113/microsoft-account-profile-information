@@ -2,7 +2,6 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,22 +10,30 @@ using ms.account.push.subscription.infrastructure;
 
 internal class Program
 {
-    internal static async Task Main()
+    internal static void Main()
     {
-        var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults()
-            .ConfigureServices((IServiceCollection services) =>
-            {
-                _ = services.AddCore();
-                _ = services.AddInfrastructure();
-                _ = services.Configure<JsonSerializerOptions>(options =>
+        try
+        {
+            var host = new HostBuilder()
+                .ConfigureFunctionsWorkerDefaults()
+                .ConfigureServices((IServiceCollection services) =>
                 {
-                    options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                    options.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase, allowIntegerValues: false));
-                });
-            })
-            .ConfigureOpenApi()
-            .Build();
-        await host.RunAsync();
+                    _ = services.AddCore();
+                    _ = services.AddInfrastructure();
+                    _ = services.Configure<JsonSerializerOptions>(options =>
+                    {
+                        options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                        options.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.CamelCase, allowIntegerValues: false));
+                    });
+                })
+                .ConfigureOpenApi()
+                .Build();
+            host.Run();
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
+        }
     }
 }
