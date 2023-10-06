@@ -40,6 +40,14 @@ stages:
         deploy:
           steps:
 
+          - task: FileTransform@1
+            displayName: 'Environment Settings'
+            inputs:
+              folderPath: '$(DropRoot)' 
+              fileType: 'json'
+              targetFiles: 'main.parameters.json'
+              xmlTransformationRules: '' #disabled
+          
           - task: AzureCLI@2
             inputs:
               azureSubscription: ${{ format('{0}', parameters.environment_name) }}
