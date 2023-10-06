@@ -7,7 +7,7 @@ using Newtonsoft.Json.Serialization;
 
 public class SubscriptionTriggerSubscribeExample : OpenApiExample<PushSubscriptionInformation>
 {
-    public override IOpenApiExample<PushSubscriptionInformation> Build(NamingStrategy namingStrategy = new())
+    public override IOpenApiExample<PushSubscriptionInformation> Build(NamingStrategy namingStrategy)
     {
         Examples.Add(
             OpenApiExampleResolver.Resolve(
