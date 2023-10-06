@@ -16,7 +16,7 @@ trigger:
     - /infrastructure        
 
 variables:
-  - group: 'Authentication'
+  - group: 'Infrastructure'
   - group: 'Release Annotations'
 
 stages:
