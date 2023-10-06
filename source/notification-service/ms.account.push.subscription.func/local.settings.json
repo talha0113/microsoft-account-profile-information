@@ -10,7 +10,6 @@
     "VAPID_Subject": "",
     "VAPID_PublicKey": "",
     "VAPID_PrivateKey": ""
-
   },
   "Host": {
     "CORS": "*"
