@@ -21,14 +21,14 @@ variables:
 
 stages:
 
-- template: ../.azuredevops/AZURE_PIPELINES/BUILD/azure-function.yml
+- template: ../../.azuredevops/AZURE_PIPELINES/BUILD/azure-function.yml
   parameters:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/notification-service'
     main_project: "ms.account.push.subscription.func"
 
-- template: ../.azuredevops/AZURE_PIPELINES/DEPLOY/azure-function.yml
+- template: ../../.azuredevops/AZURE_PIPELINES/DEPLOY/azure-function.yml
   parameters:
     name: 'development'
     display_name: 'Development'

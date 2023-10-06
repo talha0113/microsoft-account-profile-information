@@ -19,6 +19,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing 
   name: 'stg${applicationName}${environment}${index}'
 }
 
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
+  name: 'appi-${applicationName}-${environment}-${index}'
+}
+
 var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
 
 output appSettings object = {
@@ -26,8 +30,8 @@ output appSettings object = {
   WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccountConnectionString
   WEBSITE_CONTENTSHARE: toLower(functionApplicationName)
   FUNCTIONS_EXTENSION_VERSION: '~4'
-  APPINSIGHTS_INSTRUMENTATIONKEY: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=APPLICATION-INSIGHTS-INSTRUMENTATION-KEY)'
-  APPLICATIONINSIGHTS_CONNECTION_STRING: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=APPLICATION-INSIGHTS-CONNECTION-STRING)'
+  APPINSIGHTS_INSTRUMENTATIONKEY: applicationInsights.properties.InstrumentationKey
+  APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString
   APPINSIGHTS_PROFILERFEATURE_VERSION: '1.0.0'
   APPINSIGHTS_SNAPSHOTFEATURE_VERSION: '1.0.0'
   ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
