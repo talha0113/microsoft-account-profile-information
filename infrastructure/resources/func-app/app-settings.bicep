@@ -47,4 +47,7 @@ output appSettings object = {
   VAPID_Subject: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Subject)'
   VAPID_PublicKey: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Public-Key)'
   VAPID_PrivateKey: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Private-Key)'
+  DatabaseId: 'Subscriptions'
+  CollectionId: 'Items'
+  StorageQueueName: 'process-notifications'
 }
