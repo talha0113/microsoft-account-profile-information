@@ -2,6 +2,6 @@
 
 public class NotificationQueueItem : Entity
 {
-    public required PushSubscriptionInformation subscription { get; set; }
-    public required string message { get; set; }
+    public PushSubscriptionInformation subscription { get; set; }
+    public string message { get; set; }
 }
