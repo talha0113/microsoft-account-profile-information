@@ -2,16 +2,16 @@
 
 public class PushSubscriptionInformation : Entity
 {
-    public required string EndPoint { get; set; }
+    public string EndPoint { get; set; }
 
-    public required string ExpirationTime { get; set; }
+    public string ExpirationTime { get; set; }
 
-    public required Keys Keys { get; set; }
+    public Keys Keys { get; set; }
 }
 
 public class Keys
 {
-    public required string p256dh { get; set; }
+    public string p256dh { get; set; }
 
-    public required string Authentication { get; set; }
+    public string Authentication { get; set; }
 }
