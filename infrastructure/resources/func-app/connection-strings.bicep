@@ -12,7 +12,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
 }
 
 output connectionStrings object = {
-  'ms-account-profile-informationDBConnection':{
+  cosmosdb_connection:{
     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=COSMOS-DB-CONNECTION-STRING)'
     type: 'Custom'
   }
