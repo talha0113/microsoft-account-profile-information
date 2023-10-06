@@ -27,6 +27,7 @@ public class SubscriptionTriggerSignalR
     [OpenApiOperation(operationId: nameof(SubscriptionTriggerSignalR), tags: new[] { "notification" }, Visibility = OpenApiVisibilityType.Important)]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(SignalRConnectionInfo), Description = "SignalR connection info")]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
     public async Task<HttpResponseData> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData httpRequestData,

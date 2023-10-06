@@ -30,6 +30,7 @@ public class SubscriptionTriggerSubscribe
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiRequestBody(contentType: MediaTypeNames.Application.Json, bodyType: typeof(PushSubscriptionInformation), Description = "Subscribe for notifications", Example = typeof(SubscriptionTriggerSubscribeExample), Required = true)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Created)]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData httpRequestData, [FromBody] PushSubscriptionInformation pushSubscriptionInformation, CancellationToken cancellationToken)
     {

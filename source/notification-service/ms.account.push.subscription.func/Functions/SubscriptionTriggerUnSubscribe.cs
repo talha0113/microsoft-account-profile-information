@@ -28,6 +28,7 @@ public class SubscriptionTriggerUnSubscribe
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiParameter("endPoint", In = ParameterLocation.Query, Type = typeof(string), Description = "Un Subscribe for notifications", Required = true)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = null)] HttpRequestData httpRequestData, [FromQuery(Name = "endPoint")] string endPoint, CancellationToken cancellationToken)
     {

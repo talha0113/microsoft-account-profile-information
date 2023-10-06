@@ -13,6 +13,10 @@ param index string = '001'
 @description('Managed Identity Principal ID')
 param userAssignedIdentityId string
 
+@description('Azure Front Door EndPoint HostName')
+param frontDoorHostName string
+
+
 var functionApplicationName = 'func-${applicationName}-${environment}-${index}'
 
 resource applicationServicePlan 'Microsoft.Web/serverfarms@2022-09-01' = {
@@ -48,6 +52,12 @@ resource functionApplication 'Microsoft.Web/sites@2022-09-01' = {
     siteConfig: {      
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
+      cors: {
+        allowedOrigins: [
+          'https://${frontDoorHostName}'
+        ]
+        supportCredentials: false
+      }
     }
   }
 }
