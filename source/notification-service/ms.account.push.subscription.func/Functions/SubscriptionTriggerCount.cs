@@ -27,6 +27,7 @@ public class SubscriptionTriggerCount
     [OpenApiOperation(operationId: nameof(SubscriptionTriggerCount), tags: new[] { "subscriptions" }, Visibility = OpenApiVisibilityType.Important)]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(int), Description = "Number of subscriptions")]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequestData httpRequestData, CancellationToken cancellationToken)
     {

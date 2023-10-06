@@ -35,6 +35,27 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   }
 }
 
+module staticWebApplication './resources/static-web.bicep' = {
+  name: 'staticWebApplicationDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+	location: location
+    environment: environment
+    index: index    
+  }  
+}
+
+module frontDoor './resources/front-door.bicep' = {
+  name: 'frontDoorDeployment'
+  scope: resourceGroup
+  params: {
+    applicationName: applicationName
+    environment: environment
+    index: index    
+  }  
+}
+
 module managedIdentity './resources/managed-identity.bicep' = {
   name: 'managedIdentityDeployment'
   scope: resourceGroup
@@ -137,6 +158,7 @@ module functionApplication './resources/func-app/resource.bicep' = {
     environment: environment
     index: index
     userAssignedIdentityId: managedIdentity.outputs.userAssignedIdentityId
+    frontDoorHostName: frontDoor.outputs.endpointHostName
   }
   dependsOn: [
     storageAccount
@@ -144,13 +166,3 @@ module functionApplication './resources/func-app/resource.bicep' = {
   ]
 }
 
-module staticWebApplication './resources/static-web.bicep' = {
-  name: 'staticWebApplicationDeployment'
-  scope: resourceGroup
-  params: {
-    applicationName: applicationName
-	location: location
-    environment: environment
-    index: index    
-  }  
-}
