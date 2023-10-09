@@ -101,12 +101,22 @@
               "Source/manifest.json"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "defaultProject": "MicrosoftAccountProfileInformation",
   "cli": {
-    "analytics": "555dc42f-6732-45dd-8fc9-c8d6ba9d2c2b"
+    "analytics": "555dc42f-6732-45dd-8fc9-c8d6ba9d2c2b",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
