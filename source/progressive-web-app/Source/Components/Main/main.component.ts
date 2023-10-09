@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
-import { SwUpdate, UpdateAvailableEvent } from '@angular/service-worker';
+import { SwUpdate, VersionEvent, VersionReadyEvent } from '@angular/service-worker';
+import { filter, map } from 'rxjs/operators';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
@@ -28,9 +29,16 @@ export class MainComponent implements OnInit {
             this.pushService.isSubscribed.subscribe((value: boolean) => {
                 this.notificationsSubscribed = value;
                 if (this.swUpdate.isEnabled) {
-                    this.swUpdate.available.subscribe((updateEventValue: UpdateAvailableEvent) => {
-                        let applicationVersionInformationNew: Version = <Version>updateEventValue.available.appData;
-                        let applicationVersionInformationOld: Version = <Version>updateEventValue.current.appData;
+                    
+                    this.swUpdate.versionUpdates.pipe(
+                        filter((versionEvent: VersionEvent): versionEvent is VersionReadyEvent => versionEvent.type === 'VERSION_READY'),
+                        map((versionReadyEvent: VersionReadyEvent) => ({
+                            type: 'UPDATE_AVAILABLE',
+                            current: versionReadyEvent.currentVersion,
+                            available: versionReadyEvent.latestVersion,
+                        }))).subscribe(versionData => {
+                            let applicationVersionInformationNew: Version = <Version>versionData.available.appData;
+                            let applicationVersionInformationOld: Version = <Version>versionData.current.appData;
                         if (applicationVersionInformationOld == null) {
                             applicationVersionInformationOld.version = "0.0.0";
                         }
