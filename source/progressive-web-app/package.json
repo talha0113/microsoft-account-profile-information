@@ -3,22 +3,22 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --prod --vendorChunk=true --statsJson=true && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
+    "build": "ng build --configuration production --vendorChunk=true --statsJson=true && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^11.2.10",
-    "@angular/common": "^11.2.10",
-    "@angular/compiler": "^11.2.10",
-    "@angular/core": "^11.2.10",
-    "@angular/forms": "^11.2.10",
-    "@angular/platform-browser": "^11.2.10",
-    "@angular/platform-browser-dynamic": "^11.2.10",
-    "@angular/router": "^11.2.10",
-    "@angular/service-worker": "^11.2.10",
+    "@angular/animations": "^12.2.17",
+    "@angular/common": "^12.2.17",
+    "@angular/compiler": "^12.2.17",
+    "@angular/core": "^12.2.17",
+    "@angular/forms": "^12.2.17",
+    "@angular/platform-browser": "^12.2.17",
+    "@angular/platform-browser-dynamic": "^12.2.17",
+    "@angular/router": "^12.2.17",
+    "@angular/service-worker": "^12.2.17",
     "@azure/msal-browser": "^2.5.1",
     "@datorama/akita": "6.1.3",
     "@microsoft/applicationinsights-web": "^2.5.9",
@@ -27,16 +27,16 @@
     "core-js": "^3.4.1",
     "rxjs": "^6.5.3",
     "tslib": "^2.0.0",
-    "zone.js": "^0.10.2"
+    "zone.js": "~0.11.4"
   },
   "resolutions": {
     "webpack": "^5.34.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1102.9",
-    "@angular/cli": "^11.2.9",
-    "@angular/compiler-cli": "^11.2.10",
-    "@angular/language-service": "^11.2.10",
+    "@angular-devkit/build-angular": "^12.2.18",
+    "@angular/cli": "^12.2.18",
+    "@angular/compiler-cli": "^12.2.17",
+    "@angular/language-service": "^12.2.17",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "^12.11.1",
@@ -53,6 +53,6 @@
     "karma-nunit2-reporter": "^0.3.0",
     "ts-node": "^9.0.0",
     "tslint": "^6.1.3",
-    "typescript": "~4.1.5"
+    "typescript": "~4.3.5"
   }
 }
