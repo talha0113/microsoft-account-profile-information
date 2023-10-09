@@ -45,6 +45,9 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+.angular
+Distributions
+
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
 
