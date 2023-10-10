@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MicrosoftAccountProfileInformation": {
+    "ms-account-profile-information": {
       "root": "",
       "sourceRoot": "Source",
       "projectType": "application",
-      "prefix": "",
+      "prefix": "ms",
       "schematics": {},
       "architect": {
         "build": {
@@ -70,18 +70,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MicrosoftAccountProfileInformation:build"
+            "browserTarget": "ms-account-profile-information:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MicrosoftAccountProfileInformation:build:production"
+              "browserTarget": "ms-account-profile-information:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MicrosoftAccountProfileInformation:build"
+            "browserTarget": "ms-account-profile-information:build"
           }
         },
         "test": {
@@ -114,9 +114,12 @@
       }
     }
   },
-  "defaultProject": "MicrosoftAccountProfileInformation",
+  "defaultProject": "ms-account-profile-information",
   "cli": {
     "analytics": "555dc42f-6732-45dd-8fc9-c8d6ba9d2c2b",
-    "defaultCollection": "@angular-eslint/schematics"
+    "defaultCollection": "@angular-eslint/schematics",
+    "cache": {
+      "environment": "all"
+    }
   }
 }
