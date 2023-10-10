@@ -1,8 +1,8 @@
-<div *ngIf="!(isLoading$ | async); else loadingProfile">
+<div *ngIf="(isLoading$ | async) === false; else loadingProfile">
     <div *ngIf="(profileInformation$ | async) as profile">
         <div>
-            <img *ngIf="profile.imageUrl != null" [src]="profile.imageUrl | safeUrl" />
-            <div style="color:red" *ngIf="profile.imageUrl == null">
+            <img *ngIf="profile.imageUrl !== null" [src]="profile.imageUrl | safeUrl" />
+            <div style="color:red" *ngIf="profile.imageUrl === null">
                 No Profile Image
             </div>
             <div>

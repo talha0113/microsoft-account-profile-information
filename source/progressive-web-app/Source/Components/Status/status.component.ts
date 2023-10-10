@@ -13,13 +13,13 @@ export class StatusComponent implements OnInit, OnDestroy {
     private subscriptionLiveCountSubscription: Subscription = null;
 
     public subscriptionCount: number = 0;
-    public isOffline: boolean = !navigator.onLine;
+    public isOffline: boolean = true;
     public statsSubscribed: boolean = false;
 
     constructor(private pushService: PushService, private signalRService: SignalRService) { }
 
     ngOnInit(): void {
-        
+        this.isOffline = !navigator.onLine;
     }
 
     ngOnDestroy(): void {
