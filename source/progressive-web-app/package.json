@@ -5,8 +5,7 @@
     "start": "ng serve",
     "build": "ng build --configuration production --vendor-chunk=true --stats-json=true --service-worker=true --output-hashing=all && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
     "test": "ng test --code-coverage",
-    "lint": "ng lint",
-    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
