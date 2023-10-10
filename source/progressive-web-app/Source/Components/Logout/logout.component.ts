@@ -10,11 +10,12 @@ import { ProfileService } from '../../Services/profile.service';
 })
 export class LogoutComponent implements OnInit {
 
-    isOffline: boolean = !navigator.onLine;
+    isOffline: boolean = true;
 
     constructor(private authenticationService: AuthenticationService, private profileService: ProfileService, private router: Router) { }
 
     ngOnInit() {
+        this.isOffline = !navigator.onLine;
     }
 
     logout(): void {
