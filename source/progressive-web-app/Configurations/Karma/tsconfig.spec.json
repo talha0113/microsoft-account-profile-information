@@ -6,7 +6,7 @@
       "jasmine",
       "node"
     ],
-    "target": "es5"
+    "target": "es2020"
   },
   "files": [
     "karma.test.shim.ts",
