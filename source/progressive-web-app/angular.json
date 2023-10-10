@@ -44,7 +44,14 @@
                   "with": "Configurations/Environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,

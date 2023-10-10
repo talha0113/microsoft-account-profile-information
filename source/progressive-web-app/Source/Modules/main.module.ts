@@ -17,8 +17,6 @@ import { NavigationComponent } from '../Components/Navigation/navigation.compone
 import { SafeUrlPipe } from '../Pipes/safe-url.pipe';
 
 import { AuthenticationService } from '../Services/authentication.service';
-import { AuthenticationGuard } from '../Guards/authentication.guard';
-import { LoginGuard } from '../Guards/login.guard';
 import { ProfileInterceptor } from '../Interceptors/profile.interceptor';
 import { ProfileService } from '../Services/profile.service';
 import { NotificationService } from '../Services/notification.service';
@@ -53,7 +51,7 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
         BrowserModule,
         FormsModule,
         HttpClientModule,
-        RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
+        RouterModule.forRoot(appRoutes, {}),
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
         TranslationModule
     ],
@@ -72,8 +70,6 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
         AuthenticationQuery,
         ProfileStore,
         ProfileQuery,
-        LoginGuard,
-        AuthenticationGuard,
         ProfileService,
         AuthenticationService,
         NotificationService,

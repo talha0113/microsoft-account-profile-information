@@ -4,8 +4,8 @@ import { StatusComponent } from '../Components/Status/status.component';
 import { LoginComponent } from '../Components/Login/login.component';
 import { ProfileComponent } from '../Components/Profile/profile.component';
 import { LogoutComponent } from '../Components/Logout/logout.component';
-import { AuthenticationGuard } from '../Guards/authentication.guard';
-import { LoginGuard } from '../Guards/login.guard';
+import { authenticationGuard } from '../Guards/authentication.guard';
+import { loginGuard } from '../Guards/login.guard';
 
 export const appRoutes: Routes = [
     {
@@ -16,22 +16,22 @@ export const appRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        canActivate: [LoginGuard]
+        canActivate: [loginGuard]
     },
     {
         path: 'status',
         component: StatusComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [authenticationGuard]
     },
     {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [authenticationGuard]
     },
     {
         path: 'logout',
         component: LogoutComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [authenticationGuard]
     },
     {
         path: '**',
