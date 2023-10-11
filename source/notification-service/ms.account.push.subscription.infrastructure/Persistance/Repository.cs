@@ -47,4 +47,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
         await container.DeleteItemAsync<TEntity>(itemId, new PartitionKey(items.First().Id), cancellationToken: cancellationToken);
     }
+
+    public bool IsAvailable()
+    {
+        return string.IsNullOrEmpty(container.Id) ? false : true;
+    }
 }

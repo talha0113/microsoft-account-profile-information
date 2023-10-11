@@ -38,14 +38,14 @@ public class SubscriptionTriggerCount
 
         try
         {
-            await responseData.WriteAsJsonAsync(await subscriptionService.CountAsync(cancellationToken));
+            await responseData.WriteAsJsonAsync(await subscriptionService.CountAsync(cancellationToken), cancellationToken);
         }
         catch (Exception ex)
         {
             responseData.StatusCode = HttpStatusCode.InternalServerError;
             var applicationException = new ApplicationException("Error Occuered", ex);
             logger.LogError(ex, applicationException.Message);
-            await responseData.WriteStringAsync(applicationException.Message);
+            await responseData.WriteStringAsync(applicationException.Message, cancellationToken);
         }
         finally
         {
