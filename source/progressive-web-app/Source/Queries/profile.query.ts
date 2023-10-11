@@ -5,10 +5,9 @@ import { Profile } from '../Models/profile.model';
 import { ProfileState } from '../States/profile.state';
 import { ProfileStore } from '../Stores/profile.store';
 
-
 @Injectable()
 export class ProfileQuery extends QueryEntity<ProfileState, Profile> {
-    constructor(protected store: ProfileStore) {
-        super(store);
-    }
+  constructor(protected store: ProfileStore) {
+    super(store);
+  }
 }

@@ -35,53 +35,53 @@ import { TranslationModule } from '../Transloco/translation.module';
 import { FlagComponent } from '../Components/Flag/flag.component';
 import { applicationInitializationProvider } from '../Initialization/app.initialization';
 
-
 @NgModule({
-    declarations: [
-        MainComponent,
-        FlagComponent,
-        NavigationComponent,
-        LoginComponent,
-        StatusComponent,
-        ProfileComponent,
-        LogoutComponent,
-        SafeUrlPipe
-    ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        RouterModule.forRoot(appRoutes, {}),
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
-        TranslationModule
-    ],
-    providers: [        
-        applicationInitializationProvider,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: ProfileInterceptor,
-            multi: true
-        },
-        {
-            provide: ErrorHandler,
-            useClass: GlobalErrorHandlerService
-        },
-        AuthenticationStore,
-        AuthenticationQuery,
-        ProfileStore,
-        ProfileQuery,
-        ProfileService,
-        AuthenticationService,
-        NotificationService,
-        PushService,
-        SignalRService
-    ],
-    bootstrap: [
-        MainComponent
-    ]
+  declarations: [
+    MainComponent,
+    FlagComponent,
+    NavigationComponent,
+    LoginComponent,
+    StatusComponent,
+    ProfileComponent,
+    LogoutComponent,
+    SafeUrlPipe,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes, {}),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerImmediately',
+    }),
+    TranslationModule,
+  ],
+  providers: [
+    applicationInitializationProvider,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ProfileInterceptor,
+      multi: true,
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandlerService,
+    },
+    AuthenticationStore,
+    AuthenticationQuery,
+    ProfileStore,
+    ProfileQuery,
+    ProfileService,
+    AuthenticationService,
+    NotificationService,
+    PushService,
+    SignalRService,
+  ],
+  bootstrap: [MainComponent],
 })
 export class MainModule {
-    constructor() {
-        InsightsManager.initialize();
-    }
+  constructor() {
+    InsightsManager.initialize();
+  }
 }

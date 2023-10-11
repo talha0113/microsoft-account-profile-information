@@ -10,52 +10,52 @@ import { Authentication } from '../Models/authentication.model';
 import { setUpMock } from '../Managers/storage.mock';
 
 describe('Authentication Service', () => {
+  let authenticationService: AuthenticationService;
+  let authenticationStore: AuthenticationStore;
+  let authenticationQuery: AuthenticationQuery;
 
-    let authenticationService: AuthenticationService;
-    let authenticationStore: AuthenticationStore;
-    let authenticationQuery: AuthenticationQuery;
+  beforeAll(async () => {
+    setUpMock();
+  });
 
-    beforeAll(async () => {
-        setUpMock();
+  beforeAll(async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        AuthenticationStore,
+        AuthenticationQuery,
+        {
+          provide: AuthenticationService,
+          useClass: AuthenticationServiceStub,
+        },
+      ],
     });
+  });
 
-    beforeAll(async () => {
-        TestBed.configureTestingModule({
-            providers: [
-                AuthenticationStore,
-                AuthenticationQuery,
-                {
-                    provide: AuthenticationService,
-                    useClass: AuthenticationServiceStub
-                }
-            ]
-        });
+  beforeAll(async () => {
+    authenticationService = TestBed.inject(AuthenticationService);
+    authenticationStore = TestBed.inject(AuthenticationStore);
+    authenticationQuery = TestBed.inject(AuthenticationQuery);
+  });
+
+  it('Should exist', async () => {
+    expect(authenticationService).toBeDefined();
+    expect(authenticationStore).toBeDefined();
+    expect(authenticationQuery).toBeDefined();
+  });
+
+  it(`Should login`, async () => {
+    authenticationService.login();
+    authenticationService.refreshToken().subscribe(() => {
+      expect(authenticationQuery.isAuthenticated()).toBeTruthy();
+      expect(
+        StorageManager.get<Authentication>(TokenConstant.token).tokenId
+      ).toBeDefined();
     });
+  });
 
-    beforeAll(async () => {
-        authenticationService = TestBed.inject(AuthenticationService);
-        authenticationStore = TestBed.inject(AuthenticationStore);
-        authenticationQuery = TestBed.inject(AuthenticationQuery);
-    });
-
-
-    it('Should exist', async () => {
-        expect(authenticationService).toBeDefined();
-        expect(authenticationStore).toBeDefined();
-        expect(authenticationQuery).toBeDefined();
-    });
-
-    it(`Should login`, async () => {
-        authenticationService.login();
-        authenticationService.refreshToken().subscribe(() => {
-            expect(authenticationQuery.isAuthenticated()).toBeTruthy();
-            expect(StorageManager.get<Authentication>(TokenConstant.token).tokenId).toBeDefined();
-        });
-    });
-
-    it(`Should logout`, async () => {
-        authenticationService.logout();
-        expect(authenticationQuery.isAuthenticated()).toBeFalsy();
-        expect(StorageManager.get<Authentication>(TokenConstant.token)).toBeNull();
-    });
+  it(`Should logout`, async () => {
+    authenticationService.logout();
+    expect(authenticationQuery.isAuthenticated()).toBeFalsy();
+    expect(StorageManager.get<Authentication>(TokenConstant.token)).toBeNull();
+  });
 });

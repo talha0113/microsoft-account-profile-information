@@ -5,46 +5,51 @@ import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationQuery } from '../../Queries/authentication.query';
 import { AuthenticationState } from '../../States/authentication.state';
 
-
 @Component({
   selector: 'login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
+  isInProgress: boolean = false;
+  isOffline: boolean = !navigator.onLine;
 
-    isInProgress: boolean = false;
-    isOffline: boolean = !navigator.onLine;
+  constructor(
+    private authenticationService: AuthenticationService,
+    private authenticationQuery: AuthenticationQuery,
+    private router: Router
+  ) {}
 
-    constructor(private authenticationService: AuthenticationService, private authenticationQuery: AuthenticationQuery,  private router: Router) { }
+  ngOnInit() {
+    this.isInProgress = this.isOffline;
 
-    ngOnInit() {
-        this.isInProgress = this.isOffline;
+    if (!this.isOffline) {
+      this.authenticationQuery
+        .select()
+        .subscribe((value: AuthenticationState) => {
+          this.isInProgress = true;
+          if (
+            value.authentication.tokenId != null &&
+            value.authentication.accessToken != null
+          ) {
+            //this.authenticationService.refreshToken().subscribe(() => {
 
-        if (!this.isOffline) {
-            this.authenticationQuery.select().subscribe((value: AuthenticationState) => {
-                this.isInProgress = true;
-                if (value.authentication.tokenId != null && value.authentication.accessToken != null) {
-                    //this.authenticationService.refreshToken().subscribe(() => {
-                        
-                    //});
-                    this.router.navigateByUrl("/status");
-                }
-                else {
-                    this.isInProgress = false;
-                }
-            });
-        }
-
-        this.authenticationQuery.selectError().subscribe((error) => {
-            if (error) {
-                this.isInProgress = false;
-            }
+            //});
+            this.router.navigateByUrl('/status');
+          } else {
+            this.isInProgress = false;
+          }
         });
     }
 
-    login(): void {
-        this.isInProgress = true;
-        this.authenticationService.login();
-    }
+    this.authenticationQuery.selectError().subscribe(error => {
+      if (error) {
+        this.isInProgress = false;
+      }
+    });
+  }
 
+  login(): void {
+    this.isInProgress = true;
+    this.authenticationService.login();
+  }
 }

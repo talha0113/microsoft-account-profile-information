@@ -1,6 +1,10 @@
 import { Router } from '@angular/router';
-import { TestBed, ComponentFixture, ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  TestBed,
+  ComponentFixture,
+  ComponentFixtureAutoDetect,
+} from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { LogoutComponent } from './logout.component';
@@ -14,71 +18,68 @@ import { AuthenticationQuery } from '../../Queries/authentication.query';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 
 describe('Logout Component', () => {
+  let fixture: ComponentFixture<LogoutComponent>;
+  let component: LogoutComponent;
+  let router: Router;
+  let authenticationQuery: AuthenticationQuery;
 
-    let fixture: ComponentFixture<LogoutComponent>;
-    let component: LogoutComponent;
-    let router: Router;
-    let authenticationQuery: AuthenticationQuery;
+  beforeAll(async () => {
+    setUpMock();
+  });
 
-    beforeAll(async () => {
-        setUpMock();
-    });
+  beforeAll(async () => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        getTranslationTestingModule(),
+      ],
+      declarations: [LogoutComponent],
+      providers: [
+        {
+          provide: ComponentFixtureAutoDetect,
+          useValue: true,
+        },
+        ProfileStore,
+        ProfileQuery,
+        ProfileService,
+        AuthenticationStore,
+        AuthenticationQuery,
+        AuthenticationService,
+      ],
+    }).compileComponents();
+  });
 
-    beforeAll(async () => {
-        TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([]),
-                HttpClientTestingModule,
-                getTranslationTestingModule()
-            ],
-            declarations: [
-                LogoutComponent
-            ],
-            providers: [
-                {
-                    provide: ComponentFixtureAutoDetect,
-                    useValue: true
-                },
-                ProfileStore,
-                ProfileQuery,
-                ProfileService,
-                AuthenticationStore,
-                AuthenticationQuery,
-                AuthenticationService
-            ]
-        }).compileComponents();        
-    });   
+  beforeAll(async () => {
+    authenticationQuery = TestBed.inject(AuthenticationQuery);
 
-    beforeAll(async () => {
-        authenticationQuery = TestBed.inject(AuthenticationQuery);
+    router = TestBed.get(Router);
+    spyOn(router, 'navigateByUrl');
+  });
 
-        router = TestBed.get(Router);
-        spyOn(router, 'navigateByUrl');
-    });
+  beforeAll(async () => {
+    fixture = TestBed.createComponent(LogoutComponent);
+    component = fixture.componentInstance;
+  });
 
-    beforeAll(async () => {
-        fixture = TestBed.createComponent(LogoutComponent);
-        component = fixture.componentInstance;
-    });
+  it('Should exist', async () => {
+    expect(component).toBeTruthy();
+  });
 
+  it('Should render logout', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const logoutButton: HTMLButtonElement =
+      nativeElement.querySelector('button');
 
-    it('Should exist', async () => {
-        expect(component).toBeTruthy();
-    });
+    expect(logoutButton).toBeDefined();
+  });
 
-    it('Should render logout', async () => {
-        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let logoutButton: HTMLButtonElement = nativeElement.querySelector('button');
+  it('Should logout', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const logoutButton: HTMLButtonElement =
+      nativeElement.querySelector('button');
 
-        expect(logoutButton).toBeDefined();
-    });
-
-    it('Should logout', async () => {
-        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let logoutButton: HTMLButtonElement = nativeElement.querySelector('button');
-
-        logoutButton.click();
-        expect(authenticationQuery.isAuthenticated()).toBeFalsy();
-    });
-    
+    logoutButton.click();
+    expect(authenticationQuery.isAuthenticated()).toBeFalsy();
+  });
 });
