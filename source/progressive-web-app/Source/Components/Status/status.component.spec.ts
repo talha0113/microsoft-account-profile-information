@@ -12,68 +12,70 @@ import { NotificationService } from 'Source/Services/notification.service';
 import { By } from '@angular/platform-browser';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 
-
 let fixture: ComponentFixture<StatusComponent>;
-let component: StatusComponent
+let component: StatusComponent;
 
 describe('Status Component', () => {
+  beforeAll(async () => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        FormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: environment.production,
+        }),
+        getTranslationTestingModule(),
+      ],
+      declarations: [StatusComponent],
+      providers: [
+        PushService,
+        NotificationService,
+        {
+          provide: SignalRService,
+          useClass: SignalRServiceStub,
+        },
+      ],
+    }).compileComponents();
+  });
 
-    beforeAll(async () => {
-        TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                FormsModule,
-                ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-                getTranslationTestingModule()
-            ],
-            declarations: [
-                StatusComponent
-            ],
-            providers: [
-                PushService,
-                NotificationService,
-                {
-                    provide: SignalRService,
-                    useClass: SignalRServiceStub
-                }
-            ]
-        }).compileComponents();        
-    });
+  beforeAll(async () => {
+    fixture = TestBed.createComponent(StatusComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+  });
 
-    beforeAll(async () => {
-        fixture = TestBed.createComponent(StatusComponent);
-        component = fixture.componentInstance;
-        fixture.autoDetectChanges();
-    });
+  it('Should exist', async () => {
+    expect(component).toBeTruthy();
+  });
 
-    it('Should exist', async () => {
-        expect(component).toBeTruthy();
-    });
+  it('Should render message', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const messageDiv: HTMLDivElement = nativeElement.querySelector('div');
 
-    it('Should render message', async () => {
-        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let messageDiv: HTMLDivElement = nativeElement.querySelector('div');
+    expect(messageDiv.textContent).toBeTruthy();
+  });
 
-        expect(messageDiv.textContent).toBeTruthy();
-    });
+  it('Should render live stats input', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const liveStatsLabel: HTMLLabelElement =
+      nativeElement.querySelector('label');
 
-    it('Should render live stats input', async () => {
-        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let liveStatsLabel: HTMLLabelElement = nativeElement.querySelector('label');
+    expect(liveStatsLabel.textContent).toBeTruthy();
+  });
 
-        expect(liveStatsLabel.textContent).toBeTruthy();
-    });
+  it('Should not render live stats number', async () => {
+    const nativeElement = fixture.debugElement.query(
+      By.css('.stats-subscribed')
+    ).nativeElement;
+    expect(nativeElement.checked).toBeFalsy();
+  });
 
-    it('Should not render live stats number', async () => {
-        let nativeElement = fixture.debugElement.query(By.css(".stats-subscribed")).nativeElement;
-        expect(nativeElement.checked).toBeFalsy();
-    });
-
-    it('Should render live stats number', async () => {
-        let nativeElementCheckbox = fixture.debugElement.query(By.css(".stats-subscribed")).nativeElement;
-        nativeElementCheckbox.click();
-        expect(nativeElementCheckbox.checked).toBeTruthy();
-        nativeElementCheckbox.click();
-    });
-    
+  it('Should render live stats number', async () => {
+    const nativeElementCheckbox = fixture.debugElement.query(
+      By.css('.stats-subscribed')
+    ).nativeElement;
+    nativeElementCheckbox.click();
+    expect(nativeElementCheckbox.checked).toBeTruthy();
+    nativeElementCheckbox.click();
+  });
 });

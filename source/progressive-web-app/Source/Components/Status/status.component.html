@@ -1,13 +1,20 @@
 <div>
+  <div>
+    {{ 'MESSAGES.CONNECTED' | transloco }}
+  </div>
+  <div *ngIf="!isOffline">
     <div>
-        {{ 'MESSAGES.CONNECTED' | transloco }}
+      <label>
+        {{ 'MESSAGES.STATS' | transloco }}:
+        <input
+          class="stats-subscribed"
+          type="checkbox"
+          [(ngModel)]="statsSubscribed"
+          (change)="toogleStats()" />
+      </label>
     </div>
-    <div *ngIf="!isOffline">
-        <div>
-            <label>{{ 'MESSAGES.STATS' | transloco }}:</label> <input class="stats-subscribed" type="checkbox" [(ngModel)]="statsSubscribed" (change)="toogleStats()" />
-        </div>
-        <div *ngIf="statsSubscribed" class="stats-count">
-            {{ 'MESSAGES.SUBSCRIPTIONS' | transloco }}: {{ subscriptionCount }}
-        </div>
+    <div *ngIf="statsSubscribed" class="stats-count">
+      {{ 'MESSAGES.SUBSCRIPTIONS' | transloco }}: {{ subscriptionCount }}
     </div>
+  </div>
 </div>

@@ -1,18 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { APP_INITIALIZER } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { StorageManager } from '../Managers/storage.manager';
 import { TranslationConfiguration } from '../Transloco/translation.configuration';
 
 export function ApplicationInitialization(
-    translocoService: TranslocoService
+  translocoService: TranslocoService
 ): () => Promise<boolean> {
   return (): Promise<boolean> => {
     return new Promise<boolean>(
-        (resolve: (a: boolean) => void, reject: (reason: any) => void): void => {
-            const currentLanguage = StorageManager.get<string>(TranslationConfiguration.languageKey) === null ? TranslationConfiguration.availableLanguages[0] : StorageManager.get<string>(TranslationConfiguration.languageKey);
-            StorageManager.add<string>(TranslationConfiguration.languageKey, currentLanguage);
-            translocoService.setActiveLang(currentLanguage);
-            resolve(true);
+      (resolve: (a: boolean) => void, reject: (reason) => void): void => {
+        const currentLanguage =
+          StorageManager.get<string>(TranslationConfiguration.languageKey) ===
+          null
+            ? TranslationConfiguration.availableLanguages[0]
+            : StorageManager.get<string>(TranslationConfiguration.languageKey);
+        StorageManager.add<string>(
+          TranslationConfiguration.languageKey,
+          currentLanguage
+        );
+        translocoService.setActiveLang(currentLanguage);
+        resolve(true);
       }
     );
   };
@@ -20,7 +29,7 @@ export function ApplicationInitialization(
 
 export const applicationInitializationProvider = {
   provide: APP_INITIALIZER,
-    useFactory: ApplicationInitialization,
-    deps: [TranslocoService],
-  multi: true
+  useFactory: ApplicationInitialization,
+  deps: [TranslocoService],
+  multi: true,
 };

@@ -5,23 +5,25 @@ import { AuthenticationService } from '../../Services/authentication.service';
 import { ProfileService } from '../../Services/profile.service';
 
 @Component({
-    selector: 'logout',
-    templateUrl: './logout.component.html'
+  selector: 'logout',
+  templateUrl: './logout.component.html',
 })
 export class LogoutComponent implements OnInit {
+  isOffline: boolean = true;
 
-    isOffline: boolean = true;
+  constructor(
+    private authenticationService: AuthenticationService,
+    private profileService: ProfileService,
+    private router: Router
+  ) {}
 
-    constructor(private authenticationService: AuthenticationService, private profileService: ProfileService, private router: Router) { }
+  ngOnInit() {
+    this.isOffline = !navigator.onLine;
+  }
 
-    ngOnInit() {
-        this.isOffline = !navigator.onLine;
-    }
-
-    logout(): void {
-        this.authenticationService.logout();
-        this.profileService.clear();
-        this.router.navigateByUrl('/login');
-    }
-
+  logout(): void {
+    this.authenticationService.logout();
+    this.profileService.clear();
+    this.router.navigateByUrl('/login');
+  }
 }

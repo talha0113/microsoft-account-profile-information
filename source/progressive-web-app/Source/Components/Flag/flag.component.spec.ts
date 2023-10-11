@@ -13,58 +13,60 @@ import { getTranslationTestingModule } from '../../Transloco/translation-testing
 import { TranslocoService } from '@ngneat/transloco';
 import { TranslationConfiguration } from '../../Transloco/translation.configuration';
 
-
 let fixture: ComponentFixture<FlagComponent>;
 let component: FlagComponent;
 let translocoService: TranslocoService;
 
 describe('Status Component', () => {
+  beforeAll(async () => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        FormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: environment.production,
+        }),
+        getTranslationTestingModule(),
+      ],
+      declarations: [FlagComponent],
+      providers: [
+        PushService,
+        NotificationService,
+        {
+          provide: SignalRService,
+          useClass: SignalRServiceStub,
+        },
+      ],
+    }).compileComponents();
+  });
 
-    beforeAll(async () => {
-        TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule,
-                FormsModule,
-                ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-                getTranslationTestingModule()
-            ],
-            declarations: [
-                FlagComponent
-            ],
-            providers: [
-                PushService,
-                NotificationService,
-                {
-                    provide: SignalRService,
-                    useClass: SignalRServiceStub
-                }
-            ]
-        }).compileComponents();        
-    });
+  beforeAll(() => {
+    translocoService = TestBed.inject(TranslocoService);
+  });
 
-    beforeAll(() => {
-        translocoService = TestBed.inject(TranslocoService);
-    });
+  beforeAll(async () => {
+    fixture = TestBed.createComponent(FlagComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+  });
 
-    beforeAll(async () => {
-        fixture = TestBed.createComponent(FlagComponent);
-        component = fixture.componentInstance;
-        fixture.autoDetectChanges();
-    });
+  it('Should exist', async () => {
+    expect(component).toBeTruthy();
+  });
 
-    it('Should exist', async () => {
-        expect(component).toBeTruthy();
-    });
+  it('Should render flag', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const flagImg: HTMLImageElement = nativeElement.querySelector('img');
+    expect(flagImg.src).toBeTruthy();
+  });
 
-    it('Should render flag', async () => {
-        let nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        let flagImg: HTMLImageElement = nativeElement.querySelector('img');
-        expect(flagImg.src).toBeTruthy();
-    });
-
-    it('Should switch language', async () => {
-        expect(translocoService.getActiveLang()).toBe(TranslationConfiguration.availableLanguages[0]);
-        component.switchLanguage();
-        expect(translocoService.getActiveLang()).toBe(TranslationConfiguration.availableLanguages[1]);
-    });
+  it('Should switch language', async () => {
+    expect(translocoService.getActiveLang()).toBe(
+      TranslationConfiguration.availableLanguages[0]
+    );
+    component.switchLanguage();
+    expect(translocoService.getActiveLang()).toBe(
+      TranslationConfiguration.availableLanguages[1]
+    );
+  });
 });

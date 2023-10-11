@@ -6,9 +6,10 @@ import { environment } from '../Configurations/Environments/environment';
 import { enableAkitaProdMode } from '@datorama/akita';
 
 if (environment.production) {
-    enableProdMode();
-    enableAkitaProdMode();
+  enableProdMode();
+  enableAkitaProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(MainModule)
+platformBrowserDynamic()
+  .bootstrapModule(MainModule)
   .catch(err => console.log(err));
