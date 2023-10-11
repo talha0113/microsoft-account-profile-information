@@ -7,4 +7,5 @@ public interface IRepository<TEntity> where TEntity : Entity
     Task<TEntity> FindOneAndReplaceAsync(Expression<Func<TEntity, bool>> predicate, TEntity item, CancellationToken cancellationToken);
     Task<TEntity> CreateAsync(TEntity item, CancellationToken cancellationToken);
     Task DeleteAsync(string itemId, CancellationToken cancellationToken);
+    bool IsAvailable();
 }

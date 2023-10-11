@@ -41,13 +41,13 @@ public class SubscriptionTriggerSignalR
 
         try
         {
-            await responseData.WriteAsJsonAsync(connectionInfo);
+            await responseData.WriteAsJsonAsync(connectionInfo, cancellationToken);
         }
         catch (Exception ex)
         {
             responseData.StatusCode = HttpStatusCode.InternalServerError;
             var applicationException = new ApplicationException("Error Occuered", ex);
-            logger.LogError(ex, applicationException.Message);
+            logger.LogError(ex, applicationException.Message, cancellationToken);
             await responseData.WriteStringAsync(applicationException.Message);
         }
         finally

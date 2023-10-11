@@ -19,4 +19,9 @@ public class NotificationQueueService : INotificationQueueService
     {
         await queueClient.SendMessageAsync(JsonSerializer.Serialize(item), cancellationToken);
     }
+
+    public async Task<bool> IsAvailableAsync(CancellationToken cancellationToken)
+    {
+        return (await queueClient.ExistsAsync(cancellationToken)).Value;
+    }
 }
