@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --configuration production --vendor-chunk=true --stats-json=true --service-worker=true --output-hashing=all && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
+    "build": "ng build --configuration production --vendor-chunk=true --stats-json=true && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
     "test": "ng test --code-coverage",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {
@@ -31,15 +32,21 @@
     "webpack": "^5.34.0"
   },
   "devDependencies": {
+    "@angular/cli": "^16.2.5",
+    "@angular/compiler-cli": "^16.2.8",
+    "@angular/language-service": "^16.2.8",
     "@angular-devkit/build-angular": "^16.2.5",
     "@angular-eslint/builder": "^16.2.0",
     "@angular-eslint/eslint-plugin": "^16.2.0",
     "@angular-eslint/eslint-plugin-template": "^16.2.0",
     "@angular-eslint/schematics": "^16.2.0",
     "@angular-eslint/template-parser": "^16.2.0",
-    "@angular/cli": "^16.2.5",
-    "@angular/compiler-cli": "^16.2.8",
-    "@angular/language-service": "^16.2.8",
+    "@typescript-eslint/parser": "^6.7.5",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "prettier": "^3.0.3",
+    "prettier-eslint": "^15.0.1",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/jasminewd2": "~2.0.11",
     "@types/node": "~20.8.4",
