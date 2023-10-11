@@ -31,7 +31,7 @@ public class HealthCheck
     [Function(name: nameof(HealthCheck))]
     [OpenApiOperation(operationId: nameof(HealthCheck), tags: new[] { "health" }, Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(HealthCheckModel), Description = "health of a service")]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: MediaTypeNames.Application.Json, bodyType: typeof(HealthCheckModel), Description = "health of a service"))]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: MediaTypeNames.Application.Json, bodyType: typeof(HealthCheckModel), Description = "health of a service")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequestData httpRequestData, CancellationToken cancellationToken)
     {
 
