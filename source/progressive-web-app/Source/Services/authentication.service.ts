@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
-import { catchError, tap, map } from 'rxjs/operators';
+import { Observable, from, map, catchError, switchMap, tap } from 'rxjs';
 import {
   AuthError,
   IPublicClientApplication,
@@ -20,20 +19,23 @@ export class AuthenticationService {
 
   constructor(public authenticationStore: AuthenticationStore) {
     this.msalApp = new PublicClientApplication({
-      auth: {
+        auth: {
         authority: AuthenticationConfiguration.authority,
         clientId: AuthenticationConfiguration.applicationId,
         redirectUri: `${window.location.origin}/login`,
-        postLogoutRedirectUri: `${window.location.origin}/login`,
-      },
+            postLogoutRedirectUri: `${window.location.origin}/login`,
+            navigateToLoginRequestUrl: true,
+        },      
       cache: {
         cacheLocation: 'sessionStorage',
-        storeAuthStateInCookie: false,
-      },
-      system: {
-        loggerOptions: {
+          storeAuthStateInCookie: false,
+          claimsBasedCachingEnabled: true
+        },
+        system: {
+            loggerOptions: {
+                piiLoggingEnabled: true,
           loggerCallback: (level, message, containsPii) => {
-            if (containsPii) {
+              if (containsPii) {
               return;
             }
             switch (level) {
@@ -54,30 +56,34 @@ export class AuthenticationService {
         },
       },
     });
-    from(this.msalApp.handleRedirectPromise()).subscribe(
-      (value: AuthenticationResult) => {
-        if (value === null) {
-          return;
-        }
-        if (value.tokenType === 'Bearer') {
-          this.authenticationStore.login(
-            new Authentication(value.idToken, value.accessToken)
-          );
-          //this.msalApp.acquireTokenRedirect({
-          //    scopes: AuthenticationConfiguration.scopes,
-          //    sid: value.idTokenClaims["sid"]
-          //});
-        }
-      },
-      (error: AuthError) => {
-        console.error(error);
+      from(this.msalApp.initialize()).pipe(switchMap(() => {
+          return from(this.msalApp.handleRedirectPromise());
+      })).subscribe({
+          next:
+              (value: AuthenticationResult) => {
+                  if (value !== null) {
+                      if (value.tokenType === 'Bearer') {
+                          this.authenticationStore.login(
+                              new Authentication(value.idToken, value.accessToken)
+                          );
+                          //this.msalApp.acquireTokenRedirect({
+                          //    scopes: AuthenticationConfiguration.scopes,
+                          //    sid: value.idTokenClaims["sid"]
+                          //});
+                      }
+                  }                  
+              },
+          error:
+              (error) => {
+                  console.error(error);
+              }
       }
-    );
+      );
   }
 
   login(): void {
     this.msalApp.loginRedirect({
-      scopes: AuthenticationConfiguration.scopes,
+        scopes: AuthenticationConfiguration.scopes,
     });
   }
 

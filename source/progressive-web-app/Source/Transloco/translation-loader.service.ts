@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {
   Translation,
-  TRANSLOCO_LOADER,
-  TranslocoLoader,
+  TranslocoLoader
 } from '@ngneat/transloco';
 import { Injectable } from '@angular/core';
 
@@ -15,7 +14,3 @@ export class TranslationLoader implements TranslocoLoader {
     return this.httpClient.get<Translation>(`/Assets/i18n/${lang}.json`);
   }
 }
-export const translationLoader = {
-  provide: TRANSLOCO_LOADER,
-  useClass: TranslationLoader,
-};

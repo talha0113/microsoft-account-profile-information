@@ -16,14 +16,16 @@
             "outputPath": "Distributions",
             "index": "Source/index.html",
             "main": "Source/main.ts",
-            "polyfills": "Source/polyfills.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "Source/tsconfig.app.json",
             "assets": [
               "Source/favicon.ico",
               "Source/Assets",
               "Source/Web.Config",
               "Source/robots.txt",
-              "Source/manifest.json"
+              "Source/manifest.webmanifest"
             ],
             "styles": [
               "Styles/styles.css"
@@ -32,7 +34,7 @@
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
-            "sourceMap": false,
+            "sourceMap": true,
             "optimization": false,
             "namedChunks": true
           },
@@ -95,7 +97,10 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "Configurations/Karma/karma.test.shim.ts",
-            "polyfills": "Source/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "Configurations/Karma/tsconfig.spec.json",
             "karmaConfig": "Configurations/Karma/karma.config.js",
             "styles": [
@@ -105,7 +110,7 @@
             "assets": [
               "Source/favicon.ico",
               "Source/Assets",
-              "Source/manifest.json"
+              "Source/manifest.webmanifest"
             ]
           }
         },

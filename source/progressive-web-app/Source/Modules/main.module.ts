@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, isDevMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -27,7 +27,6 @@ import { AuthenticationQuery } from '../Queries/authentication.query';
 import { ProfileStore } from '../Stores/profile.store';
 import { ProfileQuery } from '../Queries/profile.query';
 
-import { environment } from '../../Configurations/Environments/environment';
 import { InsightsManager } from '../Managers/insights.manager';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { GlobalErrorHandlerService } from '../Services/global-error-handler.service';
@@ -51,9 +50,9 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {}),
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      registrationStrategy: 'registerImmediately',
+      ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: !isDevMode(),
+          registrationStrategy: 'registerImmediately',
     }),
     TranslationModule,
   ],
@@ -70,10 +69,10 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
     },
     AuthenticationStore,
     AuthenticationQuery,
-    ProfileStore,
+      AuthenticationService,
+      ProfileStore,
     ProfileQuery,
     ProfileService,
-    AuthenticationService,
     NotificationService,
     PushService,
     SignalRService,
@@ -81,7 +80,7 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
   bootstrap: [MainComponent],
 })
 export class MainModule {
-  constructor() {
+    constructor() {        
     InsightsManager.initialize();
   }
 }
