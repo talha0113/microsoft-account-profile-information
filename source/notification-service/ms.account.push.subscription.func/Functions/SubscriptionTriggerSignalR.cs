@@ -30,7 +30,7 @@ public class SubscriptionTriggerSignalR
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
     public async Task<HttpResponseData> RunAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData httpRequestData,
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequestData httpRequestData,
         [SignalRConnectionInfoInput(ConnectionStringSetting = "SignalRConnection", HubName = "msaccprofinfohub")] SignalRConnectionInfo connectionInfo,
         CancellationToken cancellationToken)
     {
