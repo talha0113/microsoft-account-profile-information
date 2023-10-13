@@ -10,7 +10,7 @@ export function ApplicationInitialization(
 ): () => Promise<boolean> {
   return (): Promise<boolean> => {
     return new Promise<boolean>(
-      (resolve: (a: boolean) => void, reject: (reason) => void): void => {
+        (resolve: (a: boolean) => void, reject: (reason) => void): void => {            
         const currentLanguage =
           StorageManager.get<string>(TranslationConfiguration.languageKey) ===
           null
@@ -20,7 +20,7 @@ export function ApplicationInitialization(
           TranslationConfiguration.languageKey,
           currentLanguage
         );
-        translocoService.setActiveLang(currentLanguage);
+            translocoService.setActiveLang(currentLanguage);            
         resolve(true);
       }
     );

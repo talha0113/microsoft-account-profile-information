@@ -1,4 +1,5 @@
 [![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Finfrastructure?branchName=main)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=58&branchName=main)
+[![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Fnotification-service?branchName=main)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=59&branchName=main)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Microsoft Account Information Application

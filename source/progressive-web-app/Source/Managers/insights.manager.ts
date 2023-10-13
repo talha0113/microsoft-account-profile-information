@@ -1,19 +1,20 @@
 ﻿import {
   ApplicationInsights,
-  SeverityLevel,
+    SeverityLevel,
+    Snippet
 } from '@microsoft/applicationinsights-web';
 import { environment } from '../../Configurations/Environments/environment';
 
 export class InsightsManager {
-  private static applicationInsights = new ApplicationInsights({
-    config: {
-      instrumentationKey: 'de2949b3-07c8-474a-978c-58538e4e4d10',
-    },
-  });
+    private static applicationInsights = new ApplicationInsights({
+        config: {
+            connectionString: 'InstrumentationKey=02db383e-c586-47be-91a4-1aa6a1847d97;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/' 
+        }
+    });
 
   static initialize() {
     InsightsManager.applicationInsights.loadAppInsights();
-    InsightsManager.trackPageView('Profile Information Main');
+      InsightsManager.trackPageView('Profile Information Main');      
   }
 
   static trackPageView(value: string): void {
@@ -23,7 +24,7 @@ export class InsightsManager {
     InsightsManager.applicationInsights.trackPageViewPerformance({
       name: value,
     });
-    InsightsManager.flush();
+      InsightsManager.flush();      
   }
 
   static trackException(message: string, stack: string): void {

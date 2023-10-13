@@ -8,11 +8,11 @@
     "STATUS": "Status",
     "PROFILE": "Profil",
     "LOGOUT": "Log ud",
-    "LOGIN": "Log på"
+    "LOGIN": "Log pÃ¥"
   },
   "MESSAGES": {
     "OFFLINE": "Applikation er offline",
-    "SUBSCRIBE": "Abonner på underretninger",
+    "SUBSCRIBE": "Abonner pÃ¥ underretninger",
     "STATS": "Live statistikker",
     "CONNECTED": "Du er tilsluttet",
     "SUBSCRIPTIONS": "Samlet abonnement"

@@ -53,8 +53,7 @@ export class SignalRService {
             JSON.stringify(error)
           );
         })
-      )
-      .subscribe(() => {});
+    ).subscribe();
   }
 
   public stopConnection(): void {

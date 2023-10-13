@@ -16,7 +16,7 @@ export const loginGuard: CanActivateFn = (
   state: RouterStateSnapshot
 ): boolean | UrlTree => {
   return (
-    inject(AuthenticationQuery).isAuthenticated() ||
+    !inject(AuthenticationQuery).isAuthenticated() ||
     inject(Router).parseUrl('/status')
   );
 };

@@ -1,29 +1,32 @@
-import {
-  TRANSLOCO_CONFIG,
-  TranslocoModule,
-  TranslocoConfig,
-} from '@ngneat/transloco';
 import { HttpClientModule } from '@angular/common/http';
-import { translationLoader } from './translation-loader.service';
-import { environment } from '../../Configurations/Environments/environment';
-import { NgModule } from '@angular/core';
+import {
+    provideTransloco,
+  TranslocoModule,
+} from '@ngneat/transloco';
+import { TranslationLoader } from './translation-loader.service';
+import { NgModule, isDevMode } from '@angular/core';
 import { TranslationConfiguration } from './translation.configuration';
 
 @NgModule({
-  imports: [TranslocoModule, HttpClientModule],
-  providers: [
-    translationLoader,
-    {
-      provide: TRANSLOCO_CONFIG,
-      useValue: {
-        availableLangs: TranslationConfiguration.availableLanguages,
-        prodMode: environment.production,
-        //defaultLang: TranslationConfiguration.availableLanguages[0],
-        fallbackLang: TranslationConfiguration.availableLanguages[0],
-        reRenderOnLangChange: true,
-      } as TranslocoConfig,
-    },
+    imports: [TranslocoModule, HttpClientModule],
+    providers: [
+        provideTransloco(
+            {
+                config: {
+                    availableLangs: TranslationConfiguration.availableLanguages,
+                    fallbackLang: TranslationConfiguration.availableLanguages[0],
+                    reRenderOnLangChange: true,
+                    prodMode: !isDevMode(),
+                    missingHandler: {
+                        allowEmpty: true,
+                        logMissingKey: true,
+                        useFallbackTranslation: true
+                    }, defaultLang: TranslationConfiguration.availableLanguages[0]
+                },
+                loader: TranslationLoader
+            }
+        )
   ],
-  exports: [TranslocoModule],
+  exports: [TranslocoModule]
 })
 export class TranslationModule {}
