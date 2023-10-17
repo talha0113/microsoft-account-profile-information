@@ -1,4 +1,4 @@
-<div *ngIf="isAuthenticated">
+<div *ngIf="isAuthenticated$ | async">
   <nav>
     <span *ngFor="let navigationLink of navigationLinks">
       <a routerLinkActive="active" routerLink="{{ navigationLink.url }}">{{

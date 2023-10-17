@@ -1,20 +1,20 @@
-﻿import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
+﻿import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, forkJoin, of, map, catchError, tap } from 'rxjs';
+import { trackRequestResult } from '@ngneat/elf-requests';
 
 import { Profile } from '../Models/profile.model';
-import { map, catchError, tap } from 'rxjs/operators';
+import { ProfileRepository } from '../Repositories/profile.repository';
 import { GraphConstant } from '../Constants/graph.constant';
-import { ProfileStore } from '../Stores/profile.store';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ProfileService {
   constructor(
     private httpClient: HttpClient,
-    private profileStore: ProfileStore
+    private repository: ProfileRepository
   ) {}
 
-  get information(): Observable<Profile> {
+  get information$(): Observable<Profile> {
     const basicInformation: Observable<Profile> = this.httpClient
       .get<Profile>(GraphConstant.profileMetaDataUrl)
       .pipe(
@@ -49,14 +49,14 @@ export class ProfileService {
       .pipe(
         tap((value: Profile) => {
           if (value != null) {
-            this.profileStore.add(value);
-            this.profileStore.setLoading(false);
+            this.repository.update = value;
           }
-        })
+        }),
+        trackRequestResult([this.repository.storeName])
       );
   }
 
   clear(): void {
-    this.profileStore.remove();
+    this.repository.remove();
   }
 }
