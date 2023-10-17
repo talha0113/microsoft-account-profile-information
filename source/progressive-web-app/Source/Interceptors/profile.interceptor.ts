@@ -14,13 +14,13 @@ import { Observable } from 'rxjs';
 import { RequestManager } from '../Managers/request.manager';
 import { catchError, switchMap } from 'rxjs/operators';
 import { ErrorManager } from '../Managers/error.manager';
-import { AuthenticationQuery } from '../Queries/authentication.query';
 import { AuthenticationService } from '../Services/authentication.service';
+import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 @Injectable()
 export class ProfileInterceptor implements HttpInterceptor {
   constructor(
-    private authenticationQuery: AuthenticationQuery,
+    private repository: AuthenticationRepository,
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
@@ -33,7 +33,9 @@ export class ProfileInterceptor implements HttpInterceptor {
       .handle(
         RequestManager.secureRequest(
           request,
-          this.authenticationQuery.getToken()
+          this.repository.store.getValue().authentication != null
+            ? this.repository.store.getValue().authentication.accessToken
+            : null
         )
       )
       .pipe(
@@ -74,7 +76,10 @@ export class ProfileInterceptor implements HttpInterceptor {
                     .handle(
                       RequestManager.secureRequest(
                         request,
-                        this.authenticationQuery.getToken()
+                        this.repository.store.getValue().authentication != null
+                          ? this.repository.store.getValue().authentication
+                              .accessToken
+                          : null
                       )
                     )
                     .pipe(

@@ -8,15 +8,18 @@ import {
   UrlTree,
   CanActivateFn,
 } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
-import { AuthenticationQuery } from '../Queries/authentication.query';
+import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 export const loginGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): boolean | UrlTree => {
-  return (
-    !inject(AuthenticationQuery).isAuthenticated() ||
-    inject(Router).parseUrl('/status')
+): Observable<boolean | UrlTree> => {
+  const router = inject(Router);
+  return inject(AuthenticationRepository).data$.pipe(
+    map(value => {
+      return !(value.data != null) || router.parseUrl('/status');
+    })
   );
 };

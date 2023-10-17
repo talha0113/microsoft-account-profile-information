@@ -22,17 +22,14 @@ import { ProfileService } from '../Services/profile.service';
 import { NotificationService } from '../Services/notification.service';
 import { PushService } from '../Services/push.service';
 
-import { AuthenticationStore } from '../Stores/authentication.store';
-import { AuthenticationQuery } from '../Queries/authentication.query';
-import { ProfileStore } from '../Stores/profile.store';
-import { ProfileQuery } from '../Queries/profile.query';
-
 import { InsightsManager } from '../Managers/insights.manager';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { GlobalErrorHandlerService } from '../Services/global-error-handler.service';
 import { TranslationModule } from '../Transloco/translation.module';
 import { FlagComponent } from '../Components/Flag/flag.component';
 import { applicationInitializationProvider } from '../Initialization/app.initialization';
+import { ProfileRepository } from '../Repositories/profile.repository';
+import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 @NgModule({
   declarations: [
@@ -50,9 +47,9 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {}),
-      ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: !isDevMode(),
-          registrationStrategy: 'registerImmediately',
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerImmediately',
     }),
     TranslationModule,
   ],
@@ -67,11 +64,9 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
       provide: ErrorHandler,
       useClass: GlobalErrorHandlerService,
     },
-    AuthenticationStore,
-    AuthenticationQuery,
-      AuthenticationService,
-      ProfileStore,
-    ProfileQuery,
+    AuthenticationRepository,
+    AuthenticationService,
+    ProfileRepository,
     ProfileService,
     NotificationService,
     PushService,
@@ -80,7 +75,7 @@ import { applicationInitializationProvider } from '../Initialization/app.initial
   bootstrap: [MainComponent],
 })
 export class MainModule {
-    constructor() {        
+  constructor() {
     InsightsManager.initialize();
   }
 }

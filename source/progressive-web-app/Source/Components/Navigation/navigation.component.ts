@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
 import { NavigationLink } from '../../Models/navigation-link.model';
-import { AuthenticationQuery } from '../../Queries/authentication.query';
+import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 
 @Component({
   selector: 'navigation',
@@ -11,16 +12,20 @@ import { AuthenticationQuery } from '../../Queries/authentication.query';
 })
 export class NavigationComponent implements OnInit {
   public navigationLinks: Array<NavigationLink> = new Array<NavigationLink>();
-  public isAuthenticated: boolean = false;
+  public isAuthenticated$: Observable<boolean>;
   constructor(
-    private authenticationQuery: AuthenticationQuery,
+    private repository: AuthenticationRepository,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.isAuthenticated = this.authenticationQuery.isAuthenticated();
+        this.isAuthenticated$ = this.repository.data$.pipe(
+          map(value => {
+            return value.data === null ? false : true;
+          })
+        );
       }
     });
 

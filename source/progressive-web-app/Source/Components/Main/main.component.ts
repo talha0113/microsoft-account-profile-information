@@ -31,7 +31,7 @@ export class MainComponent implements OnInit {
     private pushService: PushService
   ) {}
 
-    ngOnInit() {        
+  ngOnInit() {
     this.isOffline = !navigator.onLine;
     this.hideSubscription = this.notificationService.isDenied;
     if (!this.isOffline) {
@@ -92,7 +92,7 @@ export class MainComponent implements OnInit {
     //https://www.bartvanuden.com/2018/01/23/push-notifications-to-your-pwa-with-asp-net-core-2-0-and-aurelia/
     //https://github.com/yashints/Angular-PWA
 
-        this.router.events.subscribe((event: Event) => {            
+    this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.isOffline = !navigator.onLine;
         if (this.isOffline && !this.offlineNotificationDone) {
@@ -101,7 +101,6 @@ export class MainComponent implements OnInit {
         }
       }
     });
-
   }
 
   subscriptionChanged(): void {

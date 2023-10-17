@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { ProfileService } from '../../Services/profile.service';
 import { Profile } from '../../Models/profile.model';
-import { ProfileQuery } from '../../Queries/profile.query';
-import { map } from 'rxjs/operators';
+import { ProfileRepository } from '../../Repositories/profile.repository';
 
 @Component({
   selector: 'profile',
@@ -16,22 +15,20 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private profileQuery: ProfileQuery
+    private repository: ProfileRepository
   ) {}
 
   ngOnInit() {
-    if (this.profileQuery.getCount() === 0) {
-      this.profileService.information.subscribe();
-    }
+    this.profileService.information$.subscribe();
 
-    this.isLoading$ = this.profileQuery.selectLoading();
-    this.profileInformation$ = this.profileQuery.selectAll().pipe(
-      map((value: Profile[]) => {
-        if (value.length > 0) {
-          return value[0];
-        } else {
-          return null;
-        }
+    this.isLoading$ = this.repository.data$.pipe(
+      map(value => {
+        return value.isLoading;
+      })
+    );
+    this.profileInformation$ = this.repository.data$.pipe(
+      map(value => {
+        return value.data;
       })
     );
   }
