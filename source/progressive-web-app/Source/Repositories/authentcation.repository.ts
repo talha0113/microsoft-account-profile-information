@@ -44,9 +44,9 @@ export class AuthenticationRepository {
     joinRequestResult([STORE_NAME])
   );
 
-    public get data() {
-        return store.getValue().authentication;
-    };
+  public get data() {
+    return store.getValue().authentication;
+  }
 
   public get storeName() {
     return STORE_NAME;
