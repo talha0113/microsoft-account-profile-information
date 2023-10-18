@@ -64,7 +64,6 @@ export class AuthenticationService {
         }),
         trackRequestResult([this.repository.storeName]),
         tap((value: AuthenticationResult) => {
-          console.log('token');
           if (value !== null) {
             if (value.tokenType === 'Bearer') {
               this.repository.update = new Authentication(
