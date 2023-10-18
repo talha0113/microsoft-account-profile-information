@@ -2,12 +2,17 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using ms.account.push.subscription.core.services;
+using Scrutor;
 
 public static class StartUpExtension
 {
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
-        _ = services.AddScoped<ISubscriptionService, SubscriptionService>();
+        _ = services.Scan(( ITypeSourceSelector typeSourceSelector ) => {
+            typeSourceSelector.FromCallingAssembly().AddClasses((IImplementationTypeFilter implementationTypeFilter) => {
+                implementationTypeFilter.AssignableTo<ISubscriptionService>();
+            }).UsingRegistrationStrategy(RegistrationStrategy.Throw).AsMatchingInterface().WithScopedLifetime();
+        });
         return services;
     }
 }
