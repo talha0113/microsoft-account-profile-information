@@ -17,7 +17,7 @@ export const loginGuard: CanActivateFn = (
   state: RouterStateSnapshot
 ): Observable<boolean | UrlTree> => {
   const router = inject(Router);
-  return inject(AuthenticationRepository).data$.pipe(
+    return inject(AuthenticationRepository).data$.pipe(
     map(value => {
       return !(value.data != null) || router.parseUrl('/status');
     })

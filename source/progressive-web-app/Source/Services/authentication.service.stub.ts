@@ -4,28 +4,30 @@ import { AuthenticationService } from './authentication.service';
 import { map, tap } from 'rxjs/operators';
 import { Authentication } from '../Models/authentication.model';
 import { Injectable } from '@angular/core';
+import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 @Injectable()
 export class AuthenticationServiceStub extends AuthenticationService {
-  login(): void {
-    this.authenticationStore.login(
-      new Authentication('Test_Token_Id', 'Test_Access_Token')
-    );
-  }
+    constructor(public override repository: AuthenticationRepository) {
+        super(repository);
+    }
 
-  refreshToken(): Observable<null> {
+    override login(): void {
+        this.repository.update = new Authentication('Test_Token_Id', 'Test_Access_Token');
+    }
+
+    override logout(): void {
+        this.repository.remove();
+    }
+
+  override refreshToken(): Observable<null> {
     return of<string>('Test_Token').pipe(
-      tap((value: string) => {
-        this.authenticationStore.refreshToken(value);
+        tap((value: string) => {
+            new Authentication('Test_Token_Id', value);
       }),
       map((value: string) => {
-        console.log(value);
         return null;
       })
     );
-  }
-
-  logout(): void {
-    this.authenticationStore.logout();
   }
 }

@@ -17,26 +17,15 @@ let fixture: ComponentFixture<FlagComponent>;
 let component: FlagComponent;
 let translocoService: TranslocoService;
 
-describe('Status Component', () => {
+describe('Flag Component', () => {
   beforeAll(async () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         FormsModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: environment.production,
-        }),
         getTranslationTestingModule(),
       ],
       declarations: [FlagComponent],
-      providers: [
-        PushService,
-        NotificationService,
-        {
-          provide: SignalRService,
-          useClass: SignalRServiceStub,
-        },
-      ],
     }).compileComponents();
   });
 

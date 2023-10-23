@@ -1,26 +1,27 @@
-﻿import { TestBed } from '@angular/core/testing';
+﻿import { TestBed, } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
-  HttpTestingController,
+    HttpTestingController,
 } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProfileService } from './profile.service';
-import { ProfileStore } from '../Stores/profile.store';
-import { ProfileQuery } from '../Queries/profile.query';
 import { ProfileServiceMock } from './profile.service.mock';
 import { setUpMock } from '../Managers/storage.mock';
+import { ProfileRepository } from '../Repositories/profile.repository';
+import { tap } from 'rxjs';
+import { clearRequestsResult } from '@ngneat/elf-requests';
 
 describe('Profile Service', () => {
   let profileService: ProfileService;
-  let profileStore: ProfileStore;
-  let profileQuery: ProfileQuery;
+    let repository: ProfileRepository;
   let httpClientMock: HttpTestingController;
 
-  beforeAll(async () => {
+    beforeEach(() => {
     setUpMock();
   });
 
-  beforeAll(async () => {
+    beforeEach(() => {
     function noOp() {}
 
     if (typeof window.URL.createObjectURL === 'undefined') {
@@ -28,45 +29,52 @@ describe('Profile Service', () => {
     }
   });
 
-  beforeAll(async () => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ProfileService, ProfileStore, ProfileQuery],
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [RouterTestingModule, HttpClientTestingModule],
+        providers: [
+            
+            ProfileService,
+            ProfileRepository
+        ],
     });
   });
 
-  beforeAll(async () => {
-    profileService = TestBed.inject(ProfileService);
-    profileStore = TestBed.inject(ProfileStore);
-    profileQuery = TestBed.inject(ProfileQuery);
-    httpClientMock = TestBed.inject(HttpTestingController);
+    beforeEach(() => {
+      profileService = TestBed.inject(ProfileService);
+      repository = TestBed.inject(ProfileRepository);
+        httpClientMock = TestBed.inject(HttpTestingController);
+        clearRequestsResult();
+        repository.remove();
   });
-
-  it('Should exist', async () => {
-    expect(profileService).toBeDefined();
-    expect(profileStore).toBeDefined();
-    expect(profileQuery).toBeDefined();
-    expect(httpClientMock).toBeDefined();
-  });
-
-  it(`Should be empty store`, async () => {
-    profileStore.remove();
-    profileService.information.subscribe(() => {
-      expect(profileQuery.getCount()).toBe(0);
+    
+    it('Should exist', () => {
+        expect(profileService).toBeDefined();
+        expect(repository).toBeDefined();
+        expect(httpClientMock).toBeDefined();
     });
 
-    ProfileServiceMock.metaDataErrorRequest(httpClientMock);
-    ProfileServiceMock.pictureErrorRequest(httpClientMock);
-    httpClientMock.verify({ ignoreCancelled: true });
-  });
+    it(`Should be an empty repository`, () => {        
+        repository.data$.pipe(tap((value) => {
+            expect(value.data).toBeDefined();
+        })).subscribe();
+        profileService.information$.subscribe();
 
-  it(`Should not be an empty store`, async () => {
-    profileService.information.subscribe(() => {
-      expect(profileQuery.getCount()).toBe(1);
+        ProfileServiceMock.metaDataErrorRequest(httpClientMock);
+        ProfileServiceMock.pictureErrorRequest(httpClientMock);
     });
 
-    ProfileServiceMock.metaDataRequest(httpClientMock);
-    ProfileServiceMock.pictureRequest(httpClientMock);
-    httpClientMock.verify();
-  });
+    it(`Should not be an empty repository`, () => {
+        repository.data$.pipe(tap((value) => {
+            expect(value.data).toBeDefined();
+        })).subscribe();
+        profileService.information$.subscribe();
+
+        ProfileServiceMock.metaDataRequest(httpClientMock);
+        ProfileServiceMock.pictureRequest(httpClientMock);
+    });
+
+    afterEach(() => {
+        httpClientMock.verify();
+    });
 });
