@@ -10,6 +10,7 @@ import { setUpMock } from '../../Managers/storage.mock';
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
+import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 
 let fixture: ComponentFixture<NavigationComponent>;
 let component: NavigationComponent;
@@ -23,7 +24,7 @@ describe('Navigation Component', () => {
   beforeAll(async () => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         getTranslationTestingModule(),
       ],
       declarations: [NavigationComponent],
@@ -35,7 +36,8 @@ describe('Navigation Component', () => {
         {
           provide: AuthenticationService,
           useClass: AuthenticationServiceStub,
-        },
+          },
+          AuthenticationRepository
       ],
     }).compileComponents();
   });

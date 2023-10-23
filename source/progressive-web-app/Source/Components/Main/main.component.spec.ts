@@ -16,14 +16,12 @@ import { ProfileComponent } from '../Profile/profile.component';
 import { LogoutComponent } from '../Logout/logout.component';
 import { NavigationComponent } from '../Navigation/navigation.component';
 import { SafeUrlPipe } from '../../Pipes/safe-url.pipe';
-import { LoginGuard } from '../../Guards/login.guard';
-import { AuthenticationGuard } from '../../Guards/authentication.guard';
+import { loginGuard } from '../../Guards/login.guard';
+import { authenticationGuard } from '../../Guards/authentication.guard';
 import { AuthenticationService } from '../../Services/authentication.service';
-import { AuthenticationStore } from '../../Stores/authentication.store';
-import { AuthenticationQuery } from '../../Queries/authentication.query';
+import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
+import { ProfileRepository } from '../../Repositories/profile.repository';
 import { ProfileService } from '../../Services/profile.service';
-import { ProfileStore } from '../../Stores/profile.store';
-import { ProfileQuery } from '../../Queries/profile.query';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { setUpMock } from '../../Managers/storage.mock';
 import { environment } from 'Configurations/Environments/environment';
@@ -33,6 +31,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { FlagComponent } from '../Flag/flag.component';
+import { SignalRService } from '../../Services/signalr.service';
 
 describe('Main Component', () => {
   let location: Location;
@@ -70,19 +69,16 @@ describe('Main Component', () => {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
         },
-        LoginGuard,
-        AuthenticationGuard,
         {
           provide: AuthenticationService,
           useClass: AuthenticationServiceStub,
-        },
-        AuthenticationStore,
-        AuthenticationQuery,
+          },
+          AuthenticationRepository,
+          ProfileRepository,
         ProfileService,
-        ProfileStore,
-        ProfileQuery,
         NotificationService,
-        PushService,
+          PushService,
+          SignalRService,
         SwUpdate,
         SwPush,
       ],

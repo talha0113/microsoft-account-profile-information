@@ -14,7 +14,10 @@ import { setUpMock } from '../../Managers/storage.mock';
 import { ProfileServiceMock } from '../../Services/profile.service.mock';
 import { BrowserTestingModule } from '@angular/platform-browser/testing';
 import { SafeUrlPipe } from '../../Pipes/safe-url.pipe';
-import { Profile } from '../../Models/profile.model';
+import { ProfileService } from '../../Services/profile.service';
+import { ProfileRepository } from '../../Repositories/profile.repository';
+import { clearRequestsResult } from '@ngneat/elf-requests';
+import { tap } from 'rxjs';
 
 describe('Profile Component', () => {
   let fixture: ComponentFixture<ProfileComponent>;
@@ -22,14 +25,14 @@ describe('Profile Component', () => {
 
   let httpClientMock: HttpTestingController;
 
-  beforeAll(async () => {
+    beforeEach(() => {
     setUpMock();
   });
 
-  beforeAll(async () => {
+    beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         HttpClientTestingModule,
         BrowserTestingModule,
       ],
@@ -38,36 +41,32 @@ describe('Profile Component', () => {
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
-        },
+          },
+          ProfileService,
+          ProfileRepository
       ],
     }).compileComponents();
   });
 
-  beforeAll(async () => {
-    httpClientMock = TestBed.inject(HttpTestingController);
+    beforeEach(() => {
+        clearRequestsResult();
+      httpClientMock = TestBed.inject(HttpTestingController);
+      fixture = TestBed.createComponent(ProfileComponent);
+        component = fixture.componentInstance;
+        TestBed.inject(ProfileRepository).remove();
   });
 
-  beforeAll(async () => {
-    fixture = TestBed.createComponent(ProfileComponent);
-    component = fixture.componentInstance;
+    it('Should exist', () => {        
+        expect(component).toBeTruthy();
+        ProfileServiceMock.metaDataRequest(httpClientMock);
+        ProfileServiceMock.pictureRequest(httpClientMock);
+        httpClientMock.verify({ ignoreCancelled: true });
   });
 
-  it('Should exist', async () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('Should render profile', async () => {
-    component.profileInformation$.subscribe((value: Profile) => {
-      const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-      const profileNameDiv: HTMLHeadingElement =
-        nativeElement.querySelector('h3');
-
-      expect(profileNameDiv).toBeDefined();
-      expect(value).toBeDefined();
+    it('Should render profile', () => {
+        const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+        const profileNameDiv: HTMLHeadingElement =
+            nativeElement.querySelector('h3');
+        expect(profileNameDiv).toBeDefined();
     });
-
-    ProfileServiceMock.metaDataRequest(httpClientMock);
-    ProfileServiceMock.pictureRequest(httpClientMock);
-    httpClientMock.verify();
-  });
 });

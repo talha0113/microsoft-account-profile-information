@@ -5,22 +5,20 @@ import {
   ComponentFixtureAutoDetect,
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { from } from 'rxjs';
 
 import { LoginComponent } from './login.component';
 import { setUpMock } from '../../Managers/storage.mock';
-import { AuthenticationStore } from '../../Stores/authentication.store';
-import { AuthenticationQuery } from '../../Queries/authentication.query';
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
-import { from } from 'rxjs';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
+import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 
 describe('Login Component', () => {
   let router: Router;
   let fixture: ComponentFixture<LoginComponent>;
-  let component: LoginComponent;
-
-  let authenticationQuery: AuthenticationQuery;
+    let component: LoginComponent;
+    let repository: AuthenticationRepository
 
   beforeAll(async () => {
     setUpMock();
@@ -37,13 +35,12 @@ describe('Login Component', () => {
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
-        },
-        AuthenticationStore,
-        AuthenticationQuery,
-        {
-          provide: AuthenticationService,
-          useClass: AuthenticationServiceStub,
-        },
+          },
+          {
+              provide: AuthenticationService,
+              useClass: AuthenticationServiceStub,
+          },
+        AuthenticationRepository,
       ],
     }).compileComponents();
   });
@@ -57,8 +54,8 @@ describe('Login Component', () => {
     fixture.detectChanges();
   });
 
-  beforeAll(async () => {
-    authenticationQuery = TestBed.inject(AuthenticationQuery);
+    beforeAll(async () => {
+        repository = TestBed.inject(AuthenticationRepository);
   });
 
   it('Should exist', async () => {
@@ -78,8 +75,8 @@ describe('Login Component', () => {
 
   it('Should render login success process', async () => {
     component.login();
-    from(fixture.whenStable()).subscribe(() => {
-      expect(authenticationQuery.isAuthenticated()).toBeTruthy();
+      from(fixture.whenStable()).subscribe(() => {
+          expect(repository.data).toBeDefined();
     });
   });
 });

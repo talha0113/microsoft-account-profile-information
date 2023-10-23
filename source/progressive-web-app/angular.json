@@ -8,7 +8,11 @@
       "sourceRoot": "Source",
       "projectType": "application",
       "prefix": "ms",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -20,10 +24,10 @@
               "zone.js"
             ],
             "tsConfig": "Source/tsconfig.app.json",
+            "inlineStyleLanguage": "css",
             "assets": [
               "Source/favicon.ico",
               "Source/Assets",
-              "Source/Web.Config",
               "Source/robots.txt",
               "Source/manifest.webmanifest"
             ],
@@ -40,6 +44,18 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "Configurations/Environments/environment.ts",
@@ -60,32 +76,30 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "serviceWorker": true,
-              "ngswConfigPath": "Source/ngsw-config.json",
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
+              "ngswConfigPath": "Source/ngsw-config.json"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "ms-account-profile-information:build"
-          },
           "configurations": {
             "production": {
               "browserTarget": "ms-account-profile-information:build:production"
+            },
+            "development": {
+              "browserTarget": "ms-account-profile-information:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -96,22 +110,22 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "Configurations/Karma/karma.test.shim.ts",
+            "tsConfig": ".karma/tsconfig.spec.json",
+            "karmaConfig": ".karma/karma.config.js",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "Configurations/Karma/tsconfig.spec.json",
-            "karmaConfig": "Configurations/Karma/karma.config.js",
-            "styles": [
-              "Styles/styles.css"
-            ],
-            "scripts": [],
             "assets": [
               "Source/favicon.ico",
               "Source/Assets",
               "Source/manifest.webmanifest"
-            ]
+            ],
+            "styles": [
+              "Styles/styles.css"
+
+            ],
+            "scripts": []
           }
         },
         "lint": {

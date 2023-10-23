@@ -8,20 +8,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { LogoutComponent } from './logout.component';
-import { ProfileStore } from '../../Stores/profile.store';
-import { ProfileQuery } from '../../Queries/profile.query';
 import { ProfileService } from '../../Services/profile.service';
 import { setUpMock } from '../../Managers/storage.mock';
 import { AuthenticationService } from '../../Services/authentication.service';
-import { AuthenticationStore } from '../../Stores/authentication.store';
-import { AuthenticationQuery } from '../../Queries/authentication.query';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
+import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
+import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
+import { ProfileRepository } from '../../Repositories/profile.repository';
+import { tap } from 'rxjs';
 
 describe('Logout Component', () => {
   let fixture: ComponentFixture<LogoutComponent>;
   let component: LogoutComponent;
-  let router: Router;
-  let authenticationQuery: AuthenticationQuery;
+    let router: Router;
+    let repository: AuthenticationRepository;
 
   beforeAll(async () => {
     setUpMock();
@@ -40,18 +40,19 @@ describe('Logout Component', () => {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
         },
-        ProfileStore,
-        ProfileQuery,
-        ProfileService,
-        AuthenticationStore,
-        AuthenticationQuery,
-        AuthenticationService,
+          ProfileService,
+          ProfileRepository,
+          {
+              provide: AuthenticationService,
+              useClass: AuthenticationServiceStub,
+          },
+          AuthenticationRepository
       ],
     }).compileComponents();
   });
 
-  beforeAll(async () => {
-    authenticationQuery = TestBed.inject(AuthenticationQuery);
+    beforeAll(async () => {
+        repository = TestBed.inject(AuthenticationRepository);
 
     router = TestBed.get(Router);
     spyOn(router, 'navigateByUrl');
@@ -79,7 +80,9 @@ describe('Logout Component', () => {
     const logoutButton: HTMLButtonElement =
       nativeElement.querySelector('button');
 
-    logoutButton.click();
-    expect(authenticationQuery.isAuthenticated()).toBeFalsy();
+      logoutButton.click();
+      repository.data$.pipe(tap((value) => {
+          expect(value.data).toBeNull();
+      }));
   });
 });
