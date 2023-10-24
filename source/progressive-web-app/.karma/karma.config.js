@@ -18,11 +18,11 @@ module.exports = function (config) {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
         nunitReporter: {
-            outputFile: require('path').join(__dirname, "../../Reports/Results.xml"),
+            outputFile: require('path').join(__dirname, "../Reports/Results.xml"),
             suite: ''
         },
         coverageReporter: {
-            dir: require('path').join(__dirname, '../../Reports/Coverage'),
+            dir: require('path').join(__dirname, '../Reports/Coverage'),
             reports: [
                 'html',
                 'lcov',
