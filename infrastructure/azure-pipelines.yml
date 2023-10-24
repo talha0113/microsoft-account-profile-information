@@ -13,7 +13,17 @@ trigger:
     - bug/*        
   paths:
     include:
-    - /infrastructure        
+    - infrastructure        
+
+pr:
+  autoCancel: true
+  branches:  
+    include:
+    - main  
+  paths:
+    include:
+    - infrastructure
+  drafts: true
 
 variables:
   - group: 'Infrastructure'

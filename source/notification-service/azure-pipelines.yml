@@ -15,6 +15,16 @@ trigger:
     include:
     - source/notification-service        
 
+pr:
+  autoCancel: true
+  branches:  
+    include:
+    - main  
+  paths:
+    include:
+    - source/notification-service
+  drafts: true
+
 variables:
   - group: 'Authentication'
   - group: 'Release Annotations'

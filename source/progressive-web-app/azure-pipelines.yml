@@ -15,6 +15,16 @@ trigger:
     include:
     - source/progressive-web-app        
 
+pr:
+  autoCancel: true
+  branches:  
+    include:
+    - main  
+  paths:
+    include:
+    - source/progressive-web-app
+  drafts: true
+
 variables:
   - group: 'Progressive Web Application'
 
