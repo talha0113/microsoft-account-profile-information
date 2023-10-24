@@ -33,7 +33,7 @@ describe('Safe Url Pipe', () => {
     expect(safeUrlPipe).toBeDefined();
   });
 
-    it('Should transform', async () => {
-        expect(safeUrlPipe.transform(new Blob())).toBeDefined();
+  it('Should transform', async () => {
+    expect(safeUrlPipe.transform(new Blob())).toBeDefined();
   });
 });

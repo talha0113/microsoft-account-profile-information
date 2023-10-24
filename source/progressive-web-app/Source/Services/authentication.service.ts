@@ -64,7 +64,7 @@ export class AuthenticationService {
         }),
         trackRequestResult([this.repository.storeName]),
         tap((value: AuthenticationResult) => {
-            if (value) {
+          if (value) {
             if (value.tokenType === 'Bearer') {
               this.repository.update = new Authentication(
                 value.idToken,

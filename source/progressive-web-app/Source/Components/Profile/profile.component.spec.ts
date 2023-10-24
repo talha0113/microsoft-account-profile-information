@@ -17,7 +17,6 @@ import { SafeUrlPipe } from '../../Pipes/safe-url.pipe';
 import { ProfileService } from '../../Services/profile.service';
 import { ProfileRepository } from '../../Repositories/profile.repository';
 import { clearRequestsResult } from '@ngneat/elf-requests';
-import { tap } from 'rxjs';
 
 describe('Profile Component', () => {
   let fixture: ComponentFixture<ProfileComponent>;
@@ -25,11 +24,11 @@ describe('Profile Component', () => {
 
   let httpClientMock: HttpTestingController;
 
-    beforeEach(() => {
+  beforeEach(() => {
     setUpMock();
   });
 
-    beforeEach(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -41,32 +40,32 @@ describe('Profile Component', () => {
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
-          },
-          ProfileService,
-          ProfileRepository
+        },
+        ProfileService,
+        ProfileRepository,
       ],
     }).compileComponents();
   });
 
-    beforeEach(() => {
-        clearRequestsResult();
-      httpClientMock = TestBed.inject(HttpTestingController);
-      fixture = TestBed.createComponent(ProfileComponent);
-        component = fixture.componentInstance;
-        TestBed.inject(ProfileRepository).remove();
+  beforeEach(() => {
+    clearRequestsResult();
+    httpClientMock = TestBed.inject(HttpTestingController);
+    fixture = TestBed.createComponent(ProfileComponent);
+    component = fixture.componentInstance;
+    TestBed.inject(ProfileRepository).remove();
   });
 
-    it('Should exist', () => {        
-        expect(component).toBeTruthy();
-        ProfileServiceMock.metaDataRequest(httpClientMock);
-        ProfileServiceMock.pictureRequest(httpClientMock);
-        httpClientMock.verify({ ignoreCancelled: true });
+  it('Should exist', () => {
+    expect(component).toBeTruthy();
+    ProfileServiceMock.metaDataRequest(httpClientMock);
+    ProfileServiceMock.pictureRequest(httpClientMock);
+    httpClientMock.verify({ ignoreCancelled: true });
   });
 
-    it('Should render profile', () => {
-        const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        const profileNameDiv: HTMLHeadingElement =
-            nativeElement.querySelector('h3');
-        expect(profileNameDiv).toBeDefined();
-    });
+  it('Should render profile', () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const profileNameDiv: HTMLHeadingElement =
+      nativeElement.querySelector('h3');
+    expect(profileNameDiv).toBeDefined();
+  });
 });
