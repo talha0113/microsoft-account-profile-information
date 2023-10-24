@@ -30,7 +30,7 @@ stages:
   - job: package
     displayName: 'Package'
     pool:
-      vmImage: 'windows-latest' 
+      vmImage: 'ubuntu-latest' 
     continueOnError: 'false'
     workspace:
       clean: all

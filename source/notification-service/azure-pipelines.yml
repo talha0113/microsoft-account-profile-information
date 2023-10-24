@@ -13,7 +13,7 @@ trigger:
     - bug/*        
   paths:
     include:
-    - /source/notification-service        
+    - source/notification-service        
 
 variables:
   - group: 'Authentication'
