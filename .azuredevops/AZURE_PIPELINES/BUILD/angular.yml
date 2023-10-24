@@ -34,9 +34,6 @@ stages:
   
     steps:
 
-    - bash: |
-        echo "Build.Reason: $(Build.Reason)"        
-
     # Perform Tokens Replacement
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: Replace
