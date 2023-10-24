@@ -40,6 +40,7 @@ stages:
       inputs:
         rootDirectory: '${{parameters.source_directory}}/Source/Configurations'
         targetFiles: vapid.configuration.ts
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
     
     # Prepare Cache
     - task: Cache@2
