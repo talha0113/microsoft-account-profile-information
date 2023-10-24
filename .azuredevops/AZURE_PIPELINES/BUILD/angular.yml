@@ -83,7 +83,7 @@ stages:
         command: 'custom'
         customCommand: 'run lint --cache $(npm_config_cache)'
         verbose: false
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
 
     # Perform Angular Tests
     - task: Npm@1
@@ -93,7 +93,7 @@ stages:
         command: custom
         verbose: false
         customCommand: 'test'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))   
 
     # Attach Test Report to Azure Pipeline
     - task: PublishTestResults@2
@@ -103,7 +103,7 @@ stages:
         testResultsFiles: '${{parameters.source_directory}}/Reports/Results.xml'
         mergeTestResults: true
         testRunTitle: 'Microsoft Account Profile Information'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))   
 
     # Attach Coverage Report to Azure Pipeline
     - task: PublishCodeCoverageResults@1
@@ -112,7 +112,7 @@ stages:
         codeCoverageTool: Cobertura
         summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
         reportDirectory: '${{parameters.source_directory}}/Reports/Coverage'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI')) 
 
     # Perform Angular Build
     - task: Npm@1
@@ -133,9 +133,10 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         CleanTargetFolder: true
         flattenFolders: false
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
 
     # Attach Build Output to Azure Pipeline
     - publish: '$(ArtifactDirectory)'
       displayName: Artifact
       artifact: 'drop'
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
