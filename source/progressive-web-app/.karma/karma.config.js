@@ -6,33 +6,46 @@ module.exports = function (config) {
         basePath: '',
         frameworks: ['jasmine', '@angular-devkit/build-angular'],
         plugins: [
-            require('karma-jasmine'),
-            require('karma-jsdom-launcher'),
+            require('karma-jasmine'),            
             require('karma-chrome-launcher'),
-            require('karma-nunit2-reporter'),
+            require('karma-junit-reporter'),
             require('karma-jasmine-html-reporter'),
             require('karma-coverage'),
             require('@angular-devkit/build-angular/plugins/karma')
         ],
         client: {
+            jasmine: { },
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        nunitReporter: {
+        jasmineHtmlReporter: {
+            suppressAll: true // removes the duplicated traces
+        },
+        junitReporter: {
             outputFile: require('path').join(__dirname, "../Reports/Results.xml"),
             suite: ''
         },
         coverageReporter: {
             dir: require('path').join(__dirname, '../Reports/Coverage'),
-            reports: [
-                'html',
-                'lcov',
-                'cobertura',
-                'lcovonly',
-                'text-summary'
+            subdir: '.',
+            reporters: [
+                { type: 'html' },
+                { type: 'lcov' },
+                { type: 'cobertura' },
+                { type: 'lcovonly' },
+                { type: 'text' },
+                { type: 'text-summary' }
             ],
+            check: {
+                global: {
+                    statements: 50,
+                    branches: 18,
+                    functions: 48,
+                    lines: 50
+                }
+            },
             fixWebpackSourcePaths: true
         },
-        reporters: ['progress', 'kjhtml', 'nunit', 'coverage'],
+        reporters: ['progress', 'kjhtml', 'junit', 'coverage'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
