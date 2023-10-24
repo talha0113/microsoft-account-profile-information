@@ -41,16 +41,6 @@ stages:
         rootDirectory: '${{parameters.source_directory}}/Source/Configurations'
         targetFiles: vapid.configuration.ts
     
-    - task: PowerShell@2
-      displayName: 'Verify Cache'
-      inputs:
-        targetType: 'inline'
-        script: |
-          npm cache ls
-          npm cache verify
-        pwsh: true
-        workingDirectory: '${{parameters.source_directory}}'
-
     # Prepare Cache
     - task: Cache@2
       displayName: 'Cache'
@@ -61,6 +51,17 @@ stages:
            npm
         path: $(npm_config_cache)
         cacheHitVar: 'CACHE_RESTORED'
+
+    # Verify Cache
+    - task: PowerShell@2
+      displayName: 'Verify Cache'
+      inputs:
+        targetType: 'inline'
+        script: |
+          npm cache ls
+          npm cache verify
+        pwsh: true
+        workingDirectory: '${{parameters.source_directory}}'
 
     # Perform npm ci
     - task: Npm@1
