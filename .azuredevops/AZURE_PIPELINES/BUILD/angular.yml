@@ -20,7 +20,8 @@ stages:
     value: '$(Build.BuildNumber)'
   
   jobs:
--   job: package
+
+  - job: package
     displayName: ${{ parameters.display_name }}
     pool: 
       vmImage: 'ubuntu-latest' 
