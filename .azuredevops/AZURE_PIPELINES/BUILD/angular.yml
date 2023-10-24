@@ -97,19 +97,17 @@ stages:
     - task: PublishTestResults@2
       displayName: 'Report Tests'
       inputs:
-        testRunner: NUnit
+        testRunner: JUnit
         testResultsFiles: '${{parameters.source_directory}}/Reports/Results.xml'
         mergeTestResults: true
         testRunTitle: 'Microsoft Account Profile Information'
       condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))   
 
     # Attach Coverage Report to Azure Pipeline
-    - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@2
       displayName: 'Report Coverage'
       inputs:
-        codeCoverageTool: Cobertura
         summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
-        reportDirectory: '${{parameters.source_directory}}/Reports/Coverage'
       condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI')) 
 
     # Perform Angular Build
