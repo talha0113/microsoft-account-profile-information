@@ -23,10 +23,7 @@ describe('Navigation Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        getTranslationTestingModule(),
-      ],
+      imports: [RouterTestingModule, getTranslationTestingModule()],
       declarations: [NavigationComponent],
       providers: [
         {
@@ -36,8 +33,8 @@ describe('Navigation Component', () => {
         {
           provide: AuthenticationService,
           useClass: AuthenticationServiceStub,
-          },
-          AuthenticationRepository
+        },
+        AuthenticationRepository,
       ],
     }).compileComponents();
   });

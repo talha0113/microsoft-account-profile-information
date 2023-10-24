@@ -17,8 +17,8 @@ import { AuthenticationRepository } from '../../Repositories/authentcation.repos
 describe('Login Component', () => {
   let router: Router;
   let fixture: ComponentFixture<LoginComponent>;
-    let component: LoginComponent;
-    let repository: AuthenticationRepository
+  let component: LoginComponent;
+  let repository: AuthenticationRepository;
 
   beforeAll(async () => {
     setUpMock();
@@ -35,11 +35,11 @@ describe('Login Component', () => {
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
-          },
-          {
-              provide: AuthenticationService,
-              useClass: AuthenticationServiceStub,
-          },
+        },
+        {
+          provide: AuthenticationService,
+          useClass: AuthenticationServiceStub,
+        },
         AuthenticationRepository,
       ],
     }).compileComponents();
@@ -54,8 +54,8 @@ describe('Login Component', () => {
     fixture.detectChanges();
   });
 
-    beforeAll(async () => {
-        repository = TestBed.inject(AuthenticationRepository);
+  beforeAll(async () => {
+    repository = TestBed.inject(AuthenticationRepository);
   });
 
   it('Should exist', async () => {
@@ -75,8 +75,8 @@ describe('Login Component', () => {
 
   it('Should render login success process', async () => {
     component.login();
-      from(fixture.whenStable()).subscribe(() => {
-          expect(repository.data).toBeDefined();
+    from(fixture.whenStable()).subscribe(() => {
+      expect(repository.data).toBeDefined();
     });
   });
 });

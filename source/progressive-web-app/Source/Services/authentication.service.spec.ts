@@ -7,7 +7,6 @@ import { TokenConstant } from '../Constants/token.constant';
 import { Authentication } from '../Models/authentication.model';
 import { setUpMock } from '../Managers/storage.mock';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
-import { tap } from 'rxjs';
 
 describe('Authentication Service', () => {
   let authenticationService: AuthenticationService;
@@ -30,26 +29,26 @@ describe('Authentication Service', () => {
   });
 
   beforeAll(async () => {
-      authenticationService = TestBed.inject(AuthenticationService);
-      repository = TestBed.inject(AuthenticationRepository);
+    authenticationService = TestBed.inject(AuthenticationService);
+    repository = TestBed.inject(AuthenticationRepository);
   });
 
   it('Should exist', async () => {
-      expect(authenticationService).toBeDefined();
-      expect(repository).toBeDefined();
+    expect(authenticationService).toBeDefined();
+    expect(repository).toBeDefined();
   });
 
-    it(`Should login`, async () => {
-        repository.update = new Authentication("dummy", "dummy");
-        authenticationService.login();
-      authenticationService.refreshToken().subscribe(() => {
-          expect(repository.data).toBeDefined();
+  it(`Should login`, async () => {
+    repository.update = new Authentication('dummy', 'dummy');
+    authenticationService.login();
+    authenticationService.refreshToken().subscribe(() => {
+      expect(repository.data).toBeDefined();
     });
   });
 
   it(`Should logout`, async () => {
-      authenticationService.logout();
-      expect(repository.data).toBeNull();
+    authenticationService.logout();
+    expect(repository.data).toBeNull();
     expect(StorageManager.get<Authentication>(TokenConstant.token)).toBeNull();
   });
 });

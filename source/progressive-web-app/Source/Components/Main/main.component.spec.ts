@@ -16,8 +16,6 @@ import { ProfileComponent } from '../Profile/profile.component';
 import { LogoutComponent } from '../Logout/logout.component';
 import { NavigationComponent } from '../Navigation/navigation.component';
 import { SafeUrlPipe } from '../../Pipes/safe-url.pipe';
-import { loginGuard } from '../../Guards/login.guard';
-import { authenticationGuard } from '../../Guards/authentication.guard';
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 import { ProfileRepository } from '../../Repositories/profile.repository';
@@ -72,13 +70,13 @@ describe('Main Component', () => {
         {
           provide: AuthenticationService,
           useClass: AuthenticationServiceStub,
-          },
-          AuthenticationRepository,
-          ProfileRepository,
+        },
+        AuthenticationRepository,
+        ProfileRepository,
         ProfileService,
         NotificationService,
-          PushService,
-          SignalRService,
+        PushService,
+        SignalRService,
         SwUpdate,
         SwPush,
       ],

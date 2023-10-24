@@ -18,8 +18,8 @@ export class ProfileService {
     const basicInformation: Observable<Profile> = this.httpClient
       .get<Profile>(GraphConstant.profileMetaDataUrl)
       .pipe(
-          catchError(error => {
-              console.error(error);
+        catchError(error => {
+          console.error(error);
           return of(null);
         })
       );
@@ -27,31 +27,27 @@ export class ProfileService {
       .get(GraphConstant.profilePictureUrl, { responseType: 'blob' })
       .pipe(
         catchError(error => {
-            console.error(error);
+          console.error(error);
           return of(null);
         })
       );
-      return forkJoin({ basicInformation, profilePicture })
-          .pipe(
-              map((values: { basicInformation: Profile; profilePicture: Blob }) => {
-                  if (
-                      values.basicInformation == null &&
-                      values.profilePicture == null
-                  ) {
-                      return null;
-                  } else {
-                      const profileInformation: Profile = values.basicInformation;
-                      profileInformation.imageUrl = values.profilePicture;
-                      return profileInformation;
-                  }
-              }),
-              tap((value: Profile) => {
-                  if (value != null) {
-                      this.repository.update = value;
-                  }
-              }),
-              trackRequestResult([this.repository.storeName])
-          );
+    return forkJoin({ basicInformation, profilePicture }).pipe(
+      map((values: { basicInformation: Profile; profilePicture: Blob }) => {
+        if (values.basicInformation == null && values.profilePicture == null) {
+          return null;
+        } else {
+          const profileInformation: Profile = values.basicInformation;
+          profileInformation.imageUrl = values.profilePicture;
+          return profileInformation;
+        }
+      }),
+      tap((value: Profile) => {
+        if (value != null) {
+          this.repository.update = value;
+        }
+      }),
+      trackRequestResult([this.repository.storeName])
+    );
   }
 
   clear(): void {

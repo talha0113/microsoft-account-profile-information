@@ -1,14 +1,8 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 import { FlagComponent } from './flag.component';
-import { PushService } from 'Source/Services/push.service';
-import { SignalRService } from 'Source/Services/signalr.service';
-import { SignalRServiceStub } from 'Source/Services/signalr.service.stub';
-import { environment } from 'Configurations/Environments/environment';
-import { NotificationService } from 'Source/Services/notification.service';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { TranslocoService } from '@ngneat/transloco';
 import { TranslationConfiguration } from '../../Transloco/translation.configuration';

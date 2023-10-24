@@ -20,8 +20,8 @@ import { tap } from 'rxjs';
 describe('Logout Component', () => {
   let fixture: ComponentFixture<LogoutComponent>;
   let component: LogoutComponent;
-    let router: Router;
-    let repository: AuthenticationRepository;
+  let router: Router;
+  let repository: AuthenticationRepository;
 
   beforeAll(async () => {
     setUpMock();
@@ -40,19 +40,19 @@ describe('Logout Component', () => {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
         },
-          ProfileService,
-          ProfileRepository,
-          {
-              provide: AuthenticationService,
-              useClass: AuthenticationServiceStub,
-          },
-          AuthenticationRepository
+        ProfileService,
+        ProfileRepository,
+        {
+          provide: AuthenticationService,
+          useClass: AuthenticationServiceStub,
+        },
+        AuthenticationRepository,
       ],
     }).compileComponents();
   });
 
-    beforeAll(async () => {
-        repository = TestBed.inject(AuthenticationRepository);
+  beforeAll(async () => {
+    repository = TestBed.inject(AuthenticationRepository);
 
     router = TestBed.get(Router);
     spyOn(router, 'navigateByUrl');
@@ -80,9 +80,11 @@ describe('Logout Component', () => {
     const logoutButton: HTMLButtonElement =
       nativeElement.querySelector('button');
 
-      logoutButton.click();
-      repository.data$.pipe(tap((value) => {
-          expect(value.data).toBeNull();
-      }));
+    logoutButton.click();
+    repository.data$.pipe(
+      tap(value => {
+        expect(value.data).toBeNull();
+      })
+    );
   });
 });

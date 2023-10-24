@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SignalRServiceStub extends SignalRService {
-    public override get liveCount(): Observable<number> {
+  public override get liveCount(): Observable<number> {
     return of(2);
   }
 }

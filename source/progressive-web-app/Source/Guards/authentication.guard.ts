@@ -16,9 +16,9 @@ export const authenticationGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): Observable<boolean | UrlTree> => {
-    const router = inject(Router);
-    const repository = inject(AuthenticationRepository);
-    return repository.data$.pipe(
+  const router = inject(Router);
+  const repository = inject(AuthenticationRepository);
+  return repository.data$.pipe(
     map(value => {
       return value.data != null || router.parseUrl('/login');
     })
