@@ -331,10 +331,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-**/Reports
-/Distributions
-/UITest/Reports/TestResults.trx
-/Application/Distributions/**/*.*
-/Application/Reports
-/Application/package-lock.json
-/UITest/package-lock.json
+/source/progressive-web-app/Reports
+/source/progressive-web-app/Distributions
