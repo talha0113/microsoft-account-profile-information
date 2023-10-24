@@ -1,0 +1,27 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth).$(rev:r)
+
+resources:
+- repo: self
+  clean: true
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - feature/*
+    - bug/*        
+  paths:
+    include:
+    - source/progressive-web-app        
+
+variables:
+  - group: 'Progressive Web Application'
+
+stages:
+
+- template: ../../.azuredevops/AZURE_PIPELINES/BUILD/angular.yml
+  parameters:
+    name: build
+    display_name: 'Build'
+    source_directory: '$(Build.SourcesDirectory)/source/progressive-web-app'

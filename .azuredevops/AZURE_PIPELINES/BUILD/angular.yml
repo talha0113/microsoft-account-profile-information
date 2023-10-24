@@ -1,0 +1,136 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: source_directory
+  type: string
+  default: ''
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  variables:
+  - name: ArtifactDirectory 
+    value: '$(Build.ArtifactStagingDirectory)'
+  - name: BuildNumber 
+    value: '$(Build.BuildNumber)'
+  
+  jobs:
+-   job: package
+    displayName: ${{ parameters.display_name }}
+    pool: 
+      vmImage: 'ubuntu-latest' 
+    continueOnError: false
+    workspace:
+      clean: all
+    variables:
+    - name: npm_config_cache 
+      value: '$(Pipeline.Workspace)/.npm'
+  
+    steps:
+
+    # Perform Tokens Replacement
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: '${{parameters.source_directory}}/Source/Configurations'
+        targetFiles: vapid.configuration.ts
+    
+    - task: PowerShell@2
+      displayName: 'Verify Cache'
+      inputs:
+      targetType: 'inline'
+      script: |
+        npm cache ls
+        npm cache verify
+      pwsh: true
+      workingDirectory: '${{parameters.source_directory}}'
+
+    # Prepare Cache
+    - task: Cache@2
+      displayName: 'Cache'
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+           npm | "$(Agent.OS)"
+           npm
+        path: $(npm_config_cache)
+        cacheHitVar: 'CACHE_RESTORED'
+
+    # Perform npm ci
+    - task: Npm@1
+      displayName: 'Install'
+      inputs:
+        workingDir: '${{parameters.source_directory}}'
+        command: 'custom'
+        customCommand: 'ci --cache $(npm_config_cache)'
+        verbose: false
+
+    # Perform npm lint
+    - task: Npm@1
+      displayName: 'Lint'
+      inputs:
+        workingDir: '${{parameters.source_directory}}'
+        command: 'custom'
+        customCommand: 'run lint --cache $(npm_config_cache)'
+        verbose: false
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+    # Perform Angular Tests
+    - task: Npm@1
+      displayName: 'Test'
+      inputs:
+        workingDir: '${{parameters.source_directory}}'
+        command: custom
+        verbose: false
+        customCommand: 'test'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+
+    # Attach Test Report to Azure Pipeline
+    - task: PublishTestResults@2
+      displayName: 'Report Tests'
+      inputs:
+        testRunner: NUnit
+        testResultsFiles: '${{parameters.source_directory}}/Reports/Results.xml'
+        mergeTestResults: true
+        testRunTitle: 'Microsoft Account Profile Information'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))   
+
+    # Attach Coverage Report to Azure Pipeline
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Report Coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
+        reportDirectory: '${{parameters.source_directory}}/Reports/Coverage'
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')) 
+
+    # Perform Angular Build
+    - task: Npm@1
+      displayName: 'Build'
+      inputs:
+        workingDir: '${{parameters.source_directory}}'
+        command: custom
+        verbose: false
+        customCommand: 'run build'
+
+    # Copy Build Output
+    - task: CopyFiles@2
+      displayName: 'Copy'
+      inputs:
+        SourceFolder: '${{parameters.source_directory}}/Distributions'
+        Contents: |
+         **
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+        flattenFolders: false
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'Manual'))
+
+    # Attach Build Output to Azure Pipeline
+    - publish: '$(ArtifactDirectory)'
+      displayName: Artifact
+      artifact: 'drop'
