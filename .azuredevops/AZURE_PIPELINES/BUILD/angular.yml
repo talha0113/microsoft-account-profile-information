@@ -44,12 +44,12 @@ stages:
     - task: PowerShell@2
       displayName: 'Verify Cache'
       inputs:
-      targetType: 'inline'
-      script: |
-        npm cache ls
-        npm cache verify
-      pwsh: true
-      workingDirectory: '${{parameters.source_directory}}'
+        targetType: 'inline'
+        script: |
+          npm cache ls
+          npm cache verify
+        pwsh: true
+        workingDirectory: '${{parameters.source_directory}}'
 
     # Prepare Cache
     - task: Cache@2
