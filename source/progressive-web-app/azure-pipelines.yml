@@ -35,3 +35,12 @@ stages:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/source/progressive-web-app'
+
+- template: ../../.azuredevops/AZURE_PIPELINES/DEPLOY/angular.yml
+  parameters:
+    name: 'development'
+    display_name: 'Development'
+    depends_on: 'build'    
+    environment_name: 'app-msaccprofinfo-dev-001'
+    branch_name: 'feature/angular-pwa-deploy'
+    main_project: "progressive-web-app"
