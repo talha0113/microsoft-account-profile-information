@@ -36,6 +36,7 @@ stages:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/source/notification-service'
+    branch_name: 'main'
     main_project: "ms.account.push.subscription.func"
 
 - template: ../../.azuredevops/AZURE_PIPELINES/DEPLOY/azure-function.yml
