@@ -84,7 +84,8 @@ stages:
         command: 'custom'
         customCommand: 'run lint --cache $(npm_config_cache)'
         verbose: false
-      
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+
     # Perform Angular Tests
     - task: Npm@1
       displayName: 'Test'
@@ -93,6 +94,7 @@ stages:
         command: custom
         verbose: false
         customCommand: 'test'
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
       
     # Attach Test Report to Azure Pipeline
     - task: PublishTestResults@2
@@ -102,6 +104,7 @@ stages:
         testResultsFiles: '${{parameters.source_directory}}/Reports/Results.xml'
         mergeTestResults: true
         testRunTitle: 'Microsoft Account Profile Information'
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
       
     # Attach Coverage Report to Azure Pipeline
     - task: PublishCodeCoverageResults@2
@@ -117,6 +120,7 @@ stages:
         command: custom
         verbose: false
         customCommand: 'run build'
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
 
     # Copy Build Output
     - task: CopyFiles@2

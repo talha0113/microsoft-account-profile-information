@@ -8,6 +8,9 @@ parameters:
 - name: source_directory
   type: string
   default: ''
+- name: branch_name
+  type: string
+  default: 'main'
 - name: main_project
   type: string
   default: ''
@@ -48,7 +51,7 @@ stages:
       displayName: 'Emulator: Cosmos DB'
       failOnStderr: true
       errorActionPreference: stop
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
     
     - task: Bash@3
       displayName: 'Emulator: Storage'
@@ -57,8 +60,9 @@ stages:
         script: |
           npm install -g azurite
           mkdir azurite
-          azurite --silent --location azurite --debug azurite\debug.log &
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
+          azurite --silent --location azurite --debug azurite\debug.log &      
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+
 
     - task: Cache@2
       displayName: 'Cache'
@@ -89,7 +93,7 @@ stages:
           $(PROJECT_ALL)          
         custom: 'format'
         arguments: 'style --verify-no-changes --verbosity diagnostic --report $(ArtifactDirectory)/$(BuildNumber).json'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
 
     - task: DotNetCoreCLI@2
       displayName: 'Build'
@@ -105,13 +109,13 @@ stages:
         command: 'test'        
         projects: '${{parameters.source_directory}}/**/*.tests.csproj'
         arguments: '--configuration $(BuildConfiguration) --environment DatabaseId="Subscriptions" --environment CollectionId="Items" --environment ms-account-profile-informationDBConnection="AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
     
     - task: PublishCodeCoverageResults@2
       displayName: 'Coverage'
       inputs:
         summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish'
@@ -122,9 +126,7 @@ stages:
         projects: |
           ${{parameters.source_directory}}/**/${{parameters.main_project}}.csproj          
         arguments: '--configuration $(BuildConfiguration) --output $(ArtifactDirectory)'
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
 
     - publish: '$(ArtifactDirectory)'
       displayName: Artifact
       artifact: 'drop'
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
