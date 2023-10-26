@@ -35,7 +35,7 @@ stages:
     steps:
 
     - powershell: |
-        $(Build.Reason)
+        Write-Host "$(Build.Reason)"
       displayName: Branch
 
     # Perform Tokens Replacement
