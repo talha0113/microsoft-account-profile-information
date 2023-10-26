@@ -8,6 +8,9 @@ parameters:
 - name: source_directory
   type: string
   default: ''
+- name: branch_name
+  type: string
+  default: 'main'
 
 stages:
 
@@ -34,17 +37,13 @@ stages:
   
     steps:
 
-    - powershell: |
-        Write-Host "$(Build.Reason)"
-      displayName: Branch
-
     # Perform Tokens Replacement
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: Replace
       inputs:
         rootDirectory: '${{parameters.source_directory}}/Source/Configurations'
         targetFiles: vapid.configuration.ts
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))      
     
     # Prepare Cache
     - task: Cache@2
@@ -85,8 +84,7 @@ stages:
         command: 'custom'
         customCommand: 'run lint --cache $(npm_config_cache)'
         verbose: false
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))
-
+      
     # Perform Angular Tests
     - task: Npm@1
       displayName: 'Test'
@@ -95,8 +93,7 @@ stages:
         command: custom
         verbose: false
         customCommand: 'test'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))   
-
+      
     # Attach Test Report to Azure Pipeline
     - task: PublishTestResults@2
       displayName: 'Report Tests'
@@ -105,15 +102,13 @@ stages:
         testResultsFiles: '${{parameters.source_directory}}/Reports/Results.xml'
         mergeTestResults: true
         testRunTitle: 'Microsoft Account Profile Information'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI'))   
-
+      
     # Attach Coverage Report to Azure Pipeline
     - task: PublishCodeCoverageResults@2
       displayName: 'Report Coverage'
       inputs:
         summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'BatchedCI')) 
-
+      
     # Perform Angular Build
     - task: Npm@1
       displayName: 'Build'
@@ -133,10 +128,8 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         CleanTargetFolder: true
         flattenFolders: false
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))
-
+      
     # Attach Build Output to Azure Pipeline
     - publish: '$(ArtifactDirectory)'
       displayName: Artifact
       artifact: 'drop'
-      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'Manual'))

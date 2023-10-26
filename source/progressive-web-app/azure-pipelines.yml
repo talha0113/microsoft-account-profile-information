@@ -35,6 +35,7 @@ stages:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/source/progressive-web-app'
+    branch_name: 'main'
 
 - template: ../../.azuredevops/AZURE_PIPELINES/DEPLOY/angular.yml
   parameters:
