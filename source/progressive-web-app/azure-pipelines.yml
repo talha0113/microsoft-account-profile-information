@@ -43,4 +43,4 @@ stages:
     depends_on: 'build'    
     environment_name: 'app-msaccprofinfo-dev-001'
     branch_name: 'feature/angular-pwa-deploy'
-    main_project: "progressive-web-app"
+    main_project: "progressive.web.app"
