@@ -1,0 +1,66 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: depends_on
+  type: string
+  default: ''
+- name: environment_name
+  type: string
+  default: ''
+- name: branch_name
+  type: string
+  default: 'main'
+- name: main_project
+  type: string
+  default: ''
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  dependsOn: ${{ parameters.depends_on }}
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+  variables:
+  - name: DropRoot 
+    value: '$(Pipeline.Workspace)/drop'  
+
+  jobs:
+  
+  - deployment: ${{ replace(parameters.main_project, '.', '_') }}
+    displayName: ${{ parameters.main_project }}
+    environment: ${{ format('{0}', parameters.environment_name) }}
+    pool:
+      vmImage: 'ubuntu-latest'
+    continueOnError: 'false'
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - powershell: |
+              (Get-Content -Path .\ngsw.json -Raw:$true).replace("#RELEASE_NUMBER#", '$(Build.BuildNumber)') | Set-Content .\ngsw.json
+            displayName: Files
+            workingDirectory: '$(DropRoot)'
+
+          - task: Npm@1
+            displayName: 'Install'
+            inputs:
+              workingDir: '$(DropRoot)'
+              command: 'custom'
+              customCommand: 'install -g @azure/static-web-apps-cli'
+
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: ${{ format('{0}', parameters.environment_name) }}
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                $staticAppName = '${{ format('{0}', replace(parameters.environment_name, 'app', 'func')) }}'
+                $staticAppKey = az staticwebapp secrets list --name $staticAppName --query 'properties.apiKey'
+                swa deploy --deployment-token $staticAppKey
+              workingDirectory: '$(DropRoot)'
