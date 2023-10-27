@@ -60,8 +60,9 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                $staticAppName = "${{ format('{0}', replace(parameters.environment_name, 'app', 'stapp')) }}"
+                $staticAppName = "${{ replace(parameters.environment_name, 'app', 'stapp') }}"
                 echo $staticAppName
+                swa --version
                 $staticAppKey = az staticwebapp secrets list --name $staticAppName --query "properties.apiKey"
                 echo $staticAppKey
                 swa deploy --deployment-token $staticAppKey
