@@ -56,14 +56,11 @@ stages:
 
           - task: AzureCLI@2
             inputs:
-              azureSubscription: ${{ format('{0}', parameters.environment_name) }}
-              scriptType: 'bash'
+              azureSubscription: '${{ format(''{0}'', parameters.environment_name) }}'
+              scriptType: 'pscore'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                $staticAppName = "${{ replace(parameters.environment_name, 'app', 'stapp') }}"
-                echo $staticAppName
-                swa --version
-                $staticAppKey = az staticwebapp secrets list --name $staticAppName --query "properties.apiKey"
-                echo $staticAppKey
+                $staticAppName = '${{ format(''{0}'', replace(parameters.environment_name, ''app'', ''stapp'')) }}'
+                $staticAppKey = az staticwebapp secrets list --name $staticAppName --query 'properties.apiKey'
                 swa deploy --deployment-token $staticAppKey
               workingDirectory: '$(DropRoot)'
