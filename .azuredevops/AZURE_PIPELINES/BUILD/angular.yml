@@ -82,7 +82,7 @@ stages:
       inputs:
         workingDir: '${{parameters.source_directory}}'
         command: 'custom'
-        customCommand: 'run lint --cache $(npm_config_cache)'
+        customCommand: 'run lint --cache $(npm_config_cache) --prefer-offline'
         verbose: false
       condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
 
