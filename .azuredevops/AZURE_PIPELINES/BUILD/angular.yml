@@ -112,6 +112,7 @@ stages:
       inputs:
         summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
         pathToSources: '${{parameters.source_directory}}/Reports/Coverage'
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
       
     # Perform Angular Build
     - task: Npm@1
@@ -121,7 +122,6 @@ stages:
         command: custom
         verbose: false
         customCommand: 'run build'
-      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
 
     # Copy Build Output
     - task: CopyFiles@2
