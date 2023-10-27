@@ -61,6 +61,8 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 $staticAppName = "${{ format('{0}', replace(parameters.environment_name, 'app', 'stapp')) }}"
+                echo $staticAppName
                 $staticAppKey = az staticwebapp secrets list --name $staticAppName --query "properties.apiKey"
+                echo $staticAppKey
                 swa deploy --deployment-token $staticAppKey
               workingDirectory: '$(DropRoot)'
