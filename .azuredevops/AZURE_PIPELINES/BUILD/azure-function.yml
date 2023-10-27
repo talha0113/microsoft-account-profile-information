@@ -108,7 +108,7 @@ stages:
       inputs:
         command: 'test'        
         projects: '${{parameters.source_directory}}/**/*.tests.csproj'
-        arguments: '--configuration $(BuildConfiguration) --environment DatabaseId="Subscriptions" --environment CollectionId="Items" --environment ms-account-profile-informationDBConnection="AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+        arguments: '--configuration $(BuildConfiguration) --environment DatabaseId="Subscriptions" --environment CollectionId="Items" --environment cosmosdb_connection="AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
       condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
     
     - task: PublishCodeCoverageResults@2

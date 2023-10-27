@@ -111,6 +111,7 @@ stages:
       displayName: 'Report Coverage'
       inputs:
         summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
+        pathToSources: '${{parameters.source_directory}}/Reports/Coverage'
       
     # Perform Angular Build
     - task: Npm@1
