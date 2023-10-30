@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --configuration production --vendor-chunk=true --stats-json=true && ts-node --project tsconfig.system.json Tasks/Compression.ts && ts-node --project tsconfig.system.json Tasks/Replacement.ts",
+    "build": "ng build --configuration production --vendor-chunk=true --stats-json=true && gzipper compress ./Distributions --include js,css,html --gzip --skip-compressed --output-file-format [filename].[ext].[compressExt] ./Distributions",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
@@ -36,6 +36,7 @@
     "@angular/cli": "^16.2.5",
     "@angular/compiler-cli": "^16.2.8",
     "@angular-devkit/build-angular": "^16.2.5",
+
     "@angular-eslint/builder": "^16.2.0",
     "@angular-eslint/eslint-plugin": "^16.2.0",
     "@angular-eslint/eslint-plugin-template": "^16.2.0",
@@ -55,14 +56,11 @@
     "@types/jasmine": "~5.1.0",
     "@types/jasminewd2": "~2.0.11",
     "jasmine-core": "~5.1.1",
-    "jsdom": "~22.1.0",
     "karma": "~6.4.2",
-    "karma-jsdom-launcher": "~15.0.0",
     "karma-junit-reporter": "~2.0.1",
 
+    "gzipper": "~7.2.0",
 
-    "@types/node": "~20.8.4",
-    "ts-node": "~10.9.1",
     "typescript": "~5.1.6"
   }
 }
