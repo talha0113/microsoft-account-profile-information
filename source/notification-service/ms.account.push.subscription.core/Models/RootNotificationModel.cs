@@ -11,8 +11,7 @@ public class RootNotificationModel
 
 public class NotificationActionModel
 {
-    public string action = "Open";
-    public string url = "https://localhost:4200";
+    public string action = "open";
     public string title = "Open Application";
 }
 
@@ -21,6 +20,18 @@ public class NotificationModel
     public string title = "Profile Information!";
     public string body = "Notification From Backend";
     public string icon = "Assets/Icons/icon-96x96.png";
+    public object data = new {
+        onActionClick = new {
+           @default = new {
+               operation = "navigateLastFocusedOrOpen",
+               url = "login"
+           },
+           open = new {
+               operation = "navigateLastFocusedOrOpen",
+               url = "login"
+           }
+        }
+    };
     public List<NotificationActionModel> actions = new List<NotificationActionModel>();
 
     public NotificationModel(string message)
