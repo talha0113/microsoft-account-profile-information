@@ -44,7 +44,7 @@
     {
       "name": "Subscription Api Calls",
       "urls": [
-        "https://ms-account-profile-info-notification-service-fa.azurewebsites.net/api/**"
+        "https://func-msaccprofinfo-dev-001.azurewebsites.net/api/**"
       ],
       "cacheConfig": {
         "maxAge": "1d",
