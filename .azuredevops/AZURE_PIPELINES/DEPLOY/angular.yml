@@ -55,6 +55,7 @@ stages:
               customCommand: 'install -g @azure/static-web-apps-cli'
 
           - task: AzureCLI@2
+            displayName: 'Static Web App'
             inputs:
               azureSubscription: '${{ format(''{0}'', parameters.environment_name) }}'
               scriptType: 'pscore'
@@ -63,5 +64,5 @@ stages:
                 $staticAppName = "${{ format('{0}', replace(parameters.environment_name, 'app', 'stapp')) }}"
                 $staticAppKey = az staticwebapp secrets list --name $staticAppName --query "properties.apiKey"
                 cd ..
-                swa deploy ./drop --deployment-token $staticAppKey
+                swa deploy ./drop --deployment-token $staticAppKey --env production
               workingDirectory: '$(DropRoot)'
