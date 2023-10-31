@@ -19,15 +19,18 @@
     "@angular/platform-browser-dynamic": "^16.2.8",
     "@angular/router": "^16.2.8",
     "@angular/service-worker": "^16.2.8",
-    "@azure/msal-browser": "^3.2.0",
+
     "@ngneat/elf": "^2.4.0",
     "@ngneat/elf-requests": "^1.9.2",
     "@ngneat/elf-entities": "^4.5.0",
     "@ngneat/elf-persist-state": "^1.1.6",
     "@ngneat/elf-state-history": "^1.4.0",
+    "@ngneat/transloco": "^6.0.0",
+
+    "@azure/msal-browser": "^3.2.0",
     "@microsoft/applicationinsights-web": "^3.0.3",
     "@microsoft/signalr": "^7.0.11",
-    "@ngneat/transloco": "^6.0.0",
+
     "core-js": "^3.33.0",
     "rxjs": "^7.8.1",
     "zone.js": "~0.13.3"
