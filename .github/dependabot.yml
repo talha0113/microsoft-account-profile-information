@@ -2,12 +2,48 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
+    target-branch: "main"
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
     assignees:
       - "octocat"
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "16:00"
+      interval: daily
+      time: "23:00"
+    labels:
+      - "npm"
+      - "dependencies"
+      - "root"
+    commit-message:
+      prefix: "build(package)"
+      include: "scope"
+    groups:
+      angular:
+        patterns:
+        - "@commitlint*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
+
+  - package-ecosystem: "nuget"
+    directory: "/source/notification-service"
+    target-branch: "main"
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    assignees:
+      - "octocat"
+    schedule:
+      interval: daily
+      time: "23:00"
+    labels:
+      - "nuget"
+      - "dependencies"
+      - "notification-service"
     commit-message:
       prefix: "build(package)"
       include: "scope"
@@ -22,12 +58,20 @@ updates:
 
   - package-ecosystem: "npm"
     directory: "/source/progressive-web-app"
+    target-branch: "main"
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
     assignees:
       - "octocat"
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "16:00"
+      interval: daily
+      time: "23:00"
+    labels:
+      - "npm"
+      - "dependencies"
+      - "progressive-web-app"
     commit-message:
       prefix: "build(package)"
       include: "scope"
