@@ -1,0 +1,70 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    assignees:
+      - "octocat"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "16:00"
+    commit-message:
+      prefix: "build(package)"
+      include: "scope"
+    groups:
+      angular:
+        patterns:
+        - "@commitlint*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
+
+  - package-ecosystem: "npm"
+    directory: "/source/progressive-web-app"
+    assignees:
+      - "octocat"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "16:00"
+    commit-message:
+      prefix: "build(package)"
+      include: "scope"
+    groups:
+      angular:
+        patterns:
+        - "@angular/*"
+        - "@angular-devkit/*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
+      microsoft:
+        patterns:
+        - "@azure*"
+        - "@microsoft*"
+        - "typescript*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
+      lint:
+        patterns:
+        - "@angular-eslint/*"
+        - "@typescript-eslint/*"
+        - "prettier*"
+        - "eslint-*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
+      test:
+        patterns:
+        - "karma*"
+        - "@types/*"
+        - "jasmine*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
