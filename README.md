@@ -5,18 +5,19 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Microsoft Account Information Application
-- A basic progressive web application with front end and backend to utilize major concepts of **Angular**, **Serverless** and **Telemetry**
-Application display user profile like image, email and name of Azure AD or personal account
-- [Demo](https://ms-profile-information-fd.azurefd.net)
+- A basic progressive web application with front-end and back-end to utilize major concepts of **Angular**, **Serverless** and **Monitoring**
+Application display user profile like image, email and name of logged in user defined in Azure AD
+- [Demo](https://fde-msaccprofinfo-dev-001-daa3b0a8bxbdgfc8.z01.azurefd.net)
 
 ### Frontend
 Built with **Angular** and host in **Azure Storage Blob** utilize following concepts and tools
   - **Angular**
   - **Microsoft Authentication Library** for OAuth
-  - **Akita** Client Side State Management
+  - **@ngneat/elf** Client Side State Management
   - **Jasmine & Karma** for Unit Testing
   - **TypeScript**
-  - **Puppeteer** and **Jest** for Automated UI Test
+  - **Puppeteer** and **Jest** for Automated UI Test as nodejs based setup
+  - **Playwright** for targetting all the browserrs and using C#
   
 ![Flow Diagram](./Diagrams/Flow.png)
 
@@ -31,7 +32,7 @@ In order to save browser subscription and send push notification following tools
 
 ### Development Lifecycle
   - **Github Project and Issues** to Store all the tasks and issues
-  - **Azure DevOps** for Continuous Integration and Delivery. Only master branch is deployed
+  - **Azure DevOps** for Continuous Integration and Delivery. Only main branch is deployed
   - **Release Annotations** to mark release in Application Insights
 
 ![Development LifeCycle Diagram](./Diagrams/DevelopmentLifeCycle.png)
