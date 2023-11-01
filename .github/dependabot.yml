@@ -17,7 +17,7 @@ updates:
       - "dependencies"
       - "root"
     commit-message:
-      prefix: "build(package)"
+      prefix: "build"
       include: "scope"
     groups:
       angular:
@@ -45,7 +45,7 @@ updates:
       - "dependencies"
       - "notification-service"
     commit-message:
-      prefix: "build(package)"
+      prefix: "build"
       include: "scope"
     groups:
       angular:
@@ -73,7 +73,7 @@ updates:
       - "dependencies"
       - "progressive-web-app"
     commit-message:
-      prefix: "build(package)"
+      prefix: "build"
       include: "scope"
     groups:
       angular:
