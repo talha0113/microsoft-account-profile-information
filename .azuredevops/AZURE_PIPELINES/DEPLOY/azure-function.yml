@@ -51,3 +51,7 @@ stages:
               package: '$(DropRoot)/${{ parameters.main_project }}.zip'
               runtimeStack: 'DOTNET-ISOLATED|7.0'
               deploymentMethod: 'auto'
+
+          - template: ../COMMON/release-annotations.yml
+            parameters:
+              environment_name: ${{parameters.environment_name}}
