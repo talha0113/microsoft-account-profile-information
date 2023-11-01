@@ -93,6 +93,13 @@ updates:
         - "major"
         - "minor"
         - "patch"
+      ngneat:
+        patterns:
+        - "@ngneat/*"
+        update-types:
+        - "major"
+        - "minor"
+        - "patch"
       lint:
         patterns:
         - "@angular-eslint/*"
