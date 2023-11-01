@@ -20,7 +20,7 @@ updates:
       prefix: "build(package)"
       include: "scope"
     groups:
-      angular:
+      commit_lint:
         patterns:
         - "@commitlint*"
         update-types:
