@@ -1,0 +1,77 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: source_directory
+  type: string
+  default: ''
+- name: branch_name
+  type: string
+  default: 'main'
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+  variables:
+  - name: BuildNumber 
+    value: '$(Build.BuildNumber)'  
+
+  jobs:
+
+  - job: package
+    displayName: ${{ parameters.display_name }}
+    pool: 
+      vmImage: 'ubuntu-latest' 
+    continueOnError: false
+    workspace:
+      clean: all
+    variables:
+    - name: npm_config_cache 
+      value: '$(Pipeline.Workspace)/.npm'
+
+    steps:
+
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: Replace
+      inputs:
+        rootDirectory: '${{parameters.source_directory}}/Configurations'
+        targetFiles: environment.config.ts
+
+    - task: Cache@2
+      displayName: 'Cache'
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+           npm | "$(Agent.OS)"
+           npm
+        path: $(npm_config_cache)
+        cacheHitVar: 'CACHE_RESTORED'
+
+    - task: Npm@1
+      displayName: 'Install'
+      inputs:
+        workingDir: '${{parameters.source_directory}}'
+        command: 'custom'
+        customCommand: 'ci --cache $(npm_config_cache) --prefer-offline'
+        verbose: false
+
+    - task: Npm@1
+      displayName: 'Test'
+      inputs:
+        workingDir: '${{parameters.source_directory}}'
+        command: custom
+        verbose: false
+        customCommand: 'test'
+
+    - task: PublishTestResults@2
+      displayName: 'Report Tests'
+      inputs:
+        testRunner: VSTest
+        testResultsFiles: '${{parameters.source_directory}}/Reports/TestResults.trx'
+        mergeTestResults: true
+        testRunTitle: '${{ parameters.display_name }}'
