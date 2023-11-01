@@ -66,3 +66,7 @@ stages:
                 cd ..
                 swa deploy ./drop --deployment-token $staticAppKey --env production
               workingDirectory: '$(DropRoot)'
+
+          - template: ../COMMON/release-annotations.yml
+            parameters:
+              environment_name: ${{parameters.environment_name}}

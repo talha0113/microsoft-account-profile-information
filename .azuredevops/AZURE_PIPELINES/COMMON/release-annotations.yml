@@ -1,0 +1,40 @@
+parameters:
+- name: environment_name
+  type: string
+  default: ''
+
+steps:
+
+- task: AzureCLI@2
+  displayName: 'Release annotations'
+  inputs:
+    azureSubscription: '${{ format(''{0}'', parameters.environment_name) }}'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      $resourceGroupName = "${{ format('{0}', replace(parameters.environment_name, 'app', 'rg')) }}"
+      $appInsightsResourceId = ((az monitor app-insights component show --resource-group $resourceGroupName) | ConvertFrom-Json).id
+      $releaseName = "$(Build.DefinitionName)"
+      $releaseProperties = @{
+          "BuildNumber"="$(Build.BuildNumber)";
+          "BuildRepositoryName"="$(Build.Repository.Name)";
+          "BuildRepositoryProvider"="$(Build.Repository.Provider)";
+          "ReleaseDefinitionName"="$(Build.DefinitionName)";
+          "ReleaseDescription"="Triggered by $(Build.DefinitionName) $(Build.BuildNumber)";
+          "ReleaseEnvironmentName"="$(Release.EnvironmentName)";
+          "ReleaseId"="$(Release.ReleaseId)";
+          "ReleaseName"="$(Release.ReleaseName)";
+          "ReleaseRequestedFor"="$(Release.RequestedFor)";
+          "ReleaseWebUrl"="$(Release.ReleaseWebUrl)";
+          "SourceBranch"="$(Build.SourceBranch)"
+      }
+      $annotation = @{
+          Id = [GUID]::NewGuid();
+          AnnotationName = $releaseName;
+          EventTime = (Get-Date).ToUniversalTime().GetDateTimeFormats("s")[0];
+          Category = "Deployment";
+          Properties = ConvertTo-Json $releaseProperties -Compress
+      }
+
+      $body = (ConvertTo-Json $annotation -Compress) -replace '(\\+)"', '$1$1"' -replace "`"", "`"`""
+      az rest --method put --uri "$($appInsightsResourceId)/Annotations?api-version=2015-05-01" --body "$($body) "
