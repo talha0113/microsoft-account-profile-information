@@ -25,10 +25,6 @@ pr:
     - source/notification-service
   drafts: true
 
-variables:
-  - group: 'Authentication'
-  - group: 'Release Annotations'
-
 stages:
 
 - template: ../../.azuredevops/AZURE_PIPELINES/BUILD/azure-function.yml

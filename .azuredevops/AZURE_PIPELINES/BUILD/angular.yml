@@ -27,7 +27,7 @@ stages:
   - job: package
     displayName: ${{ parameters.display_name }}
     pool: 
-      vmImage: 'windows-latest' 
+      vmImage: 'ubuntu-latest' 
     continueOnError: false
     workspace:
       clean: all

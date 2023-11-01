@@ -1,0 +1,38 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth).$(rev:r)
+
+resources:
+- repo: self
+  clean: true
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - feature/*
+    - bug/*        
+  paths:
+    include:
+    - source/ui-tests/puppeteer        
+
+pr:
+  autoCancel: true
+  branches:  
+    include:
+    - main  
+  paths:
+    include:
+    - source/ui-tests/puppeteer
+  drafts: true
+
+variables:
+  - group: 'Progressive Web Application'
+
+stages:
+
+- template: ../../../.azuredevops/AZURE_PIPELINES/DEPLOY/UI-TESTS/puppeteer.yml
+  parameters:
+    name: 'puppeteer'
+    display_name: 'Puppeteer'
+    source_directory: '$(Build.SourcesDirectory)/source/ui-tests/puppeteer'
+    branch_name: 'main'
