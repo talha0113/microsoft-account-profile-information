@@ -1,29 +1,17 @@
 name: $(Year:yyyy).$(Month).$(DayOfMonth).$(rev:r)
 
 resources:
-- repo: self
-  clean: true
+  pipelines:
+  - pipeline: progressive-web-app
+    source: \microsoft-account-profile-information\progressive-web-app
+    trigger: 
+      branches:
+        include: 
+        - main
 
-trigger:
-  batch: true
-  branches:
-    include:
-    - main
-    - feature/*
-    - bug/*        
-  paths:
-    include:
-    - source/ui-tests/puppeteer        
+trigger: none
 
-pr:
-  autoCancel: true
-  branches:  
-    include:
-    - main  
-  paths:
-    include:
-    - source/ui-tests/puppeteer
-  drafts: true
+pr: none
 
 variables:
   - group: 'Progressive Web Application'
