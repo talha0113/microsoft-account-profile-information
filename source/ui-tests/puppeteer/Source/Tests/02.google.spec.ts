@@ -1,5 +1,7 @@
 ﻿import { Browser, Page } from "puppeteer";
 
+const timeout = 5000;
+
 describe('Google', () => {
     let browser: Browser;
     let page: Page;
@@ -7,20 +9,19 @@ describe('Google', () => {
     const height: number = 1080;
 
     beforeAll(async () => {
-        page = await <Page>(((<any>global).__BROWSER__).newPage()); 
+        page = await globalThis.__BROWSER__.newPage();
         await page.goto('https://google.com')
         await page.setViewport({ width, height });
-    }, 30000);
+    }, timeout);
+
     test("Render title", async () => {
-        await page.goto("https://www.google.dk", {
-            waitUntil: 'networkidle2',
-            timeout: 3000000
-        })
-        await page.waitForSelector(".gsfi");
-        let title: string = await page.title();
+        await page.goto("https://www.google.dk");
+        await page.waitForSelector(".gLFyf");
+        const title: string = await page.title();
         expect(title).toBe("Google");
-    }, 30000);
+    }, timeout);
+
     afterAll(async () => {
         await page.close();
-    }, 30000)
+    }, timeout)
 });
