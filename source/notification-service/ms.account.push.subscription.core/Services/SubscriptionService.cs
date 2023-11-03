@@ -17,12 +17,12 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task SubscribeAsync(PushSubscriptionInformation subscription, CancellationToken cancellationToken)
     {
-        if ((await repository.FindAsync(item => item.Keys.p256dh == subscription.Keys.p256dh, cancellationToken)).FirstOrDefault() == null)
+        if ((await repository.FindAsync(item => item.EndPoint == subscription.EndPoint, cancellationToken)).FirstOrDefault() == null)
         {
             await repository.CreateAsync(subscription, cancellationToken: cancellationToken);
         }
 
-        var item = (await repository.FindAsync(item => item.Keys.p256dh == subscription.Keys.p256dh, cancellationToken)).FirstOrDefault();
+        var item = (await repository.FindAsync(item => item.EndPoint == subscription.EndPoint, cancellationToken)).FirstOrDefault();
 
         var notificationQueueItem = new NotificationQueueItem
         {

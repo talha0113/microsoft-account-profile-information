@@ -43,7 +43,7 @@ public class SubscriptionTriggerSubscribe
         {
             await subscriptionService.SubscribeAsync(new domain.entities.PushSubscriptionInformation
             {
-                Id = pushSubscriptionInformation.Id,
+                Id = Guid.NewGuid().ToString(),
                 EndPoint = pushSubscriptionInformation.EndPoint,
                 ExpirationTime = pushSubscriptionInformation.ExpirationTime,
                 Keys = new domain.entities.Keys
