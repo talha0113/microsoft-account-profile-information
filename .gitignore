@@ -333,3 +333,4 @@ ASALocalRun/
 .mfractor/
 /source/progressive-web-app/Reports
 /source/progressive-web-app/Distributions
+/source/ui-tests/puppeteer/Reports

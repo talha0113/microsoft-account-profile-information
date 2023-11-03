@@ -1,0 +1,33 @@
+{
+  "testEnvironmentOptions": {
+    "url": "http://localhost"
+  },
+  "rootDir": "../",
+  "bail": true,
+  "cache": false,
+  "clearMocks": true,
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "json",
+    "html"
+  ],
+  "globals": {
+
+  },
+  "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(t|j)sx?$",
+  "transform": {
+    "^.+\\.(t|j)sx?$": [
+      "ts-jest",
+      {
+        "tsconfig": "./tsconfig.json"
+      }
+    ]
+  },
+  "globalSetup": "<rootDir>/.jest/jest.setup.js",
+  "globalTeardown": "<rootDir>/.jest/jest.teardown.js",
+  "testEnvironment": "<rootDir>/.jest/jest.environment.js",
+  "setupFilesAfterEnv": [ "<rootDir>/.jest/jest.init.js" ],
+  "testResultsProcessor": "<rootDir>/.jest/jest.trx.processor"
+}
