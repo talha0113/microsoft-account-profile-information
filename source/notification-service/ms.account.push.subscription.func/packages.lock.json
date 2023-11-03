@@ -73,9 +73,9 @@
       },
       "Microsoft.Azure.Functions.Worker.Sdk": {
         "type": "Direct",
-        "requested": "[1.15.0, )",
-        "resolved": "1.15.0",
-        "contentHash": "snqX2SoFb1WBZANB8Sb8QpYvfu2d/pHg3/3SQ6sjka/41EAg0mqQ++YBn7TcGdHTA6td3O3TxVpjYjZhBDdv/Q==",
+        "requested": "[1.15.1, )",
+        "resolved": "1.15.1",
+        "contentHash": "cuzXvmwI/TJonhIncn9RriDRkbHBYr5G+gD6G7T4uw4E94jdkfGn1TTXkd9q/k/c5CGTw3aibc/BUOplsYFXHg==",
         "dependencies": {
           "Microsoft.Azure.Functions.Worker.Sdk.Analyzers": "1.2.1",
           "Microsoft.Azure.Functions.Worker.Sdk.Generators": "1.1.2"
@@ -390,8 +390,8 @@
       },
       "Microsoft.Azure.Cosmos": {
         "type": "Transitive",
-        "resolved": "3.35.4",
-        "contentHash": "oDwaE4TlQHec3R8CH5xLgvci5Fpj4q/W1kSPu3gm2Q49cJXXyEQqGp/j3dgM7O/fwrm9u5ZgvYtkpor2f4i2wQ==",
+        "resolved": "3.36.0",
+        "contentHash": "O8NYZ3JEVVp9xjj1VZ1gQzeJowspyt3n1wJKjt7fZRwVNDyeiBwe1F9oIBwdrsvigBfxLT3wvBZU1oU5vVlXPw==",
         "dependencies": {
           "Azure.Core": "1.19.0",
           "Microsoft.Bcl.AsyncInterfaces": "1.0.0",
@@ -1972,7 +1972,7 @@
         "type": "Project",
         "dependencies": {
           "Azure.Storage.Queues": "[12.16.0, )",
-          "Microsoft.Azure.Cosmos": "[3.35.4, )",
+          "Microsoft.Azure.Cosmos": "[3.36.0, )",
           "Microsoft.Extensions.Configuration.Abstractions": "[7.0.0, )",
           "WebPush": "[1.0.12, )",
           "ms.account.push.subscription.core": "[1.0.0, )"

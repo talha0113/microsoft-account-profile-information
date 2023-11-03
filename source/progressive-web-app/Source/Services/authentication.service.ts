@@ -86,8 +86,14 @@ export class AuthenticationService {
   }
 
   login(): void {
-    this.msalApp.loginRedirect({
-      scopes: AuthenticationConfiguration.scopes,
+    from(
+      this.msalApp.loginRedirect({
+        scopes: AuthenticationConfiguration.scopes,
+      })
+    ).subscribe({
+      error: error => {
+        console.error(error);
+      },
     });
   }
 
