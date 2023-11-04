@@ -20,6 +20,6 @@ public class WebPushService : IWebPushService
     {
         var pushClient = new WebPushClient();
         pushClient.SetVapidDetails(new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey));
-        pushClient.SendNotification(new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Authentication), JsonSerializer.Serialize(new RootNotificationModel(message)));
+        pushClient.SendNotification(new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(message)));
     }
 }
