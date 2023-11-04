@@ -48,7 +48,7 @@ public class SubscriptionTriggerSubscribe
                 ExpirationTime = pushSubscriptionInformation.ExpirationTime,
                 Keys = new domain.entities.Keys
                 {
-                    Authentication = pushSubscriptionInformation.Keys.Authentication,
+                    Auth = pushSubscriptionInformation.Keys.Auth,
                     p256dh = pushSubscriptionInformation.Keys.p256dh
                 }
             }, cancellationToken);
