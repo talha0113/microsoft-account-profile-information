@@ -13,5 +13,5 @@ public class Keys
 {
     public string p256dh { get; set; }
 
-    public string Authentication { get; set; }
+    public string Auth { get; set; }
 }
