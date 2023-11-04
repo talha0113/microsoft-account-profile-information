@@ -19,7 +19,7 @@ public class SubscriptionTriggerSubscribeExample : OpenApiExample<PushSubscripti
                     ExpirationTime = DateTime.Now.ToString(),
                     Keys = new Keys
                     {
-                        Authentication = Guid.NewGuid().ToString(),
+                        Auth = Guid.NewGuid().ToString(),
                         p256dh = Guid.NewGuid().ToString()
                     }
                 },
