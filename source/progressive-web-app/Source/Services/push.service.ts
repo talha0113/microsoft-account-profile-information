@@ -79,13 +79,13 @@ export class PushService {
     if (this.swPush.isEnabled) {
       return this.swPush.subscription.pipe(
         switchMap((value: PushSubscription) => {
-         return this.httpClient.
-             delete(
+         return this.httpClient
+           .delete(
               `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
                 value.endpoint
-              )}`
-            ).
-           pipe(
+             )}`
+            )
+           .pipe(
               switchMap(() => {
                 return from(this.swPush.unsubscribe());
               })
