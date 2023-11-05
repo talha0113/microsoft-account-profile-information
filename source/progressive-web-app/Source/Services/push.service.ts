@@ -87,7 +87,7 @@ export class PushService {
         }),
         switchMap(() => {
           return from(this.swPush.unsubscribe());
-        })
+        }),
         map(() => {
           return null;
         }),
