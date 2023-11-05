@@ -83,9 +83,11 @@ export class PushService {
             `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
               value.endpoint
             )}`
-          ).pipe(switchMap(() => {
-          return from(this.swPush.unsubscribe());
-        }));
+          ).pipe(
+            switchMap(() => {
+              return from(this.swPush.unsubscribe());
+            })
+          );
         }),
         map(() => {
           return null;
