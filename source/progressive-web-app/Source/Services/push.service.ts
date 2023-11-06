@@ -79,11 +79,15 @@ export class PushService {
     if (this.swPush.isEnabled) {
       return this.swPush.subscription.pipe(
         switchMap((value: PushSubscription) => {
-          return this.httpClient.delete(
-            `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
-              value.endpoint
-            )}`
-          );
+          if (value != null) {
+            return this.httpClient.delete(
+              `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
+                value.endpoint
+              )}`
+            );
+          } else {
+            return of(null);
+          }
         }),
         switchMap(() => {
           return from(this.swPush.unsubscribe());
