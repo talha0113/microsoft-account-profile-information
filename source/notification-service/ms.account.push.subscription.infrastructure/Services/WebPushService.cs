@@ -1,6 +1,7 @@
 ﻿namespace ms.account.push.subscription.infrastructure.services;
 
 using System.Text.Json;
+using System.Threading.Tasks;
 using ms.account.push.subscription.core.models;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
@@ -16,10 +17,9 @@ public class WebPushService : IWebPushService
         this.vapidOption = vapidOption;
     }
 
-    public void SendNotification(PushSubscriptionInformation subscription, string message)
+    public async Task SendNotificationAsync(PushSubscriptionInformation subscription, string message, CancellationToken cancellationToken)
     {
         var pushClient = new WebPushClient();
-        pushClient.SetVapidDetails(new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey));
-        pushClient.SendNotification(new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(message)));
+        await pushClient.SendNotificationAsync(new PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(message)), new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey), cancellationToken);
     }
 }
