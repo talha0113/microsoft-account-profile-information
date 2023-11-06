@@ -89,6 +89,7 @@ public class SubscriptionTriggerSignalR
         {
             logger.LogInformation($"{nameof(SendSignalRMessage)} - Request Ended.");
         }
+
         return signalRMessageAction;
     }
 }
