@@ -23,7 +23,7 @@ public static class StartUpExtension
             }).
             UsingRegistrationStrategy(RegistrationStrategy.Throw).AsImplementedInterfaces().WithSingletonLifetime();
         }).
-        AddSingleton<VAPIDOption>(new VAPIDOption { Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? "", PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? "", PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? "" }).
+        AddSingleton<VAPIDOption>(new VAPIDOption { Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.Subject)} is null"), PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null"), PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null") }).
         AddSingleton<QueueClient>(new QueueClient(configuration?["AzureWebJobsStorage"], configuration?["StorageQueueName"], new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
         return services;
