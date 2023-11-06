@@ -31,7 +31,7 @@ export class SignalRService {
           this.signalRConnection.on(
             'SignalRSubscriptionCountEvent',
             (value: { count: number }) => {
-                this.liveCount$.next(value.count);
+              this.liveCount$.next(value.count);
             }
           );
           this.signalRConnection.onclose(error => {
