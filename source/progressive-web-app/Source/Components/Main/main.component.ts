@@ -120,9 +120,11 @@ export class MainComponent implements OnInit {
           },
         });
       } else {
-        this.pushService.unSubscribe.subscribe(() => {
-          this.isSubscriptionInProgress = false;
-        });
+          this.pushService.unSubscribe.subscribe({
+              next: () => {
+                  this.isSubscriptionInProgress = false;
+              }
+          });
       }
     }
   }

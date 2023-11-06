@@ -1,5 +1,6 @@
 ﻿namespace ms.account.push.subscription.func.functions;
 
+using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using ms.account.push.subscription.core.services;
@@ -17,11 +18,20 @@ public class SubscriptionTriggerPushNotification
     }
 
     [Function(name: nameof(SubscriptionTriggerPushNotification))]
-    public void Run([QueueTrigger("process-notifications", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem, CancellationToken cancellationToken)
+    public async Task RunAsync([QueueTrigger("process-notifications", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem, CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(SubscriptionTriggerPushNotification)} - Request Started.");
 
-        webPushService.SendNotification(queueItem.subscription, $"{queueItem.message}");
+        try
+        {
+            await webPushService.SendNotificationAsync(queueItem.subscription, $"{queueItem.message}", cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            var applicationException = new ApplicationException("Error Occuered", ex);
+            logger.LogError(ex, applicationException.Message, cancellationToken);
+            throw;
+        }
 
         logger.LogInformation($"{nameof(SubscriptionTriggerPushNotification)} - Request Ended.");
     }
