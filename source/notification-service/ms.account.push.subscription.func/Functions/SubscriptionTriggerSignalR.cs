@@ -11,11 +11,14 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ms.account.push.subscription.core.services;
+using ms.account.push.subscription.domain.entities;
 
 public class SubscriptionTriggerSignalR
 {
     private readonly ILogger<SubscriptionTriggerSignalR> logger;
     private readonly ISubscriptionService subscriptionService;
+    private const string SIGNALR_CONNECTION_STRING_KEY = "SignalRConnection";
+    private const string SIGNALR_HUB_NAME = "msaccprofinfohub";
 
     public SubscriptionTriggerSignalR(ILogger<SubscriptionTriggerSignalR> logger, ISubscriptionService subscriptionService)
     {
@@ -31,7 +34,7 @@ public class SubscriptionTriggerSignalR
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
     public async Task<HttpResponseData> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequestData httpRequestData,
-        [SignalRConnectionInfoInput(ConnectionStringSetting = "SignalRConnection", HubName = "msaccprofinfohub")] SignalRConnectionInfo connectionInfo,
+        [SignalRConnectionInfoInput(ConnectionStringSetting = SIGNALR_CONNECTION_STRING_KEY, HubName = SIGNALR_HUB_NAME)] SignalRConnectionInfo connectionInfo,
         CancellationToken cancellationToken)
     {
 
@@ -56,5 +59,36 @@ public class SubscriptionTriggerSignalR
         }
 
         return responseData;
+    }
+
+    [Function(name: nameof(SendSignalRMessage))]
+    [SignalROutput(HubName = SIGNALR_HUB_NAME, ConnectionStringSetting = SIGNALR_CONNECTION_STRING_KEY)]
+    public async Task<SignalRMessageAction> SendSignalRMessage(
+            [CosmosDBTrigger(
+            databaseName: "Subscriptions",
+            containerName: "Items",
+            Connection = "cosmosdb_connection",
+            LeaseContainerName = "leases",
+            CreateLeaseContainerIfNotExists = true)]IReadOnlyList<PushSubscriptionInformation> documents,
+            CancellationToken cancellationToken)
+    {
+        logger.LogInformation($"{nameof(SendSignalRMessage)} Request Started.");
+
+        var signalRMessageAction = new SignalRMessageAction("SignalRSubscriptionCountEvent");
+
+        try
+        {
+            signalRMessageAction.Arguments = new[] { new { Count = await subscriptionService.CountAsync(cancellationToken) } };
+        }
+        catch (Exception ex)
+        {
+            var applicationException = new ApplicationException("Error Occuered", ex);
+            logger.LogError(ex, applicationException.Message, cancellationToken);
+        }
+        finally
+        {
+            logger.LogInformation($"{nameof(SendSignalRMessage)} - Request Ended.");
+        }
+        return signalRMessageAction;
     }
 }
