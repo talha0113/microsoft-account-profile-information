@@ -79,25 +79,19 @@ export class PushService {
     if (this.swPush.isEnabled) {
       return this.swPush.subscription.pipe(
         switchMap((value: PushSubscription) => {
-          return this.httpClient
-            .delete(
-              `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
-                value.endpoint
-              )}`
-            )
-            .pipe(
-              switchMap(() => {
-                return from(this.swPush.unsubscribe());
-              })
-            );
+          return this.httpClient.delete(
+            `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
+              value.endpoint
+            )}`
+          );
         }),
-        map(() => {
-          return null;
+        switchMap(() => {
+          return from(this.swPush.unsubscribe());
         }),
         catchError(error => {
           // Bug
           //return ErrorManager.generalError("PushService.unSubscribe", error);
-          console.log(error);
+          console.error(error);
           return of(null);
         })
       );
