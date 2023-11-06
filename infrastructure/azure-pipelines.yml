@@ -27,7 +27,6 @@ pr:
 
 variables:
   - group: 'Infrastructure'
-  - group: 'Release Annotations'
 
 stages:
 
