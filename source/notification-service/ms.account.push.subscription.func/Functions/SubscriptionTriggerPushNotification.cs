@@ -17,7 +17,7 @@ public class SubscriptionTriggerPushNotification
     }
 
     [Function(name: nameof(SubscriptionTriggerPushNotification))]
-    public void Run([QueueTrigger("process-notifications", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem)
+    public void Run([QueueTrigger("process-notifications", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem, CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(SubscriptionTriggerPushNotification)} - Request Started.");
 

@@ -20,7 +20,7 @@ public class SubscriptionTriggerPushNotificationPoison
     }
 
     [Function(name: nameof(SubscriptionTriggerPushNotificationPoison))]
-    public void Run([QueueTrigger("process-notifications-poison", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem)
+    public void Run([QueueTrigger("process-notifications-poison", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem, CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(SubscriptionTriggerPushNotificationPoison)} - Request Started.");
         logger.LogWarning(new ApplicationException("Unable to Perform Push Notification"), JsonSerializer.Serialize(queueItem));
