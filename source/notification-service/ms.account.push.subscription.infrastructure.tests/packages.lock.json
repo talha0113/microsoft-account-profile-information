@@ -74,8 +74,8 @@
       },
       "Azure.Storage.Common": {
         "type": "Transitive",
-        "resolved": "12.17.0",
-        "contentHash": "/h8SpUkxMuQy/MbNFeJQGmhYt3JnYfEiGeDojtNgLNzzhyDnRYgjF3ZKYgjORYQpn0Spr+4+v2MZy+0GNJBLrg==",
+        "resolved": "12.18.0",
+        "contentHash": "lAYPjO4TRIyomalFkqIgZ0RN4I5zxjBydF24g+Aez0VR4WFx6JPLslhA082+xmwVTSeIz906dYeD2iVZDv1UaQ==",
         "dependencies": {
           "Azure.Core": "1.35.0",
           "System.IO.Hashing": "6.0.0"
@@ -83,10 +83,10 @@
       },
       "Azure.Storage.Queues": {
         "type": "Transitive",
-        "resolved": "12.16.0",
-        "contentHash": "ociB+g4P8d4o6K6dsCxz4qVNyGzmTKC5t7wlDLAezbfAp4m41SAUvxcDU0N4Mqxf04GPQeyImSeMFQfDzZHEcQ==",
+        "resolved": "12.17.0",
+        "contentHash": "Vam5f5xYsdX1hf4oHXMnC9hNpR/Ml9Dbp3gpf6yRVtHVkf33IwdVQ2X8FfkJ567rl74mwHZbWaoGeV6a0YA5LA==",
         "dependencies": {
-          "Azure.Storage.Common": "12.17.0",
+          "Azure.Storage.Common": "12.18.0",
           "System.Memory.Data": "1.0.2",
           "System.Text.Json": "4.7.2"
         }
@@ -127,6 +127,27 @@
         "contentHash": "HaI8puqA66YU7/9cK4Sgbs1taUTP1Ssa4QT2PIzqJ7GvAbN1QgkjbRsjH+FSbMh1MJdvS0CIwQNLtFT+KF6KpA==",
         "dependencies": {
           "NETStandard.Library": "1.6.1"
+        }
+      },
+      "Lib.AspNetCore.WebPush": {
+        "type": "Transitive",
+        "resolved": "2.2.1",
+        "contentHash": "/BNvN2c8w0dDqIpaTQCuYNR3oPZRYfxvI+oe6v+EysZtL9OW6X26TQ2Bl9LG+m0z/me5MqdkUGI1L3o6OrabVA==",
+        "dependencies": {
+          "Lib.Net.Http.WebPush": "3.1.0"
+        }
+      },
+      "Lib.Net.Http.EncryptedContentEncoding": {
+        "type": "Transitive",
+        "resolved": "2.1.0",
+        "contentHash": "4i7lOuMNvYF8K9/ZqqW2ecQxS9TEtQ808Ty7BXMTiy1zC5nBVDG2UDiKWfhFOpTPMoaDgd+ye6qfI6l3klW92g=="
+      },
+      "Lib.Net.Http.WebPush": {
+        "type": "Transitive",
+        "resolved": "3.1.0",
+        "contentHash": "xLFOi2e5R1BT0EsOQZt7tYyd/j+FzmROp77Y1DYtXZjFfWlEoW6IHbob0CL5mDXMw5KeTBBORi/LwoGeYLxQ5Q==",
+        "dependencies": {
+          "Lib.Net.Http.EncryptedContentEncoding": "2.1.0"
         }
       },
       "Microsoft.Azure.Cosmos": {
@@ -1468,7 +1489,8 @@
       "ms.account.push.subscription.infrastructure": {
         "type": "Project",
         "dependencies": {
-          "Azure.Storage.Queues": "[12.16.0, )",
+          "Azure.Storage.Queues": "[12.17.0, )",
+          "Lib.AspNetCore.WebPush": "[2.2.1, )",
           "Microsoft.Azure.Cosmos": "[3.36.0, )",
           "Microsoft.Extensions.Configuration.Abstractions": "[7.0.0, )",
           "WebPush": "[1.0.12, )",

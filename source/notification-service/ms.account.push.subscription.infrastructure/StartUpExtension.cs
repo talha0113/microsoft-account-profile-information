@@ -1,6 +1,7 @@
 ﻿namespace ms.account.push.subscription.infrastructure;
 
 using Azure.Storage.Queues;
+using Lib.AspNetCore.WebPush;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ms.account.push.subscription.core.services;
@@ -24,6 +25,12 @@ public static class StartUpExtension
             UsingRegistrationStrategy(RegistrationStrategy.Throw).AsImplementedInterfaces().WithSingletonLifetime();
         }).
         AddSingleton<VAPIDOption>(new VAPIDOption { Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.Subject)} is null"), PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null"), PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null") }).
+        AddPushServiceClient((PushServiceClientOptions serviceClientOptions) => 
+        {
+            serviceClientOptions.Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.Subject)} is null");
+            serviceClientOptions.PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null");
+            serviceClientOptions.PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null");
+        }).
         AddSingleton<QueueClient>(new QueueClient(configuration?["AzureWebJobsStorage"], configuration?["StorageQueueName"], new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
         return services;
