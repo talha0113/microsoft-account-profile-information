@@ -2,5 +2,6 @@
 
 public interface IWebPushService
 {
-    Task SendNotificationAsync(PushSubscriptionInformation subscription, string message, CancellationToken cancellationToken);
+    Task SendNotificationWebPushAsync(PushSubscriptionInformation subscription, string message, CancellationToken cancellationToken);
+    Task SendNotificationPushClientAsync(PushSubscriptionInformation subscription, string message, CancellationToken cancellationToken);
 }

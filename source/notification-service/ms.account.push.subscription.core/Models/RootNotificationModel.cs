@@ -6,21 +6,21 @@ public class RootNotificationModel
     {
         notification = new NotificationModel(message);
     }
-    public NotificationModel notification;
+    public NotificationModel notification { get; set; }
 }
 
 public class NotificationActionModel
 {
-    public string action = "open";
-    public string title = "Open Application";
+    public string action { get; set; } = "open";
+    public string title { get; set; } = "Open Application";
 }
 
 public class NotificationModel
 {
-    public string title = "Profile Information!";
-    public string body = "Notification From Backend";
-    public string icon = "Assets/Icons/icon-96x96.png";
-    public object data = new {
+    public string title { get; set; } = "Profile Information!";
+    public string body { get; set; } = "Notification From Backend";
+    public string icon { get; set; } = "Assets/Icons/icon-96x96.png";
+    public object data { get; set; } = new {
         onActionClick = new {
            @default = new {
                operation = "navigateLastFocusedOrOpen",
@@ -32,7 +32,7 @@ public class NotificationModel
            }
         }
     };
-    public List<NotificationActionModel> actions = new List<NotificationActionModel>();
+    public List<NotificationActionModel> actions { get; set; } = new List<NotificationActionModel>();
 
     public NotificationModel(string message)
     {
