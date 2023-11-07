@@ -20,7 +20,7 @@ Built with **Angular** and host in **Azure Storage Blob** utilize following conc
   - **Puppeteer** and **Jest** for Automated UI Test as nodejs based setup
   - **Playwright** for targetting all the browserrs and using C#
   
-![Flow Diagram](./Diagrams/Flow.png)
+![Flow Diagram](./diagrams/Flow.png)
 
 ### Backend
 In order to save browser subscription and send push notification following tools and concepts utlized
@@ -29,11 +29,11 @@ In order to save browser subscription and send push notification following tools
   - **Storage Queue** to add notifications in the queue and Azure Function Trigger to send notification
   - **Azure Application Insights** to store all the logs and expception from applications
 
-![Architecture Diagram](./Diagrams/Stack.png)
+![Architecture Diagram](./diagrams/Stack.png)
 
 ### Development Lifecycle
   - **Github Project and Issues** to Store all the tasks and issues
   - **Azure DevOps** for Continuous Integration and Delivery. Only main branch is deployed
   - **Release Annotations** to mark release in Application Insights
 
-![Development LifeCycle Diagram](./Diagrams/DevelopmentLifeCycle.png)
+![Development LifeCycle Diagram](./diagrams/DevelopmentLifeCycle.png)
