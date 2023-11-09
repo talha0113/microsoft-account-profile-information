@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Lib.Net.Http.WebPush;
 using Microsoft.Extensions.Logging;
-using ms.account.push.subscription.core;
 using ms.account.push.subscription.core.models;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
