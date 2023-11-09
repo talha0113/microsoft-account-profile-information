@@ -7,6 +7,8 @@ public class PushSubscriptionInformation : Entity
     public string ExpirationTime { get; set; }
 
     public Keys Keys { get; set; }
+
+    public string Language { get; set; }
 }
 
 public class Keys

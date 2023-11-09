@@ -22,27 +22,40 @@ public class SubscriptionService : ISubscriptionService
             await repository.CreateAsync(subscription, cancellationToken: cancellationToken);
         }
 
-        var item = (await repository.FindAsync(item => item.EndPoint == subscription.EndPoint, cancellationToken)).FirstOrDefault();
-
-        var notificationQueueItem = new NotificationQueueItem
+        foreach (var item in (await repository.FindAsync(item => true, cancellationToken)))
         {
-            Id = subscription.Id,
-            message = $"{await CountAsync(cancellationToken)} Subscriptions for Application",
-            subscription = item ?? throw new ArgumentNullException(nameof(PushSubscriptionInformation)),
-        };
-        await notificationQueueService.InsertAsync(notificationQueueItem, cancellationToken);
+            var notificationQueueItem = new NotificationQueueItem
+            {
+                Id = subscription.Id,
+                count = await CountAsync(cancellationToken),
+                subscription = item
+            };
+            await notificationQueueService.InsertAsync(notificationQueueItem, cancellationToken: cancellationToken);
+        }        
     }
 
     public async Task UnSubscribeAsync(string endPoint, CancellationToken cancellationToken)
     {
-        foreach (var item in (await repository.FindAsync(item => item.EndPoint == endPoint, cancellationToken)))
+        foreach (var item in (await repository.FindAsync(item => item.EndPoint == endPoint, cancellationToken: cancellationToken)))
         {
             await repository.DeleteAsync(item.Id, cancellationToken);
         }
     }
 
+    public async Task UpdateLanguageAsync(string endPoint, string language, CancellationToken cancellationToken)
+    {
+        if ((await repository.FindAsync(item => item.EndPoint == endPoint, cancellationToken: cancellationToken)).FirstOrDefault() == null)
+        {
+            throw new ApplicationException($"{nameof(endPoint)} doesn't exist");
+        }
+
+        var item = (await repository.FindAsync(item => item.EndPoint == endPoint, cancellationToken: cancellationToken)).FirstOrDefault();
+        item.Language = language;
+        await repository.FindOneAndReplaceAsync(item => item.EndPoint == endPoint, item, cancellationToken: cancellationToken);
+    }
+
     public async Task<long> CountAsync(CancellationToken cancellationToken)
     {
-        return await repository.CountAsync(item => item.EndPoint != null, cancellationToken);
-    }
+        return await repository.CountAsync(item => item.EndPoint != null, cancellationToken: cancellationToken);
+    }    
 }
