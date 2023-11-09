@@ -22,17 +22,14 @@ describe('Flag Component', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-            FormsModule,
-            RouterTestingModule.withRoutes(appRoutes),
-            ServiceWorkerModule.register('ngsw-worker.js', {
-                enabled: environment.production,
-            }),
+        FormsModule,
+        RouterTestingModule.withRoutes(appRoutes),
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: environment.production,
+        }),
         getTranslationTestingModule(),
-        ],
-        providers: [
-            NotificationService,
-            PushService,
-        ],
+      ],
+      providers: [NotificationService, PushService],
       declarations: [FlagComponent],
     }).compileComponents();
   });
