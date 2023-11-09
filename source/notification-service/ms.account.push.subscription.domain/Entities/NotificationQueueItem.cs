@@ -3,5 +3,5 @@
 public class NotificationQueueItem : Entity
 {
     public PushSubscriptionInformation subscription { get; set; }
-    public string message { get; set; }
+    public long count { get; set; }
 }

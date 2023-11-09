@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Lib.Net.Http.WebPush;
 using Microsoft.Extensions.Logging;
+using ms.account.push.subscription.core;
 using ms.account.push.subscription.core.models;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
@@ -24,13 +25,13 @@ public class WebPushService : IWebPushService
         this.logger = logger;
     }
 
-    public async Task SendNotificationWebPushAsync(PushSubscriptionInformation subscription, string message, CancellationToken cancellationToken)
+    public async Task SendNotificationWebPushAsync(PushSubscriptionInformation subscription, long count, CancellationToken cancellationToken)
     {
         var pushClient = new WebPushClient();
-        await pushClient.SendNotificationAsync(new WebPush.PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(message)), new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey), cancellationToken);
+        await pushClient.SendNotificationAsync(new WebPush.PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(count, subscription.Language)), new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey), cancellationToken);
     }
 
-    public async Task SendNotificationPushClientAsync(PushSubscriptionInformation subscription, string message, CancellationToken cancellationToken)
+    public async Task SendNotificationPushClientAsync(PushSubscriptionInformation subscription, long count, CancellationToken cancellationToken)
     {
         try
         {

@@ -24,7 +24,7 @@ public class SubscriptionTriggerPushNotification
 
         try
         {
-            await webPushService.SendNotificationWebPushAsync(queueItem.subscription, $"{queueItem.message}", cancellationToken);
+            await webPushService.SendNotificationWebPushAsync(queueItem.subscription, $"{queueItem.count}", cancellationToken);
         }
         catch (Exception ex)
         {
