@@ -47,6 +47,32 @@ export class PushService {
     return of(false);
   }
 
+  public updateLangauge(language: string): Observable<boolean> {
+    if (this.swPush.isEnabled) {
+      return from(
+        this.swPush.requestSubscription({
+          serverPublicKey: VAPIDConfiguration.publicKey,
+        })
+      ).pipe(
+        switchMap((value: PushSubscription) => {
+          return this.httpClient.patch(
+            `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
+              value.endpoint
+            )}`,
+            language
+          );
+        }),
+        map(() => {
+          return true;
+        }),
+        catchError(error => {
+          return ErrorManager.generalError('PushService.updateLangauge', error);
+        })
+      );
+    }
+    return of(false);
+  }
+
   public get count(): Observable<number> {
     this.httpClient
       .get(`${environment.PWASubscribeCountUrl}`)
