@@ -8,7 +8,8 @@ export const environment = {
     PWASubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerSubscribe`,
     PWAUnSubscribeUrl: `${functionBaseUrl}/SubscriptionTriggerUnSubscribe`,
     PWASubscribeCountUrl: `${functionBaseUrl}/SubscriptionTriggerCount`,
-    PWASignalRConnectionUrl: `${functionBaseUrl}/GetSignalRInformation`
+    PWASignalRConnectionUrl: `${functionBaseUrl}/SubscriptionTriggerSignalR`,
+    PWAUpdateLanguageUrl: `${functionBaseUrl}/SubscriptionTriggerUpdateLanguage`
 };
 
 /*
