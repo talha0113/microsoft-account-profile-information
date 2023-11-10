@@ -134,6 +134,7 @@ export class MainComponent implements OnInit {
         this.pushService.unSubscribe.subscribe({
           next: () => {
             this.isSubscriptionInProgress = false;
+            window.location.reload();
           },
         });
       }
