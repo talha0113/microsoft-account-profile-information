@@ -49,24 +49,25 @@ export class PushService {
   public updateLangauge(language: string): Observable<boolean> {
     if (this.swPush.isEnabled) {
       return from(
-        this.swPush.requestSubscription({
-          serverPublicKey: VAPIDConfiguration.publicKey,
-        })
-      ).pipe(
-        switchMap((value: PushSubscription) => {
-          return this.httpClient.patch(
-            `${environment.PWAUpdateLanguageUrl}&endpoint=${encodeURIComponent(
-              value.endpoint
-            )}`,
-            language
-          );
-        }),
-        map(() => {
-          return true;
-        }),
-        catchError(error => {
-          return ErrorManager.generalError('PushService.updateLangauge', error);
-        })
+        this.swPush.subscription.pipe(
+          switchMap((value: PushSubscription) => {
+            return this.httpClient.patch(
+              `${
+                environment.PWAUpdateLanguageUrl
+              }&endpoint=${encodeURIComponent(value.endpoint)}`,
+              language
+            );
+          }),
+          map(() => {
+            return true;
+          }),
+          catchError(error => {
+            return ErrorManager.generalError(
+              'PushService.updateLangauge',
+              error
+            );
+          })
+        )
       );
     }
     return of(false);
