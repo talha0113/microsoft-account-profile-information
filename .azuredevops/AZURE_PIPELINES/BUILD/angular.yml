@@ -38,13 +38,26 @@ stages:
     steps:
 
     # Perform Tokens Replacement
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    - task: replacetokens@3
       displayName: Replace
       inputs:
-        rootDirectory: '${{parameters.source_directory}}/Source/Configurations'
-        targetFiles: vapid.configuration.ts
+        rootDirectory: '${{parameters.source_directory}}'
+        targetFiles: |
+          Source/Configurations/vapid.configuration.ts
+          Configurations/Environments/environment.prod.ts
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        actionOnNoFiles: 'continue'
+        enableTransforms: false
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        enableRecursion: false
+        useLegacyPattern: false
+        enableTelemetry: true
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))      
-    
+
     # Prepare Cache
     - task: Cache@2
       displayName: 'Cache'

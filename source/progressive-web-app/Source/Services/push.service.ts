@@ -107,22 +107,23 @@ export class PushService {
         switchMap((value: PushSubscription) => {
           if (value != null) {
             return this.httpClient.delete(
-              `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
-                value.endpoint
-              )}`
+              `${
+                environment.PWAUpdateLanguageUrl
+              }&endpoint=${encodeURIComponent(value.endpoint)}`
             );
           } else {
             return of(null);
           }
         }),
         switchMap(() => {
-          return from(this.swPush.unsubscribe());
+          return from(this.swPush.unsubscribe()).pipe(
+            catchError(() => {
+              return of(null);
+            })
+          );
         }),
         catchError(error => {
-          // Bug
-          //return ErrorManager.generalError("PushService.unSubscribe", error);
-          console.error(error);
-          return of(null);
+          return ErrorManager.generalError('PushService.unSubscribe', error);
         })
       );
     }
