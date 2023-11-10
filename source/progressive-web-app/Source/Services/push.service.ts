@@ -55,7 +55,7 @@ export class PushService {
       ).pipe(
         switchMap((value: PushSubscription) => {
           return this.httpClient.patch(
-            `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
+            `${environment.PWAUpdateLanguageUrl}&endpoint=${encodeURIComponent(
               value.endpoint
             )}`,
             language
@@ -106,9 +106,9 @@ export class PushService {
         switchMap((value: PushSubscription) => {
           if (value != null) {
             return this.httpClient.delete(
-              `${
-                environment.PWAUpdateLanguageUrl
-              }&endpoint=${encodeURIComponent(value.endpoint)}`
+              `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
+                value.endpoint
+              )}`
             );
           } else {
             return of(null);
