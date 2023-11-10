@@ -116,7 +116,8 @@ export class PushService {
         }),
         switchMap(() => {
           return from(this.swPush.unsubscribe()).pipe(
-            catchError(() => {
+            catchError(error => {
+              console.error(error);
               return of(null);
             })
           );
