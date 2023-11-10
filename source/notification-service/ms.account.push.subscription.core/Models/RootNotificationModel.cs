@@ -44,6 +44,6 @@ public class NotificationModel
         body = $"{count} {(language == Constants.DANISH_LANGUAGE_KEY ? "Abonnementer til ansøgning": "Subscriptions for Application")}";
         title = language == Constants.DANISH_LANGUAGE_KEY ? "Profiloplysninger!" : "Profile Information!";
         
-        actions.Add(new NotificationActionModel());
+        actions.Add(new NotificationActionModel(language));
     }
 }
