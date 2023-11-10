@@ -11,6 +11,9 @@ export class ErrorManager {
   }
   public static generalError(path: string, error: string): Observable<never> {
     InsightsManager.trackException(path, error);
-    return throwError(`${path}: ${error}`);
+    console.error(error);
+    return throwError(() => {
+      new Error(`${path}: ${error}`);
+    });
   }
 }
