@@ -27,7 +27,6 @@ export class PushService {
         })
       ).pipe(
         switchMap((value: PushSubscription) => {
-          //console.log(JSON.stringify(value));
           return this.httpClient.post(
             environment.PWASubscribeUrl,
             value.toJSON()

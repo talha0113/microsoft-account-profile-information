@@ -5,7 +5,8 @@ import {
   VersionEvent,
   VersionReadyEvent,
 } from '@angular/service-worker';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs';
+import { TranslocoService } from '@ngneat/transloco';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
@@ -25,6 +26,7 @@ export class MainComponent implements OnInit {
   public hideSubscription: boolean = false;
 
   constructor(
+    private translocoService: TranslocoService,
     private swUpdate: SwUpdate,
     private router: Router,
     private notificationService: NotificationService,
@@ -107,18 +109,27 @@ export class MainComponent implements OnInit {
     if (!this.isOffline) {
       this.isSubscriptionInProgress = true;
       if (this.notificationsSubscribed) {
-        this.pushService.subscribe().subscribe({
-          next: (value: boolean) => {
-            this.notificationsSubscribed = value;
-            this.isSubscriptionInProgress = false;
-          },
-          error: error => {
-            console.log(error);
-            this.notificationsSubscribed = !this.notificationsSubscribed;
-            this.hideSubscription = true;
-            this.isSubscriptionInProgress = false;
-          },
-        });
+        this.pushService
+          .subscribe()
+          .pipe(
+            switchMap(() => {
+              return this.pushService.updateLangauge(
+                this.translocoService.getActiveLang()
+              );
+            })
+          )
+          .subscribe({
+            next: (value: boolean) => {
+              this.notificationsSubscribed = value;
+              this.isSubscriptionInProgress = false;
+            },
+            error: error => {
+              console.log(error);
+              this.notificationsSubscribed = !this.notificationsSubscribed;
+              this.hideSubscription = true;
+              this.isSubscriptionInProgress = false;
+            },
+          });
       } else {
         this.pushService.unSubscribe.subscribe({
           next: () => {
