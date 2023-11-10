@@ -11,6 +11,11 @@ public class RootNotificationModel
 
 public class NotificationActionModel
 {
+    public NotificationActionModel(string language)
+    {
+        title = language == Constants.DANISH_LANGUAGE_KEY ? "Åbn Applikation" : "Open Application";
+    }
+
     public string action { get; set; } = "open";
     public string title { get; set; } = "Open Application";
 }
@@ -36,7 +41,7 @@ public class NotificationModel
 
     public NotificationModel(long count, string language)
     {
-        body = $"{count} {(language == Constants.DANISH_LANGUAGE_KEY ? "Subscriptions for Application": "Abonnementer til ansøgning")}";
+        body = $"{count} {(language == Constants.DANISH_LANGUAGE_KEY ? "Abonnementer til ansøgning": "Subscriptions for Application")}";
         title = language == Constants.DANISH_LANGUAGE_KEY ? "Profiloplysninger!" : "Profile Information!";
         
         actions.Add(new NotificationActionModel());
