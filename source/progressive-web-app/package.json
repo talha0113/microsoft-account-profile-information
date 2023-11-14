@@ -27,9 +27,9 @@
     "@ngneat/elf-state-history": "^1.4.0",
     "@ngneat/transloco": "^6.0.0",
 
-    "@azure/msal-browser": "^3.4.0",
-    "@microsoft/applicationinsights-web": "^3.0.4",
-    "@microsoft/signalr": "^7.0.12",
+    "@azure/msal-browser": "^3.5.0",
+    "@microsoft/applicationinsights-web": "^3.0.5",
+    "@microsoft/signalr": "^8.0.0",
 
     "core-js": "^3.33.2",
     "rxjs": "^7.8.1",
@@ -64,6 +64,6 @@
 
     "gzipper": "~7.2.0",
 
-    "typescript": "~5.1.6"
+    "typescript": "~5.2.2"
   }
 }
