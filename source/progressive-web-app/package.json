@@ -10,15 +10,15 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^16.2.12",
-    "@angular/common": "^16.2.12",
-    "@angular/compiler": "^16.2.12",
-    "@angular/core": "^16.2.12",
-    "@angular/forms": "^16.2.12",
-    "@angular/platform-browser": "^16.2.12",
-    "@angular/platform-browser-dynamic": "^16.2.12",
-    "@angular/router": "^16.2.12",
-    "@angular/service-worker": "^16.2.12",
+    "@angular/animations": "^17.0.3",
+    "@angular/common": "^17.0.3",
+    "@angular/compiler": "^17.0.3",
+    "@angular/core": "^17.0.3",
+    "@angular/forms": "^17.0.3",
+    "@angular/platform-browser": "^17.0.3",
+    "@angular/platform-browser-dynamic": "^17.0.3",
+    "@angular/router": "^17.0.3",
+    "@angular/service-worker": "^17.0.3",
 
     "@ngneat/elf": "^2.4.0",
     "@ngneat/elf-requests": "^1.9.2",
@@ -36,9 +36,9 @@
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
-    "@angular/cli": "^16.2.9",
-    "@angular/compiler-cli": "^16.2.12",
-    "@angular-devkit/build-angular": "^16.2.9",
+    "@angular/cli": "^17.0.1",
+    "@angular/compiler-cli": "^17.0.3",
+    "@angular-devkit/build-angular": "^17.0.1",
 
     "@angular-eslint/builder": "^16.2.0",
     "@angular-eslint/eslint-plugin": "^16.2.0",
