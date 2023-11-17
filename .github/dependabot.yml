@@ -113,3 +113,20 @@ updates:
         - "major"
         - "minor"
         - "patch"
+  - package-ecosystem: "npm"
+    directory: "/source/ui-tests/puppeteer"
+    target-branch: "main"
+    rebase-strategy: "auto"
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+    assignees:
+      - "octocat"
+    schedule:
+      interval: daily
+      time: "23:00"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "build"
+      include: "scope"
