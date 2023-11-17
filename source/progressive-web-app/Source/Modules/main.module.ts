@@ -47,6 +47,7 @@ import { AuthenticationRepository } from '../Repositories/authentcation.reposito
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {}),
+
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerImmediately',

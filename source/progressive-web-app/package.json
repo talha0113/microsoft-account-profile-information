@@ -3,22 +3,22 @@
   "version": "1.0.0",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --configuration production --vendor-chunk=true --stats-json=true && gzipper compress ./Distributions --include js,css,html --gzip --skip-compressed --output-file-format [filename].[ext].[compressExt] ./Distributions",
+    "build": "ng build --configuration production --source-map=true --vendor-chunk=true --stats-json=true && gzipper compress ./Distributions --include js,css,html --gzip --skip-compressed --output-file-format [filename].[ext].[compressExt] ./Distributions",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^16.2.12",
-    "@angular/common": "^16.2.12",
-    "@angular/compiler": "^16.2.12",
-    "@angular/core": "^16.2.12",
-    "@angular/forms": "^16.2.12",
-    "@angular/platform-browser": "^16.2.12",
-    "@angular/platform-browser-dynamic": "^16.2.12",
-    "@angular/router": "^16.2.12",
-    "@angular/service-worker": "^16.2.12",
+    "@angular/animations": "^17.0.3",
+    "@angular/common": "^17.0.3",
+    "@angular/compiler": "^17.0.3",
+    "@angular/core": "^17.0.3",
+    "@angular/forms": "^17.0.3",
+    "@angular/platform-browser": "^17.0.3",
+    "@angular/platform-browser-dynamic": "^17.0.3",
+    "@angular/router": "^17.0.3",
+    "@angular/service-worker": "^17.0.3",
 
     "@ngneat/elf": "^2.4.0",
     "@ngneat/elf-requests": "^1.9.2",
@@ -27,27 +27,29 @@
     "@ngneat/elf-state-history": "^1.4.0",
     "@ngneat/transloco": "^6.0.0",
 
-    "@azure/msal-browser": "^3.4.0",
-    "@microsoft/applicationinsights-web": "^3.0.4",
-    "@microsoft/signalr": "^7.0.12",
+    "@azure/msal-browser": "^3.5.0",
+    "@microsoft/applicationinsights-web": "^3.0.5",
+    "@microsoft/signalr": "^8.0.0",
 
     "core-js": "^3.33.2",
     "rxjs": "^7.8.1",
-    "zone.js": "~0.13.3"
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular/cli": "^16.2.9",
-    "@angular/compiler-cli": "^16.2.12",
-    "@angular-devkit/build-angular": "^16.2.9",
+    "@angular/cli": "^17.0.1",
+    "@angular/compiler-cli": "^17.0.3",
+    "@angular-devkit/build-angular": "^17.0.1",
 
-    "@angular-eslint/builder": "^16.2.0",
-    "@angular-eslint/eslint-plugin": "^16.2.0",
-    "@angular-eslint/eslint-plugin-template": "^16.2.0",
-    "@angular-eslint/schematics": "^16.2.0",
-    "@angular-eslint/template-parser": "^16.2.0",
+    "@angular-eslint/builder": "^17.1.0",
+    "@angular-eslint/eslint-plugin": "^17.1.0",
+    "@angular-eslint/eslint-plugin-template": "^17.1.0",
+    "@angular-eslint/schematics": "^17.1.0",
+    "@angular-eslint/template-parser": "^17.1.0",
+
     "@typescript-eslint/parser": "^6.10.0",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "prettier": "^3.0.3",
+    
+    "prettier": "^3.1.0",
     "prettier-eslint": "^16.1.2",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -61,9 +63,9 @@
     "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-junit-reporter": "~2.0.1",
-
+    
     "gzipper": "~7.2.0",
 
-    "typescript": "~5.1.6"
+    "typescript": "~5.2.2"
   }
 }

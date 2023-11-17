@@ -1,12 +1,10 @@
 <ng-container *transloco="let translate; read: 'LANGUAGE'">
-  <a
-    *ngIf="!isOffline"
-    (click)="switchLanguage()"
-    (keyup)="(switchLanguage)"
-    tabindex="0">
-    <img
-      [attr.alt]="translate('TEXT')"
-      [attr.src]="safeFlag(translate('FLAG'))"
-      height="30" />
-  </a>
+  @if (!isOffline) {
+    <a (click)="switchLanguage()" (keyup)="(switchLanguage)" tabindex="0">
+      <img
+        [attr.alt]="translate('TEXT')"
+        [attr.src]="safeFlag(translate('FLAG'))"
+        height="30" />
+    </a>
+  }
 </ng-container>
