@@ -46,8 +46,8 @@
     "@angular-eslint/schematics": "^17.1.0",
     "@angular-eslint/template-parser": "^17.1.0",
 
-    "@typescript-eslint/parser": "^6.10.0",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
     
     "prettier": "^3.1.0",
     "prettier-eslint": "^16.1.2",
