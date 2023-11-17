@@ -38,7 +38,7 @@
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
-            "sourceMap": true,
+            "sourceMap": false,
             "optimization": false,
             "namedChunks": true
           },
@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ms-account-profile-information:build:production"
+              "buildTarget": "ms-account-profile-information:build:production"
             },
             "development": {
-              "browserTarget": "ms-account-profile-information:build:development"
+              "buildTarget": "ms-account-profile-information:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -104,7 +104,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ms-account-profile-information:build"
+            "buildTarget": "ms-account-profile-information:build"
           }
         },
         "test": {

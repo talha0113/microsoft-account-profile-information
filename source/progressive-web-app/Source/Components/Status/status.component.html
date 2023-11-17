@@ -2,7 +2,7 @@
   <div>
     {{ 'MESSAGES.CONNECTED' | transloco }}
   </div>
-  <div *ngIf="!isOffline">
+  @if (!isOffline) {
     <div>
       <label>
         {{ 'MESSAGES.STATS' | transloco }}:
@@ -13,8 +13,10 @@
           (change)="toogleStats()" />
       </label>
     </div>
-    <div *ngIf="statsSubscribed" class="stats-count">
-      {{ 'MESSAGES.SUBSCRIPTIONS' | transloco }}: {{ subscriptionCount }}
-    </div>
-  </div>
+    @if (statsSubscribed) {
+      <div class="stats-count">
+        {{ 'MESSAGES.SUBSCRIPTIONS' | transloco }}: {{ subscriptionCount }}
+      </div>
+    }
+  }
 </div>

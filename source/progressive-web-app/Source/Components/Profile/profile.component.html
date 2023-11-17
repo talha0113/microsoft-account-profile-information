@@ -1,13 +1,11 @@
-<div *ngIf="(isLoading$ | async) === false; else loadingProfile">
-  <div *ngIf="profileInformation$ | async as profile">
+@if ((isLoading$ | async) === false) {
+  @if (profileInformation$ | async; as profile) {
     <div>
-      <img
-        *ngIf="profile.imageUrl !== null"
-        alt="profile image"
-        [attr.src]="profile.imageUrl | safeUrl" />
-      <div style="color: red" *ngIf="profile.imageUrl === null">
-        No Profile Image
-      </div>
+      @if (profile.imageUrl !== null) {
+        <img alt="profile image" [attr.src]="profile.imageUrl | safeUrl" />
+      } @else {
+        <div style="color: red">No Profile Image</div>
+      }
       <div>
         <h3>
           {{ profile.displayName }}
@@ -17,9 +15,7 @@
         {{ profile.userPrincipalName }}
       </div>
     </div>
-  </div>
-</div>
-
-<ng-template #loadingProfile>
+  }
+} @else {
   <div>Loading Profile...</div>
-</ng-template>
+}
