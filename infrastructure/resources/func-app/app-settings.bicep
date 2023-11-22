@@ -42,7 +42,6 @@ output appSettings object = {
   XDT_MicrosoftApplicationInsights_Mode: 'recommended'
   XDT_MicrosoftApplicationInsights_PreemptSdk: '~1'
   FUNCTIONS_WORKER_RUNTIME: applicationRuntime
-  linuxFxVersion: '${toUpper(applicationRuntime)}|6.0'
   SignalRConnection: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SIGNALR-CONNECTION-STRING)'
   VAPID_Subject: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Subject)'
   VAPID_PublicKey: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=VAPID-Public-Key)'
