@@ -40,18 +40,18 @@
     "@angular/compiler-cli": "^17.0.4",
     "@angular-devkit/build-angular": "^17.0.3",
 
-    "@angular-eslint/builder": "^17.1.0",
-    "@angular-eslint/eslint-plugin": "^17.1.0",
-    "@angular-eslint/eslint-plugin-template": "^17.1.0",
-    "@angular-eslint/schematics": "^17.1.0",
-    "@angular-eslint/template-parser": "^17.1.0",
+    "@angular-eslint/builder": "^17.1.1",
+    "@angular-eslint/eslint-plugin": "^17.1.1",
+    "@angular-eslint/eslint-plugin-template": "^17.1.1",
+    "@angular-eslint/schematics": "^17.1.1",
+    "@angular-eslint/template-parser": "^17.1.1",
 
-    "@typescript-eslint/parser": "^6.13.1",
-    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.2",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
     
     "prettier": "^3.1.0",
     "prettier-eslint": "^16.1.2",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
 
     "karma-chrome-launcher": "~3.2.0",
