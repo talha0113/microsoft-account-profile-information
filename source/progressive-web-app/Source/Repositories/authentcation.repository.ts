@@ -13,7 +13,9 @@ import {
 } from '@ngneat/elf-persist-state';
 import { stateHistory } from '@ngneat/elf-state-history';
 
+import { StorageManager } from '../Managers/storage.manager';
 import { Authentication } from '../Models/authentication.model';
+import { TokenConstant } from '../Constants/token.constant';
 
 const STORE_NAME = 'AUTHENTICATION';
 interface AuthenticationProps {
@@ -24,7 +26,9 @@ const store = createStore(
   {
     name: STORE_NAME,
   },
-  withProps<AuthenticationProps>({ authentication: null }),
+  withProps<AuthenticationProps>({
+    authentication: StorageManager.get<Authentication>(TokenConstant.token),
+  }),
   withRequestsStatus(initializeAsPending(STORE_NAME))
 );
 
@@ -64,6 +68,8 @@ export class AuthenticationRepository {
       }),
       updateRequestStatus(STORE_NAME, 'success')
     );
+    StorageManager.remove(TokenConstant.token);
+    StorageManager.add(TokenConstant.token, authentication);
   }
 
   public remove() {
