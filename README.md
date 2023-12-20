@@ -12,6 +12,7 @@
     - [Back-End](#back-end)
 - [Architecture](#architecture)
 - [DevOps](#devops)
+    - [Branching](#branching)
 
 ## Microsoft Account Information Application
 - A basic progressive web application with front-end and back-end to utilize major concepts of **Angular**, **Serverless** and **Monitoring**
@@ -96,12 +97,41 @@ sequenceDiagram
     s->>+p: live notifications
 ```
 
-### Architecture
+## Architecture
 ![Architecture Diagram](./diagrams/Stack.png)
 
-### DevOps
+## DevOps
   - **Github Project and Issues** to Store all the tasks and issues
   - **Azure DevOps** for Continuous Integration and Delivery. Only main branch is deployed
   - **Release Annotations** to mark release in Application Insights
-
+### Branching
+Trunk based development has been opted to protect the main branch and short lived branches for new features and bugs
+``` mermaid
+    %%{init: { 'gitGraph': {'mainBranchName': 'main'}} }%%
+    gitGraph
+       commit
+       commit
+       branch feature/1
+       checkout feature/1
+       commit
+       commit
+       checkout main
+       commit
+       commit
+       branch feature/2
+       commit
+       checkout main
+       merge feature/1
+       commit
+       merge feature/2
+       checkout main
+       commit
+       commit
+       branch bug/3
+       checkout bug/3
+       commit
+       checkout main
+       merge bug/3
+       commit
+```
 ![Development LifeCycle Diagram](./diagrams/DevelopmentLifeCycle.png)
