@@ -13,6 +13,8 @@
 - [Architecture](#architecture)
 - [DevOps](#devops)
     - [Branching](#branching)
+    - [Continuous Integration](#continuous-integration)
+    - [Continuous Delivery](#continuous-delivery)
 
 ## Microsoft Account Information Application
 - A basic progressive web application with front-end and back-end to utilize major concepts of **Angular**, **Serverless** and **Monitoring**
@@ -134,4 +136,51 @@ Trunk based development has been opted to protect the main branch and short live
        merge bug/3
        commit
 ```
-![Development LifeCycle Diagram](./diagrams/DevelopmentLifeCycle.png)
+
+### Continuous Integration
+`Front-End`,  `Back-End` and `Infrastructure as Code` applications are following same process from `continuous integration`. `CodeQL` is used for code scanning on every `Pull Request`
+``` mermaid
+flowchart LR
+    cc[Commit] --> ca[Dependecies Cache]
+    ca --> rp[Restore Packages]
+    rp --> l[Lint]
+    l --> b[Build]
+    b --> br{main branch?}
+    br -->|Yes| p[Artifacts]
+    br -->|No| t[Tests]
+```
+
+### Continuous Delivery
+``` mermaid
+---
+title: Infrastructure as Code
+---
+flowchart LR
+    a[Download Artifacts] --> d[Deploy Bicep]
+    d --> r[Release Annotations]
+```
+``` mermaid
+---
+title: Notification Service (Function Apps)
+---
+flowchart LR
+    a[Download Artifacts] --> d[Deploy Function App]
+    d --> r[Release Annotations]
+```
+
+``` mermaid
+---
+title: Angular PWA
+---
+flowchart LR
+    a[Download Artifacts] --> d[Deploy Static Web App]
+    d --> r[Release Annotations]
+```
+``` mermaid
+---
+title: Puppeteer Automated UI Tests
+---
+flowchart LR
+    rp[Restore Packages] --> b[Build]    
+    b --> t[Tests]
+```
