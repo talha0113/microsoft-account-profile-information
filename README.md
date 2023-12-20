@@ -100,7 +100,38 @@ sequenceDiagram
 ```
 
 ## Architecture
-![Architecture Diagram](./diagrams/Stack.png)
+``` mermaid
+flowchart LR    
+    ar>App Registration]
+    mg[(Microsoft Graph)]
+    fd([Azure Front Door])
+    swa([Static Web Application])
+    af([Azure Functions])
+    pn[[Push Notifications]]
+    cd[(Azure Cosmos DB)]
+    qs{{Queue Storage}}
+    kv([Azure Key Vault])
+    sr([Azure SignalR])
+    ai([Application Insights])
+    la[(Log Analytics Workspace)]
+
+    subgraph am[Azure Monitor]
+    direction TB
+        ai 
+        la
+    end
+
+    swa --> mg
+    ar --> mg
+    fd --> swa --> ar
+    swa --> af --> cd
+    cd --> af --> qs
+    qs --> af --> kv
+    af --> sr --> swa
+    af --> pn --> swa
+    swa --> am
+    af --> am
+```
 
 ## DevOps
   - **Github Project and Issues** to Store all the tasks and issues
