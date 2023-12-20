@@ -18,9 +18,38 @@ Built with **Angular** and hosted in `Azure Static Web App` utilize following fr
   - **Jasmine & Karma** for Unit Testing
   - **TypeScript**
   - **Puppeteer** and **Jest** for Automated UI Test
-  - **Playwright** for targetting all the browserrs and using C#. (Future addition)
-  
-![Flow Diagram](./diagrams/Flow.png)
+  - **Playwright** for targetting all the browserrs and using C#. (Comming soon)
+
+``` mermaid
+sequenceDiagram
+    autonumber
+
+    actor u as User
+
+    participant l as Login
+    participant a as Auhenticate
+    participant s as Status
+    participant p as Profile
+    participant o as Logout
+    participant b as Back-End
+    
+    u->>+l: Browse
+    alt is authenticated?
+        u->>+s: Logged In
+    else is not authenticated
+        u->>+a: Authenticate User
+        a-->>-l: Authenticated
+        l->>+s: Logged In
+    end
+    
+    s->>+b: Fetch Live Subscriptions
+    b-->>-s: Display Subscriptions
+    s->>+b: Subscribe for push notifications
+    b-->>-s: Push notifications subscribed
+    u->>+p: View Profile Information
+    u->>+o: LogOut Option
+    o-->>-u: LoggedOut 
+```    
 
 ### Backend
 In order to save browser subscription and send push notification following implementation has been used
