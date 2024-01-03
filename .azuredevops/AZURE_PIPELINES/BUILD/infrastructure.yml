@@ -39,7 +39,7 @@ stages:
         SourceFolder: '${{parameters.source_directory}}'
         Contents: |
           **/*.bicep
-          *.json
+          *.bicepparam
           !bicepconfig.json
         TargetFolder: '$(ArtifactDirectory)'
         OverWrite: true
