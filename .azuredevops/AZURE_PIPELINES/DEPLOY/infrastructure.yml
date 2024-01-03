@@ -40,12 +40,17 @@ stages:
         deploy:
           steps:
 
+          - powershell: |
+              az bicep build-params --file main.bicepparam --outfile main.bicepparam.json              
+            workingDirectory: '$(DropRoot)'
+            displayName: 'Parameter FIle'
+          
           - task: FileTransform@1
             displayName: 'Environment Settings'
             inputs:
               folderPath: '$(DropRoot)' 
               fileType: 'json'
-              targetFiles: 'main.parameters.json'
+              targetFiles: 'main.bicepparam.json'
               xmlTransformationRules: '' #disabled
           
           - task: AzureCLI@2
@@ -56,7 +61,7 @@ stages:
               workingDirectory: '$(DropRoot)'
               inlineScript: |
                 az --version                
-                az deployment sub create --location westeurope --template-file main.bicep --parameters main.parameters.json
+                az deployment sub create --location westeurope --template-file main.bicep --parameters main.bicepparam.json
             displayName: 'Resources'
 
           - template: ../COMMON/release-annotations.yml
