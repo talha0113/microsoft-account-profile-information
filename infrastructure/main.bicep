@@ -4,7 +4,7 @@ targetScope = 'subscription'
 param location string = deployment().location
 
 @description('Application Name')
-param applicationName string = 'dummy'
+param applicationName string
 
 @description('Deployment Time')
 param deploymentTime string = utcNow('F')
@@ -14,10 +14,10 @@ param deploymentTime string = utcNow('F')
   'dev'
   'prod'
 ])
-param environment string = 'dev'
+param environment string
 
 @description('Index')
-param index string = '001'
+param index string
 
 @description('VAPID Configuration')
 param vapId object
