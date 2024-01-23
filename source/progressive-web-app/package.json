@@ -20,9 +20,9 @@
     "@angular/router": "^17.1.0",
     "@angular/service-worker": "^17.1.0",
 
-    "@ngneat/elf": "^2.4.0",
+    "@ngneat/elf": "^2.5.0",
     "@ngneat/elf-requests": "^1.9.2",
-    "@ngneat/elf-entities": "^4.6.0",
+    "@ngneat/elf-entities": "^5.0.0",
     "@ngneat/elf-persist-state": "^1.2.0",
     "@ngneat/elf-state-history": "^1.4.0",
     "@ngneat/transloco": "^6.0.4",
