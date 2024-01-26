@@ -33,5 +33,5 @@ stages:
     - powershell: |
         git tag $(BuildNumber)
         git push origin $(BuildNumber)
-      displayName: Files
-      workingDirectory: '$(DropRoot)'
+      displayName: Tag
+      workingDirectory: '$(Build.SourcesDirectory)'
