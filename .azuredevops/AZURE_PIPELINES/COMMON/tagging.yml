@@ -1,0 +1,37 @@
+parameters:
+- name: name
+  type: string
+  default: ''
+- name: display_name
+  type: string
+  default: ''
+- name: branch_name
+  type: string
+  default: 'main'
+
+stages:
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.display_name }}
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
+  variables:
+  - name: BuildNumber 
+    value: '$(Build.BuildNumber)'  
+
+  jobs:
+
+  - job: package
+    displayName: ${{ parameters.display_name }}
+    pool: 
+      vmImage: 'ubuntu-latest' 
+    continueOnError: false
+    workspace:
+      clean: all
+
+    steps:
+
+    - powershell: |
+        git tag $(BuildNumber)
+        git push origin $(BuildNumber)
+      displayName: Files
+      workingDirectory: '$(DropRoot)'

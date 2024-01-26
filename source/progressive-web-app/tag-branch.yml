@@ -1,0 +1,22 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth).$(rev:r)
+
+resources:
+  pipelines:
+  - pipeline: puppeteer
+    source: \microsoft-account-profile-information\puppeteer
+    trigger: 
+      branches:
+        include: 
+        - main
+
+trigger: none
+
+pr: none
+
+stages:
+
+- template: ../../.azuredevops/AZURE_PIPELINES/COMMON/tagging.yml
+  parameters:
+    name: 'tagging'
+    display_name: 'Tagging'
+    branch_name: 'main'
