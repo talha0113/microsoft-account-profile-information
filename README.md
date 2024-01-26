@@ -2,7 +2,7 @@
 [![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Fnotification-service?branchName=main&label=notification-service)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=59&branchName=main)
 [![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Fprogressive-web-app?branchName=main&label=progressive-web-app)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=60&branchName=main)
 [![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Fpuppeteer?branchName=main&label=puppeteer)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=61&branchName=main)
-[![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Fbranch-tagging?branchName=main)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=62&branchName=main)
+[![Build Status](https://dev.azure.com/talha0113/Open%20Source/_apis/build/status%2Fmicrosoft-account-profile-information%2Fbranch-tagging?branchName=main&label=branch-tagging)](https://dev.azure.com/talha0113/Open%20Source/_build/latest?definitionId=62&branchName=main)
 [![CodeQL](https://github.com/talha0113/microsoft-account-profile-information/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/talha0113/microsoft-account-profile-information/actions/workflows/github-code-scanning/codeql)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli)
 
