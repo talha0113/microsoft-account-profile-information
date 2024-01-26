@@ -30,6 +30,9 @@ stages:
 
     steps:
 
+    - checkout: self
+      persistCredentials: true
+    
     - powershell: |
         git tag $(BuildNumber)
         git push origin $(BuildNumber)
