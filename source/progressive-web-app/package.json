@@ -61,7 +61,7 @@
     "@types/jasmine": "~5.1.4",
     "@types/jasminewd2": "~2.0.13",
     "jasmine-core": "~5.1.2",
-    "karma": "~6.4.2",
+    "karma": "~6.4.3",
     "karma-junit-reporter": "~2.0.1",
     
     "gzipper": "~7.2.0",
