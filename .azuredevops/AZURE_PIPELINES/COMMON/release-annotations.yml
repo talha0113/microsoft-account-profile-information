@@ -1,40 +1,88 @@
 parameters:
 - name: environment_name
   type: string
-  default: ''
+  default: '' 
+- name: depends_on
+  type: string
+  default: ''  
 
-steps:
+jobs:
 
-- task: AzureCLI@2
-  displayName: 'Release Annotations'
-  inputs:
-    azureSubscription: '${{ format(''{0}'', parameters.environment_name) }}'
-    scriptType: 'pscore'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      $resourceGroupName = "${{ format('{0}', replace(parameters.environment_name, 'app', 'rg')) }}"
-      $appInsightsResourceId = ((az monitor app-insights component show --resource-group $resourceGroupName) | ConvertFrom-Json).id
-      $releaseName = "$(Build.DefinitionName)"
-      $releaseProperties = @{
-          "BuildNumber"='$(Build.BuildNumber)';
-          "BuildRepositoryName"='$(Build.Repository.Name)';
-          "BuildRepositoryProvider"='$(Build.Repository.Provider)';
-          "ReleaseDefinitionName"='$(Build.DefinitionName)';
-          "ReleaseDescription"='Triggered by $(Build.DefinitionName) $(Build.BuildNumber)';
-          "ReleaseEnvironmentName"='$(Environment.Name)';
-          "ReleaseId"='$(Environment.Id)';
-          "ReleaseName"='$(Build.DefinitionName)';
-          "ReleaseRequestedFor"='$(Build.RequestedFor)';
-          "ReleaseWebUrl"='$(Build.Repository.Uri)';
-          "SourceBranch"='$(Build.SourceBranch)'
-      }
-      $annotation = @{
-          Id = [GUID]::NewGuid();
-          AnnotationName = $releaseName;
-          EventTime = (Get-Date).ToUniversalTime().GetDateTimeFormats("s")[0];
-          Category = "Deployment";
-          Properties = ConvertTo-Json $releaseProperties -Compress
-      }
+- deployment: tag
+  displayName: 'Tag'
+  environment: ${{ format('{0}', parameters.environment_name) }}
+  dependsOn: ${{ parameters.depends_on }}
+  pool:
+    vmImage: 'windows-latest' 
+  continueOnError: 'false'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
 
-      $body = (ConvertTo-Json $annotation -Compress) -replace '(\\+)"', '$1$1"' -replace "`"", "`"`""
-      az rest --method put --uri "$($appInsightsResourceId)/Annotations?api-version=2015-05-01" --body "$($body) "
+        - task: AzureCLI@2
+          displayName: 'Release Annotations'
+          inputs:
+            azureSubscription: '${{ format(''{0}'', parameters.environment_name) }}'
+            scriptType: 'pscore'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              $resourceGroupName = "${{ format('{0}', replace(parameters.environment_name, 'app', 'rg')) }}"
+              $appInsightsResourceId = ((az monitor app-insights component show --resource-group $resourceGroupName) | ConvertFrom-Json).id
+              $releaseName = "$(Build.DefinitionName)"
+              $releaseProperties = @{
+                  "BuildNumber"="$(Build.BuildNumber)";
+                  "BuildRepositoryName"="$(Build.Repository.Name)";
+                  "BuildRepositoryProvider"="$(Build.Repository.Provider)";
+                  "ReleaseDefinitionName"="$(Build.DefinitionName)";
+                  "ReleaseDescription"="Triggered by $(Build.DefinitionName) $(Build.BuildNumber)";
+                  "ReleaseEnvironmentName"="$(Environment.Name)";
+                  "ReleaseId"="$(Environment.Id)";
+                  "ReleaseName"="$(Build.DefinitionName)";
+                  "ReleaseRequestedFor"="$(Build.RequestedFor)";
+                  "ReleaseWebUrl"="$(Build.Repository.Uri)";
+                  "SourceBranch"="$(Build.SourceBranch)";
+              }
+
+              # Function to ensure all Unicode characters in a JSON string are properly escaped
+              function Convert-UnicodeToEscapeHex {
+              param (
+                [parameter(Mandatory = $true)][string]$JsonString
+              )
+              $JsonObject = ConvertFrom-Json -InputObject $JsonString
+              foreach ($property in $JsonObject.PSObject.Properties) {
+                $name = $property.Name
+                $value = $property.Value
+                if ($value -is [string]) {
+                  $value = [regex]::Unescape($value)
+                  $OutputString = ""
+                  foreach ($char in $value.ToCharArray()) {
+                    $dec = [int]$char
+                    if ($dec -gt 127) {
+                      $hex = [convert]::ToString($dec, 16)
+                      $hex = $hex.PadLeft(4, '0')
+                      $OutputString += "\u$hex"
+                    }
+                    else {
+                      $OutputString += $char
+                    }
+                  }
+                  $JsonObject.$name = $OutputString
+                }
+               }
+                return ConvertTo-Json -InputObject $JsonObject -Compress
+              }
+
+              $annotation = @{
+               Id = [GUID]::NewGuid();
+               AnnotationName = $releaseName;
+               EventTime = (Get-Date).ToUniversalTime().GetDateTimeFormats("s")[0];
+               Category = "Deployment"; #Application Insights only displays annotations from the "Deployment" Category
+               Properties = ConvertTo-Json $releaseProperties -Compress
+              }
+
+              $annotation = ConvertTo-Json $annotation -Compress
+              $annotation = Convert-UnicodeToEscapeHex -JsonString $annotation  
+
+              $body = $annotation -replace '(\\+)"', '$1$1"' -replace "`"", "`"`""
+              az rest --method put --uri "$($appInsightsResourceId)/Annotations?api-version=2015-05-01" --body "$($body) "
