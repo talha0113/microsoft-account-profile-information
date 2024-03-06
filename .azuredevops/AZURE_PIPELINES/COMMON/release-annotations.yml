@@ -6,7 +6,7 @@ parameters:
 steps:
 
 - task: AzureCLI@2
-  displayName: 'Release annotations'
+  displayName: 'Release Annotations'
   inputs:
     azureSubscription: '${{ format(''{0}'', parameters.environment_name) }}'
     scriptType: 'pscore'
