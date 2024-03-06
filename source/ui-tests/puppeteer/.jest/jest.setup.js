@@ -10,7 +10,7 @@ const height = 1080;
 module.exports = async function () {
     const browser = await launch({
         timeout: 0,
-        headless: 'new',
+        headless: true,
         slowMo: 20,
         dumpio: true,
         ignoreHTTPSErrors: true,
