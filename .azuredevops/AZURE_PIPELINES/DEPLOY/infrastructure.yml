@@ -64,6 +64,7 @@ stages:
                 az deployment sub create --location westeurope --template-file main.bicep --parameters main.bicepparam.json
             displayName: 'Resources'
 
-          - template: ../COMMON/release-annotations.yml
-            parameters:
-              environment_name: ${{parameters.environment_name}}
+  - template: ../COMMON/release-annotations.yml
+    parameters:
+      environment_name: ${{parameters.environment_name}}
+      depends_on: ${{ replace(parameters.main_project, '.', '_') }} 
