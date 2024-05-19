@@ -33,7 +33,7 @@
 
     "core-js": "^3.37.1",
     "rxjs": "^7.8.1",
-    "zone.js": "~0.14.5"
+    "zone.js": "~0.14.6"
   },
   "devDependencies": {
     "@angular/cli": "^17.3.6",
