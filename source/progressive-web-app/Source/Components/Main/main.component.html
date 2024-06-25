@@ -20,6 +20,7 @@
       <label>
         {{ 'MESSAGES.SUBSCRIBE' | transloco }}:
         <input
+          name="notificationsSubscribed"
           type="checkbox"
           [disabled]="isSubscriptionInProgress"
           [(ngModel)]="notificationsSubscribed"
