@@ -15,7 +15,7 @@ pr: none
 
 stages:
 
-- template: ../../.azuredevops/AZURE_PIPELINES/COMMON/tagging.yml
+- template: ../../.azuredevops/azure-pipelines/common/tagging.yml
   parameters:
     name: 'tagging'
     display_name: 'Tagging'

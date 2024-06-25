@@ -38,24 +38,15 @@ stages:
     steps:
 
     # Perform Tokens Replacement
-    - task: replacetokens@3
+    - task: replacetokens@6
       displayName: Replace
       inputs:
-        rootDirectory: '${{parameters.source_directory}}'
-        targetFiles: |
+        tokenPattern: 'default'
+        root: '${{parameters.source_directory}}'
+        sources: |
           Source/Configurations/vapid.configuration.ts
           Configurations/Environments/environment.prod.ts
-        encoding: 'auto'
-        writeBOM: true
-        actionOnMissing: 'warn'
-        keepToken: false
-        actionOnNoFiles: 'continue'
-        enableTransforms: false
-        tokenPrefix: '#{'
-        tokenSuffix: '}#'
-        enableRecursion: false
-        useLegacyPattern: false
-        enableTelemetry: true
+        ifNoFilesFound: 'error'
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))      
 
     # Prepare Cache

@@ -27,7 +27,7 @@ pr:
 
 stages:
 
-- template: ../../.azuredevops/AZURE_PIPELINES/BUILD/azure-function.yml
+- template: ../../.azuredevops/azure-pipelines/build/azure-function.yml
   parameters:
     name: build
     display_name: 'Build'
@@ -35,7 +35,7 @@ stages:
     branch_name: 'main'
     main_project: "ms.account.push.subscription.func"
 
-- template: ../../.azuredevops/AZURE_PIPELINES/DEPLOY/azure-function.yml
+- template: ../../.azuredevops/azure-pipelines/deploy/azure-function.yml
   parameters:
     name: 'development'
     display_name: 'Development'

@@ -30,13 +30,13 @@ variables:
 
 stages:
 
-- template: ../.azuredevops/AZURE_PIPELINES/BUILD/infrastructure.yml
+- template: ../.azuredevops/azure-pipelines/build/infrastructure.yml
   parameters:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/infrastructure'
 
-- template: ../.azuredevops/AZURE_PIPELINES/DEPLOY/infrastructure.yml
+- template: ../.azuredevops/azure-pipelines/deploy/infrastructure.yml
   parameters:
     name: 'development'
     display_name: 'Development'
