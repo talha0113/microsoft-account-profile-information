@@ -18,7 +18,7 @@ variables:
 
 stages:
 
-- template: ../../../.azuredevops/AZURE_PIPELINES/DEPLOY/UI-TESTS/puppeteer.yml
+- template: ../../../.azuredevops/azure-pipelines/deploy/ui-tests/puppeteer.yml
   parameters:
     name: 'puppeteer'
     display_name: 'Puppeteer'
