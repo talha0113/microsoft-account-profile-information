@@ -51,7 +51,7 @@ stages:
               package: '$(DropRoot)/${{ parameters.main_project }}.zip'              
               deploymentMethod: 'auto'
 
-  - template: ../COMMON/release-annotations.yml
+  - template: ../common/release-annotations.yml
     parameters:
       environment_name: ${{parameters.environment_name}}
       depends_on: ${{ replace(parameters.main_project, '.', '_') }}          

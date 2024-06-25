@@ -30,14 +30,14 @@ variables:
 
 stages:
 
-- template: ../../.azuredevops/AZURE_PIPELINES/BUILD/angular.yml
+- template: ../../.azuredevops/azure-pipelines/build/angular.yml
   parameters:
     name: build
     display_name: 'Build'
     source_directory: '$(Build.SourcesDirectory)/source/progressive-web-app'
     branch_name: 'main'
 
-- template: ../../.azuredevops/AZURE_PIPELINES/DEPLOY/angular.yml
+- template: ../../.azuredevops/azure-pipelines/deploy/angular.yml
   parameters:
     name: 'development'
     display_name: 'Development'
