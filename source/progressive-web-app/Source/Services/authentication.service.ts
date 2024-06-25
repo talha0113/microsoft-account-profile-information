@@ -70,10 +70,6 @@ export class AuthenticationService {
                 value.idToken,
                 value.accessToken
               );
-              //this.msalApp.acquireTokenRedirect({
-              //    scopes: AuthenticationConfiguration.scopes,
-              //    sid: value.idTokenClaims["sid"]
-              //});
             }
           }
         })

@@ -8,7 +8,7 @@ export class InsightsManager {
   private static applicationInsights = new ApplicationInsights({
     config: {
       connectionString:
-        'InstrumentationKey=02db383e-c586-47be-91a4-1aa6a1847d97;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/',
+        'InstrumentationKey=02db383e-c586-47be-91a4-1aa6a1847d97;',
     },
   });
 
