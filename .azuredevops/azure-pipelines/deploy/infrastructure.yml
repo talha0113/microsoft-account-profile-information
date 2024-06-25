@@ -67,4 +67,4 @@ stages:
   - template: ../common/release-annotations.yml
     parameters:
       environment_name: ${{parameters.environment_name}}
-      depends_on: ${{ replace(parameters.main_project, '.', '_') }} 
+      depends_on: deploy
