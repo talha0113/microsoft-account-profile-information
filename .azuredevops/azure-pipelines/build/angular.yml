@@ -27,7 +27,7 @@ stages:
   - job: package
     displayName: ${{ parameters.display_name }}
     pool: 
-      vmImage: 'windows-latest' 
+      vmImage: 'ubuntu-latest' 
     continueOnError: false
     workspace:
       clean: all
@@ -36,6 +36,14 @@ stages:
       value: '$(Pipeline.Workspace)/.npm'
   
     steps:
+
+    # Install node version 22.x
+    - task: NodeTool@0
+      displayName: 'Node: 22.x'
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '22.x'
+        checkLatest: true
 
     # Perform Tokens Replacement
     - task: replacetokens@6
