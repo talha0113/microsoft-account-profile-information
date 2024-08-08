@@ -13,7 +13,6 @@ module.exports = async function () {
         headless: true,
         slowMo: 20,
         dumpio: true,
-        ignoreHTTPSErrors: true,
         args: [
             `--window-size=${width},${height}`,
             `--incognit`,
