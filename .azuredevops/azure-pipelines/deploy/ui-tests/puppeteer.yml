@@ -36,11 +36,14 @@ stages:
 
     steps:
 
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    - task: replacetokens@6
       displayName: Replace
       inputs:
-        rootDirectory: '${{parameters.source_directory}}/Configurations'
-        targetFiles: environment.config.ts
+        tokenPattern: 'default'
+        root: '${{parameters.source_directory}}/Configurations'
+        sources: |
+          environment.config.ts
+        ifNoFilesFound: 'error'
 
     - task: Cache@2
       displayName: 'Cache'
