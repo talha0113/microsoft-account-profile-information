@@ -50,7 +50,7 @@ resource functionApplication 'Microsoft.Web/sites@2022-09-01' = {
     keyVaultReferenceIdentity: userAssignedIdentityId
     httpsOnly: true
     siteConfig: {      
-      linuxFxVersion: 'DOTNET-ISOLATED|8.0'
+      linuxFxVersion: 'DOTNET-ISOLATED|9.0'
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
       cors: {
