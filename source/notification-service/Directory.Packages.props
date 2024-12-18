@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Azure.Storage.Queues" Version="12.21.0" />
+    <PackageVersion Include="Microsoft.Azure.Cosmos" Version="3.46.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.11.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.5.1" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.SignalRService" Version="1.15.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="6.6.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageVersion Include="Scrutor" Version="5.0.2" />
+    <PackageVersion Include="Lib.AspNetCore.WebPush" Version="2.2.1" />
+    <PackageVersion Include="WebPush" Version="1.0.12" />
+    <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1" />
+    <PackageVersion Include="FluentAssertions" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.6.4" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.6.4" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+  </ItemGroup>
+</Project>
