@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { APP_INITIALIZER } from '@angular/core';
+import { inject, provideAppInitializer } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { StorageManager } from '../Managers/storage.manager';
 import { TranslationConfiguration } from '../Transloco/translation.configuration';
@@ -27,9 +27,7 @@ export function ApplicationInitialization(
   };
 }
 
-export const applicationInitializationProvider = {
-  provide: APP_INITIALIZER,
-  useFactory: ApplicationInitialization,
-  deps: [TranslocoService],
-  multi: true,
-};
+export const applicationInitializationProvider = provideAppInitializer(() => {
+        const initializerFn = (ApplicationInitialization)(inject(TranslocoService));
+        return initializerFn();
+      });

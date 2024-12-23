@@ -15,11 +15,12 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "Distributions",
+            "outputPath": {
+              "base": "Distributions"
+            },
             "index": "Source/index.html",
-            "main": "Source/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -35,19 +36,18 @@
               "Styles/styles.css"
             ],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": false,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "Source/main.ts"
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "950kb",
                   "maximumError": "1mb"
                 },
                 {
@@ -73,15 +73,10 @@
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true,
-              "ngswConfigPath": "Source/ngsw-config.json"
+              "serviceWorker": "Source/ngsw-config.json"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
