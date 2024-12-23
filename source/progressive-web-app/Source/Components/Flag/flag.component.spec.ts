@@ -57,8 +57,9 @@ describe('Flag Component', () => {
   it('Should switch language', async () => {
     expect(translocoService.getActiveLang()).toBe(
       TranslationConfiguration.availableLanguages[0]
-    );
-    component.switchLanguage();
+      );
+      component.switchLanguage();
+      TestBed.flushEffects();
     expect(translocoService.getActiveLang()).toBe(
       TranslationConfiguration.availableLanguages[1]
     );
