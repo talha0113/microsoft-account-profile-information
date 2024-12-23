@@ -5,8 +5,9 @@ import { PushService } from 'Source/Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
 
 @Component({
-  selector: 'status',
-  templateUrl: './status.component.html',
+    selector: 'status',
+    templateUrl: './status.component.html',
+    standalone: false
 })
 export class StatusComponent implements OnInit, OnDestroy {
   private subscriptionLiveCountSubscription: Subscription = null;

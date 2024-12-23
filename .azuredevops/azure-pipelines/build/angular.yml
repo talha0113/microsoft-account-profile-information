@@ -139,7 +139,7 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy'
       inputs:
-        SourceFolder: '${{parameters.source_directory}}/Distributions'
+        SourceFolder: '${{parameters.source_directory}}/Distributions/browser'
         Contents: |
          **
         TargetFolder: '$(Build.ArtifactStagingDirectory)'

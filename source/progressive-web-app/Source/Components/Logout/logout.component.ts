@@ -5,8 +5,9 @@ import { AuthenticationService } from '../../Services/authentication.service';
 import { ProfileService } from '../../Services/profile.service';
 
 @Component({
-  selector: 'logout',
-  templateUrl: './logout.component.html',
+    selector: 'logout',
+    templateUrl: './logout.component.html',
+    standalone: false
 })
 export class LogoutComponent implements OnInit {
   isOffline: boolean = true;

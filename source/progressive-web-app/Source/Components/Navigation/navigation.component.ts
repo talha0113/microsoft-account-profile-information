@@ -6,9 +6,10 @@ import { NavigationLink } from '../../Models/navigation-link.model';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 
 @Component({
-  selector: 'navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css'],
+    selector: 'navigation',
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.css'],
+    standalone: false
 })
 export class NavigationComponent implements OnInit {
   public navigationLinks: Array<NavigationLink> = new Array<NavigationLink>();
