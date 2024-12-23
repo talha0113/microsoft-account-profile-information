@@ -6,9 +6,9 @@ import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 
 @Component({
-    selector: 'login',
-    templateUrl: './login.component.html',
-    standalone: false
+  selector: 'login',
+  templateUrl: './login.component.html',
+  standalone: false,
 })
 export class LoginComponent implements OnInit {
   isInProgress$: Observable<boolean>;

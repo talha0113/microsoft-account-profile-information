@@ -28,6 +28,6 @@ export function ApplicationInitialization(
 }
 
 export const applicationInitializationProvider = provideAppInitializer(() => {
-        const initializerFn = (ApplicationInitialization)(inject(TranslocoService));
-        return initializerFn();
-      });
+  const initializerFn = ApplicationInitialization(inject(TranslocoService));
+  return initializerFn();
+});

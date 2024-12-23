@@ -8,9 +8,9 @@ import { StorageManager } from '../../Managers/storage.manager';
 import { PushService } from '../../Services/push.service';
 
 @Component({
-    selector: 'flag',
-    templateUrl: 'flag.component.html',
-    standalone: false
+  selector: 'flag',
+  templateUrl: 'flag.component.html',
+  standalone: false,
 })
 export class FlagComponent implements OnInit, OnDestroy {
   public currentLanguage: string = '';
