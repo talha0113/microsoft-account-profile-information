@@ -6,9 +6,9 @@ import { Profile } from '../../Models/profile.model';
 import { ProfileRepository } from '../../Repositories/profile.repository';
 
 @Component({
-    selector: 'profile',
-    templateUrl: './profile.component.html',
-    standalone: false
+  selector: 'profile',
+  templateUrl: './profile.component.html',
+  standalone: false,
 })
 export class ProfileComponent implements OnInit {
   profileInformation$: Observable<Profile>;

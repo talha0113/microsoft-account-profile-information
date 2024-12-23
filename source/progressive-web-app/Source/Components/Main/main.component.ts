@@ -14,9 +14,9 @@ import { Version } from 'Source/Models/version.model';
 import { VersionConstant } from 'Source/Constants/version.constant';
 
 @Component({
-    selector: 'main',
-    templateUrl: './main.component.html',
-    standalone: false
+  selector: 'main',
+  templateUrl: './main.component.html',
+  standalone: false,
 })
 export class MainComponent implements OnInit {
   public title: string = 'Profile Information!';
