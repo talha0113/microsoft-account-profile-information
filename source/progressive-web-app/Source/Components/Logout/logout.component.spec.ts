@@ -1,11 +1,10 @@
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import {
   TestBed,
   ComponentFixture,
   ComponentFixtureAutoDetect,
 } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { LogoutComponent } from './logout.component';
 import { ProfileService } from '../../Services/profile.service';
@@ -16,6 +15,7 @@ import { AuthenticationRepository } from '../../Repositories/authentcation.repos
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { ProfileRepository } from '../../Repositories/profile.repository';
 import { tap } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('Logout Component', () => {
   let fixture: ComponentFixture<LogoutComponent>;
@@ -29,13 +29,12 @@ describe('Logout Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        getTranslationTestingModule(),
-      ],
+      imports: [getTranslationTestingModule()],
       declarations: [LogoutComponent],
       providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,

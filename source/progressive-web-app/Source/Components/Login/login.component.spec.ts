@@ -1,10 +1,9 @@
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import {
   TestBed,
   ComponentFixture,
   ComponentFixtureAutoDetect,
 } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { from } from 'rxjs';
 
 import { LoginComponent } from './login.component';
@@ -26,12 +25,10 @@ describe('Login Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        getTranslationTestingModule(),
-      ],
+      imports: [getTranslationTestingModule()],
       declarations: [LoginComponent],
       providers: [
+        provideRouter([]),
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,
