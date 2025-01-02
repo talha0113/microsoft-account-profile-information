@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, isDevMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { appRoutes } from '../Routes/main.route';
@@ -45,7 +45,6 @@ import { AuthenticationRepository } from '../Repositories/authentcation.reposito
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule,
     RouterModule.forRoot(appRoutes, {}),
 
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -56,6 +55,7 @@ import { AuthenticationRepository } from '../Repositories/authentcation.reposito
   ],
   providers: [
     applicationInitializationProvider,
+    provideHttpClient(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ProfileInterceptor,
