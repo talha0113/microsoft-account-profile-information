@@ -55,6 +55,11 @@ stages:
         path: $(npm_config_cache)
         cacheHitVar: 'CACHE_RESTORED'
 
+    - powershell: |
+        npx puppeteer browsers install chrome              
+      workingDirectory: '${{parameters.source_directory}}'
+      displayName: 'Chrome'
+    
     - task: Npm@1
       displayName: 'Install'
       inputs:
