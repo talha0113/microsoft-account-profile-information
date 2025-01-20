@@ -9,7 +9,7 @@ public static class StartUpExtension
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
         _ = services.Scan(( ITypeSourceSelector typeSourceSelector ) => {
-            typeSourceSelector.FromEntryAssembly().AddClasses((IImplementationTypeFilter implementationTypeFilter) => {
+            typeSourceSelector.FromApplicationDependencies().AddClasses((IImplementationTypeFilter implementationTypeFilter) => {
                 implementationTypeFilter.AssignableTo<ISubscriptionService>();
             }).UsingRegistrationStrategy(RegistrationStrategy.Throw).AsMatchingInterface().WithScopedLifetime();
         });
