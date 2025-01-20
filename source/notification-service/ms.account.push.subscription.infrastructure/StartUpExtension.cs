@@ -18,7 +18,7 @@ public static class StartUpExtension
         var configuration = services.BuildServiceProvider().GetService<IConfiguration>() ?? throw new Exception($"{nameof(IConfiguration)} is null");
 
         _ = services.Scan((ITypeSourceSelector typeSourceSelector) => {
-            typeSourceSelector.FromEntryAssembly().
+            typeSourceSelector.FromApplicationDependencies().
             AddClasses((IImplementationTypeFilter implementationTypeFilter) => {
                 implementationTypeFilter.AssignableToAny(typeof(IWebPushService), typeof(INotificationQueueService));
             }).
