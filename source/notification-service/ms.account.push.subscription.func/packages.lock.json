@@ -47,9 +47,9 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.CosmosDB": {
         "type": "Direct",
-        "requested": "[4.11.0, )",
-        "resolved": "4.11.0",
-        "contentHash": "XHTVJ8a29v6HCHKkNtIz62P0tRJRcej36fkyUIAhwZllfD0pD8TpRZcO+ky3JY1j+VVPgiNN5mi8bHw/ON9kow==",
+        "requested": "[4.12.0, )",
+        "resolved": "4.12.0",
+        "contentHash": "2ymT5ucHajMVzBNpp+jzYTNV4QaquqHeotiJdt+mUMUVaAfCZKGbr7yJIwyPEfOgJsiF/NyDh3GOvPH9ZTfb7A==",
         "dependencies": {
           "Microsoft.Azure.Cosmos": "3.39.1",
           "Microsoft.Azure.Functions.Worker.Core": "1.19.0",
