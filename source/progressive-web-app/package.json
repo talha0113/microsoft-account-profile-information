@@ -25,7 +25,7 @@
     "@ngneat/elf-persist-state": "^1.2.1",
     "@ngneat/elf-state-history": "^1.4.0",
     "@ngneat/transloco": "^6.0.4",
-    "@azure/msal-browser": "^4.2.1",
+    "@azure/msal-browser": "^4.3.0",
     "@microsoft/applicationinsights-web": "^3.3.5",
     "@microsoft/signalr": "^8.0.7",
     "core-js": "^3.40.0",
