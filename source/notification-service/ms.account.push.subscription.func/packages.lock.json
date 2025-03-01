@@ -15,9 +15,9 @@
       },
       "Microsoft.Azure.Cosmos": {
         "type": "Direct",
-        "requested": "[3.47.1, )",
-        "resolved": "3.47.1",
-        "contentHash": "T64cwiDAJZtgrRlNLjyeWMfTizYkrdk9zqp9GJqMKWJen/8/bZ9yningjaxdcEL1CKIHbDoS/L2u+kcTKJ5Ceg==",
+        "requested": "[3.47.2, )",
+        "resolved": "3.47.2",
+        "contentHash": "lRHh/lifbcJnHsUjCYJEzD8DuVrl9/bZSvvOJD0minP16Waj20DImVrillZGvXuY8opDgFvFtQMc7W7Pln1oGA==",
         "dependencies": {
           "Azure.Core": "1.44.1",
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
@@ -2057,7 +2057,7 @@
         "dependencies": {
           "Azure.Storage.Queues": "[12.21.0, )",
           "Lib.AspNetCore.WebPush": "[2.2.1, )",
-          "Microsoft.Azure.Cosmos": "[3.47.1, )",
+          "Microsoft.Azure.Cosmos": "[3.47.2, )",
           "Microsoft.Extensions.Configuration.Abstractions": "[9.0.2, )",
           "WebPush": "[1.0.12, )",
           "ms.account.push.subscription.core": "[1.0.0, )"
