@@ -25,7 +25,7 @@
     "@ngneat/elf-persist-state": "^1.2.1",
     "@ngneat/elf-state-history": "^1.4.0",
     "@ngneat/transloco": "^6.0.4",
-    "@azure/msal-browser": "^4.4.0",
+    "@azure/msal-browser": "^4.5.0",
     "@microsoft/applicationinsights-web": "^3.3.5",
     "@microsoft/signalr": "^8.0.7",
     "core-js": "^3.40.0",
@@ -57,6 +57,6 @@
     "karma": "~6.4.4",
     "karma-junit-reporter": "~2.0.1",
     "gzipper": "~8.2.0",
-    "typescript": "~5.7.3"
+    "typescript": "~5.8.2"
   }
 }
