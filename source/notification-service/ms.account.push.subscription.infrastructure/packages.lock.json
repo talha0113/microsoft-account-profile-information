@@ -15,11 +15,11 @@
       },
       "Lib.AspNetCore.WebPush": {
         "type": "Direct",
-        "requested": "[2.2.1, )",
-        "resolved": "2.2.1",
-        "contentHash": "/BNvN2c8w0dDqIpaTQCuYNR3oPZRYfxvI+oe6v+EysZtL9OW6X26TQ2Bl9LG+m0z/me5MqdkUGI1L3o6OrabVA==",
+        "requested": "[2.2.2, )",
+        "resolved": "2.2.2",
+        "contentHash": "T4YkqdFJ+eXE8wR7JxA8rmLnUe7D0q+kfQT5UPNkgbF1jGie/bMSajP95QszyDyLed6zxnIFKl+01p0PD6zIdA==",
         "dependencies": {
-          "Lib.Net.Http.WebPush": "3.1.0"
+          "Lib.Net.Http.WebPush": "3.3.1"
         }
       },
       "Microsoft.Azure.Cosmos": {
@@ -89,15 +89,15 @@
       },
       "Lib.Net.Http.EncryptedContentEncoding": {
         "type": "Transitive",
-        "resolved": "2.1.0",
-        "contentHash": "4i7lOuMNvYF8K9/ZqqW2ecQxS9TEtQ808Ty7BXMTiy1zC5nBVDG2UDiKWfhFOpTPMoaDgd+ye6qfI6l3klW92g=="
+        "resolved": "2.1.1",
+        "contentHash": "n+CuGyBCZ9zLT3p39sab1bSL2FRCoXHXUM/T7jXwZlibOE+mASOqXcKD9LzNjH+VZTdA0mn02EdBww06DzD9IA=="
       },
       "Lib.Net.Http.WebPush": {
         "type": "Transitive",
-        "resolved": "3.1.0",
-        "contentHash": "xLFOi2e5R1BT0EsOQZt7tYyd/j+FzmROp77Y1DYtXZjFfWlEoW6IHbob0CL5mDXMw5KeTBBORi/LwoGeYLxQ5Q==",
+        "resolved": "3.3.1",
+        "contentHash": "5ByiHRcY3lF/4LA7ZbgzBEUmX6oYlPTS1NzXEom3uvT7wFHeZ8Q9DOQcPG6awFqS8yGUuyTvxrHyBzTOwe8Fpg==",
         "dependencies": {
-          "Lib.Net.Http.EncryptedContentEncoding": "2.1.0"
+          "Lib.Net.Http.EncryptedContentEncoding": "2.1.1"
         }
       },
       "Microsoft.Bcl.AsyncInterfaces": {
