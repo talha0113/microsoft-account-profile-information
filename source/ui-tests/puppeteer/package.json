@@ -16,7 +16,7 @@
     "jest-trx-results-processor": "^3.0.2",
     "mkdirp": "^3.0.1",
     "os": "^0.1.2",
-    "puppeteer": "^24.12.1",
+    "puppeteer": "^24.13.0",
     "rimraf": "^6.0.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
