@@ -1,5 +1,5 @@
-@if ((isLoading$ | async) === false) {
-  @if (profileInformation$ | async; as profile) {
+@if (isLoading() === false) {
+  @if (profileInformation(); as profile) {
     <div>
       @if (profile.imageUrl !== null) {
         <img alt="profile image" [attr.src]="profile.imageUrl | safeUrl" />

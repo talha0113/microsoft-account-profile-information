@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { ProfileService } from '../../Services/profile.service';
 import { Profile } from '../../Models/profile.model';
@@ -11,8 +12,18 @@ import { ProfileRepository } from '../../Repositories/profile.repository';
   standalone: false,
 })
 export class ProfileComponent implements OnInit {
-  profileInformation$: Observable<Profile>;
-  isLoading$: Observable<boolean>;
+  profileInformation = toSignal(
+    this.repository.data$.pipe(
+      map(value => value.data)
+    )
+  );
+  
+  isLoading = toSignal(
+    this.repository.data$.pipe(
+      map(value => value.isLoading)
+    ),
+    { initialValue: true }
+  );
 
   constructor(
     private profileService: ProfileService,
@@ -21,16 +32,5 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.profileService.information$.subscribe();
-
-    this.isLoading$ = this.repository.data$.pipe(
-      map(value => {
-        return value.isLoading;
-      })
-    );
-    this.profileInformation$ = this.repository.data$.pipe(
-      map(value => {
-        return value.data;
-      })
-    );
   }
 }
