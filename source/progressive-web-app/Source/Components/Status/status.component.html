@@ -2,20 +2,20 @@
   <div>
     {{ 'MESSAGES.CONNECTED' | transloco }}
   </div>
-  @if (!isOffline) {
+  @if (!isOffline()) {
     <div>
       <label>
         {{ 'MESSAGES.STATS' | transloco }}:
         <input
           class="stats-subscribed"
           type="checkbox"
-          [(ngModel)]="statsSubscribed"
+          [checked]="statsSubscribed()"
           (change)="toogleStats()" />
       </label>
     </div>
-    @if (statsSubscribed) {
+    @if (statsSubscribed()) {
       <div class="stats-count">
-        {{ 'MESSAGES.SUBSCRIPTIONS' | transloco }}: {{ subscriptionCount }}
+        {{ 'MESSAGES.SUBSCRIPTIONS' | transloco }}: {{ subscriptionCount() }}
       </div>
     }
   }

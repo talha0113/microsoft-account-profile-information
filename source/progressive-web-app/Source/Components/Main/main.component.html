@@ -15,25 +15,25 @@
     <router-outlet></router-outlet>
   </div>
   <br />
-  @if (!isOffline && !hideSubscription) {
+  @if (!isOffline() && !hideSubscription()) {
     <div>
       <label>
         {{ 'MESSAGES.SUBSCRIBE' | transloco }}:
         <input
           name="notificationsSubscribed"
           type="checkbox"
-          [disabled]="isSubscriptionInProgress"
-          [(ngModel)]="notificationsSubscribed"
+          [disabled]="isSubscriptionInProgress()"
+          [checked]="notificationsSubscribed()"
           (change)="subscriptionChanged()" />
       </label>
     </div>
   }
-  @if (isSubscriptionInProgress) {
+  @if (isSubscriptionInProgress()) {
     <div>
       <img alt="loader" src="../../Assets/loader.gif" height="30" width="30" />
     </div>
   }
-  @if (isOffline) {
+  @if (isOffline()) {
     <div style="color: red">
       <b>
         {{ 'MESSAGES.OFFLINE' | transloco }}
