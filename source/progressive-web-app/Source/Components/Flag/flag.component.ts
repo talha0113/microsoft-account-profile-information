@@ -10,7 +10,7 @@ import { Router, Event, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslocoService } from '@ngneat/transloco';
 import { TranslationConfiguration } from '../../Transloco/translation.configuration';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { StorageManager } from '../../Managers/storage.manager';
 import { PushService } from '../../Services/push.service';
 
@@ -20,9 +20,10 @@ import { PushService } from '../../Services/push.service';
   standalone: false,
 })
 export class FlagComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  
   public readonly currentLanguage: WritableSignal<string> = signal('');
-  private readonly subscription: Subscription = null;
-  public isOffline: boolean = !navigator.onLine;
+  public isOffline = signal(!navigator.onLine);
 
   constructor(
     private readonly domSanitizer: DomSanitizer,
@@ -42,17 +43,18 @@ export class FlagComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.currentLanguage.set(this.translocoService.getActiveLang());
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.isOffline = !navigator.onLine;
-      }
-    });
+    this.router.events
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: Event) => {
+        if (event instanceof NavigationEnd) {
+          this.isOffline.set(!navigator.onLine);
+        }
+      });
   }
 
   public ngOnDestroy(): void {
-    if (this.subscription !== null) {
-      this.subscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public safeFlag(value: string): SafeUrl {
