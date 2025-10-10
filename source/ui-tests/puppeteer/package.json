@@ -19,6 +19,6 @@
     "puppeteer": "^24.23.0",
     "rimraf": "^6.0.0",
     "ts-jest": "^29.4.4",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   }
 }
