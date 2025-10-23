@@ -69,14 +69,14 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.OpenApi": {
         "type": "Direct",
-        "requested": "[1.5.1, )",
-        "resolved": "1.5.1",
-        "contentHash": "14W3/70jZCpVv91WYPKFpnrNs7hx75sKU7EJRK8mV2R8KciEBsVMZ5MOlo8jv8bM2MSViq3zs/Z3Xo0fW6hgBg==",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "nhw+JpCQqXHf5vA5leFoCUO24+Skbadv00IPcZ+6DlCKEIiiLPDt3Rln/waKzuHVbPhGSfybcac/R2MWYlZw+A==",
         "dependencies": {
           "Microsoft.Azure.Core.NewtonsoftJson": "1.0.0",
           "Microsoft.Azure.Functions.Worker.Core": "1.8.0",
           "Microsoft.Azure.Functions.Worker.Extensions.Http": "3.0.13",
-          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": "1.5.1",
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": "1.6.0",
           "YamlDotNet": "12.0.1"
         }
       },
@@ -550,8 +550,8 @@
       },
       "Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings": {
         "type": "Transitive",
-        "resolved": "1.5.1",
-        "contentHash": "fxCeaobDiszTKBGcrsKzv7OFPU8gasWlsDp6PECeSQNYt72BGztflR2PluV9LcVHwzlsgmIcIxbozo2d0AuIWw==",
+        "resolved": "1.6.0",
+        "contentHash": "jZHz5i4N+w6wRvTIjhlUE03t9acJ4cbuOk0Z11W5SkZJsFjG5lCw5QuG2lfZvTbOxlJmaqXbOK9by62yjGWmPw==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Binder": "2.1.1",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "2.1.1"
@@ -559,11 +559,11 @@
       },
       "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": {
         "type": "Transitive",
-        "resolved": "1.5.1",
-        "contentHash": "JbzBl45/1J+q0H1KTt471KtObzX2a2ObKvZK4yBZRsLw9qyehabZqWxjnEiT8q0Jw1DLat5nTrjul1741DRhng==",
+        "resolved": "1.6.0",
+        "contentHash": "CZX7cW2P9OvWatlzusD6+FDpGQpBKcOpM8xYDA+KPjSdA/Aphqg3SREe4NS2G6sY6hN8WfuH0uFBdHRN63yWrA==",
         "dependencies": {
           "Microsoft.Azure.WebJobs.Extensions.Http": "3.2.0",
-          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings": "1.5.1",
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings": "1.6.0",
           "Microsoft.OpenApi": "1.2.3",
           "Newtonsoft.Json": "13.0.1",
           "System.IO.FileSystem.Primitives": "4.3.0",
