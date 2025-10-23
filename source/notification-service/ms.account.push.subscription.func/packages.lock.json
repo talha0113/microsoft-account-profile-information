@@ -69,14 +69,14 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.OpenApi": {
         "type": "Direct",
-        "requested": "[1.5.1, )",
-        "resolved": "1.5.1",
-        "contentHash": "14W3/70jZCpVv91WYPKFpnrNs7hx75sKU7EJRK8mV2R8KciEBsVMZ5MOlo8jv8bM2MSViq3zs/Z3Xo0fW6hgBg==",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "nhw+JpCQqXHf5vA5leFoCUO24+Skbadv00IPcZ+6DlCKEIiiLPDt3Rln/waKzuHVbPhGSfybcac/R2MWYlZw+A==",
         "dependencies": {
           "Microsoft.Azure.Core.NewtonsoftJson": "1.0.0",
           "Microsoft.Azure.Functions.Worker.Core": "1.8.0",
           "Microsoft.Azure.Functions.Worker.Extensions.Http": "3.0.13",
-          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": "1.5.1",
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": "1.6.0",
           "YamlDotNet": "12.0.1"
         }
       },
@@ -555,8 +555,8 @@
       },
       "Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings": {
         "type": "Transitive",
-        "resolved": "1.5.1",
-        "contentHash": "fxCeaobDiszTKBGcrsKzv7OFPU8gasWlsDp6PECeSQNYt72BGztflR2PluV9LcVHwzlsgmIcIxbozo2d0AuIWw==",
+        "resolved": "1.6.0",
+        "contentHash": "jZHz5i4N+w6wRvTIjhlUE03t9acJ4cbuOk0Z11W5SkZJsFjG5lCw5QuG2lfZvTbOxlJmaqXbOK9by62yjGWmPw==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Binder": "2.1.1",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "2.1.1"
@@ -564,11 +564,11 @@
       },
       "Microsoft.Azure.WebJobs.Extensions.OpenApi.Core": {
         "type": "Transitive",
-        "resolved": "1.5.1",
-        "contentHash": "JbzBl45/1J+q0H1KTt471KtObzX2a2ObKvZK4yBZRsLw9qyehabZqWxjnEiT8q0Jw1DLat5nTrjul1741DRhng==",
+        "resolved": "1.6.0",
+        "contentHash": "CZX7cW2P9OvWatlzusD6+FDpGQpBKcOpM8xYDA+KPjSdA/Aphqg3SREe4NS2G6sY6hN8WfuH0uFBdHRN63yWrA==",
         "dependencies": {
           "Microsoft.Azure.WebJobs.Extensions.Http": "3.2.0",
-          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings": "1.5.1",
+          "Microsoft.Azure.WebJobs.Extensions.OpenApi.Configuration.AppSettings": "1.6.0",
           "Microsoft.OpenApi": "1.2.3",
           "Newtonsoft.Json": "13.0.1",
           "System.IO.FileSystem.Primitives": "4.3.0",
@@ -677,8 +677,8 @@
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "9.0.4",
-        "contentHash": "UI0TQPVkS78bFdjkTodmkH0Fe8lXv9LnhGFKgKrsgUJ5a5FVdFRcgjIkBVLbGgdRhxWirxH/8IXUtEyYJx6GQg=="
+        "resolved": "9.0.6",
+        "contentHash": "0Zn6nR/6g+90MxskZyOOMPQvnPnrrGu6bytPwkV+azDcTtCSuQ1+GJUrg8Klmnrjk1i6zMpw2lXijl+tw7Q3kA=="
       },
       "Microsoft.Extensions.DependencyModel": {
         "type": "Transitive",
@@ -886,8 +886,8 @@
       },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
-        "resolved": "9.0.4",
-        "contentHash": "SPFyMjyku1nqTFFJ928JAMd0QnRe4xjE7KeKnZMWXf3xk+6e0WiOZAluYtLdbJUXtsl2cCRSi8cBquJ408k8RA=="
+        "resolved": "9.0.6",
+        "contentHash": "BHniU24QV67qp1pJknqYSofAPYGmijGI8D+ci9yfw33iuFdyOeB9lWTg78ThyYLyQwZw3s0vZ36VMb0MqbUuLw=="
       },
       "Microsoft.Identity.Client": {
         "type": "Transitive",
@@ -1969,8 +1969,8 @@
       "ms.account.push.subscription.core": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "[9.0.4, )",
-          "Scrutor": "[6.0.1, )",
+          "Microsoft.Extensions.DependencyInjection": "[9.0.6, )",
+          "Scrutor": "[6.1.0, )",
           "ms.account.push.subscription.domain": "[1.0.0, )"
         }
       },
@@ -1983,7 +1983,7 @@
           "Azure.Storage.Queues": "[12.22.0, )",
           "Lib.AspNetCore.WebPush": "[2.2.2, )",
           "Microsoft.Azure.Cosmos": "[3.51.0, )",
-          "Microsoft.Extensions.Configuration.Abstractions": "[9.0.4, )",
+          "Microsoft.Extensions.Configuration.Abstractions": "[9.0.6, )",
           "WebPush": "[1.0.12, )",
           "ms.account.push.subscription.core": "[1.0.0, )"
         }
@@ -1999,27 +1999,27 @@
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[9.0.4, )",
-        "resolved": "9.0.4",
-        "contentHash": "0LN/DiIKvBrkqp7gkF3qhGIeZk6/B63PthAHjQsxymJfIBcz0kbf4/p/t4lMgggVxZ+flRi5xvTwlpPOoZk8fg==",
+        "requested": "[9.0.6, )",
+        "resolved": "9.0.6",
+        "contentHash": "3GgMIi2jP8g1fBW93Z9b9Unamc0SIsgyhiCmC91gq4loTixK9vQMuxxUsfJ1kRGwn+/FqLKwOHqmn0oYWn3Fvw==",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.4"
+          "Microsoft.Extensions.Primitives": "9.0.6"
         }
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "CentralTransitive",
-        "requested": "[9.0.4, )",
-        "resolved": "9.0.4",
-        "contentHash": "f2MTUaS2EQ3lX4325ytPAISZqgBfXmY0WvgD80ji6Z20AoDNiCESxsqo6mFRwHJD/jfVKRw9FsW6+86gNre3ug==",
+        "requested": "[9.0.6, )",
+        "resolved": "9.0.6",
+        "contentHash": "vS65HMo5RS10DD543fknsyVDxihMcVxVn3/hNaILgBxWYnOLxWIeCIO9X0QFuCvPRNjClvXe9Aj8KaQNx7vFkQ==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.6"
         }
       },
       "Scrutor": {
         "type": "CentralTransitive",
-        "requested": "[6.0.1, )",
-        "resolved": "6.0.1",
-        "contentHash": "5xKT6ND5GqnFzwSaYozHCJe75GFL8sPy4yw/iRFqeBFGlmqPNFpOg1T9Q0Gl2h76Cklt0ZTg6Ypkri5iUBKXsA==",
+        "requested": "[6.1.0, )",
+        "resolved": "6.1.0",
+        "contentHash": "m4+0RdgnX+jeiaqteq9x5SwEtuCjWG0KTw1jBjCzn7V8mCanXKoeF8+59E0fcoRbAjdEq6YqHFCmxZ49Kvqp3g==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.1",
           "Microsoft.Extensions.DependencyModel": "8.0.2"
