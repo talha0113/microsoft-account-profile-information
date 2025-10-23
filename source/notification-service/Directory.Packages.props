@@ -13,7 +13,7 @@
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="6.7.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
     <PackageVersion Include="Scrutor" Version="6.1.0" />
     <PackageVersion Include="Lib.AspNetCore.WebPush" Version="2.2.2" />
     <PackageVersion Include="WebPush" Version="1.0.12" />
