@@ -46,11 +46,11 @@
       },
       "MSTest.TestFramework": {
         "type": "Direct",
-        "requested": "[3.9.2, )",
-        "resolved": "3.9.2",
-        "contentHash": "0lNtgMGT7CribQlprcJKW1dQ+7M1hn+BFEm6jVCm4OUAZPR22x9yv6F0BI/RYOD/C2NPx5fhFNAuaTctPHZmmA==",
+        "requested": "[4.0.1, )",
+        "resolved": "4.0.1",
+        "contentHash": "uXIBT47UAQcga6sfflqFvo1rkmHQESIhDvtusMWqhOef9nZhJF8UslfOZoIBV8q6uv9WOehSZ5fBBB4SNZWnBg==",
         "dependencies": {
-          "MSTest.Analyzers": "3.9.2"
+          "MSTest.Analyzers": "4.0.1"
         }
       },
       "AutoFixture": {
@@ -227,8 +227,8 @@
       },
       "MSTest.Analyzers": {
         "type": "Transitive",
-        "resolved": "3.9.2",
-        "contentHash": "RQhIotFb7OG2W9G+o8KG3qqCJTkTq2HAUFetTLCopxma+a73BLWkYirAvhxMq6Hu2aGgZrYfWlDo1owyagYjzQ=="
+        "resolved": "4.0.1",
+        "contentHash": "SFYBSnZ2O5n+JZ6dYGig0rV8maAYYSAk8SpYbAvCl8XqJ2H1+Z6Su9AI4llW+RMJtmDDRUZ3JgaGih/MMgQkOw=="
       },
       "NETStandard.Library": {
         "type": "Transitive",
