@@ -1,7 +1,7 @@
 ﻿import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../Services/authentication.service';
+import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationServiceStub } from '../Services/authentication.service.stub';
 import { setUpMock } from '../Managers/storage.mock';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
@@ -21,9 +21,9 @@ describe('Profile Interceptor', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-        providers: [
-            provideHttpClient(),
-            provideHttpClientTesting(), 
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ProfileInterceptor,

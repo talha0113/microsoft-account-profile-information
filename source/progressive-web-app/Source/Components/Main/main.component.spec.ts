@@ -1,12 +1,13 @@
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import {
   TestBed,
   ComponentFixture,
   ComponentFixtureAutoDetect,
 } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { SwUpdate, ServiceWorkerModule, SwPush } from '@angular/service-worker';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { appRoutes } from '../../Routes/main.route';
 import { MainComponent } from './main.component';
@@ -16,7 +17,7 @@ import { ProfileComponent } from '../Profile/profile.component';
 import { LogoutComponent } from '../Logout/logout.component';
 import { NavigationComponent } from '../Navigation/navigation.component';
 import { SafeUrlPipe } from '../../Pipes/safe-url.pipe';
-import { AuthenticationService } from '../../Services/authentication.service';
+import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 import { ProfileRepository } from '../../Repositories/profile.repository';
 import { ProfileService } from '../../Services/profile.service';
@@ -26,7 +27,6 @@ import { environment } from 'Configurations/Environments/environment';
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { FlagComponent } from '../Flag/flag.component';
 import { SignalRService } from '../../Services/signalr.service';
@@ -44,9 +44,7 @@ describe('Main Component', () => {
   beforeAll(async () => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule,
         FormsModule,
-        RouterTestingModule.withRoutes(appRoutes),
         ServiceWorkerModule.register('ngsw-worker.js', {
           enabled: environment.production,
         }),
@@ -61,6 +59,9 @@ describe('Main Component', () => {
         SafeUrlPipe,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter(appRoutes),
         {
           provide: ComponentFixtureAutoDetect,
           useValue: true,

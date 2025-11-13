@@ -1,7 +1,7 @@
 ﻿import { Observable, of } from 'rxjs';
 
 import { AuthenticationService } from './authentication.service';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Authentication } from '../Models/authentication.model';
 import { Injectable, inject } from '@angular/core';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
@@ -31,7 +31,6 @@ export class AuthenticationServiceStub extends AuthenticationService {
 
   override refreshToken(): Observable<null> {
     return of<string>('Test_Token').pipe(
-        tap((value: string) => { }),
       map(() => {
         return null;
       })

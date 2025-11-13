@@ -77,7 +77,7 @@ export class AuthenticationService {
         })
       )
       .subscribe({
-        error: (error: any) => {
+        error: error => {
           console.error(error);
         },
       });
@@ -89,7 +89,7 @@ export class AuthenticationService {
         scopes: AuthenticationConfiguration.scopes,
       })
     ).subscribe({
-      error: (error: any) => {
+      error: error => {
         console.error(error);
       },
     });

@@ -29,11 +29,15 @@ describe('Profile Service', () => {
     }
   });
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({            
-            providers: [provideHttpClient(),
-                provideHttpClientTesting(), ProfileService, ProfileRepository],
-        });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        ProfileService,
+        ProfileRepository,
+      ],
+    });
   });
 
   beforeEach(() => {

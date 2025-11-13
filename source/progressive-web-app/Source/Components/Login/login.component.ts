@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
-import { AuthenticationService } from '../../Services/authentication.service';
+import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 import { TranslocoPipe } from '@ngneat/transloco';
 
