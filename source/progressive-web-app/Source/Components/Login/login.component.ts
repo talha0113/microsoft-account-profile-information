@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { map, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
@@ -10,9 +12,17 @@ import { AuthenticationRepository } from '../../Repositories/authentcation.repos
   templateUrl: './login.component.html',
   standalone: false,
 })
-export class LoginComponent implements OnInit {
-  isInProgress$: Observable<boolean>;
-  isOffline: boolean = !navigator.onLine;
+export class LoginComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  
+  isInProgress = toSignal(
+    this.repository.data$.pipe(
+      map(value => value.isLoading)
+    ),
+    { initialValue: true }
+  );
+  
+  isOffline = signal(!navigator.onLine);
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -21,27 +31,28 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isInProgress$ = of(this.isOffline);
+    this.isOffline.set(!navigator.onLine);
 
-    if (!this.isOffline) {
-      this.isInProgress$ = this.repository.data$.pipe(
-        map(value => {
-          return value.isLoading;
-        })
-      );
-      this.repository.data$.subscribe(value => {
-        if (value.data != null) {
-          //this.authenticationService.refreshToken().subscribe(() => {
+    if (!this.isOffline()) {
+      this.repository.data$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(value => {
+          if (value.data != null) {
+            //this.authenticationService.refreshToken().subscribe(() => {
 
-          //});
-          this.router.navigateByUrl('/status');
-        }
-      });
+            //});
+            this.router.navigateByUrl('/status');
+          }
+        });
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   login(): void {
-    this.isInProgress$ = of(true);
     this.authenticationService.login();
   }
 }
