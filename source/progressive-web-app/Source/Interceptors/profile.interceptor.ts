@@ -18,9 +18,9 @@ import { AuthenticationRepository } from '../Repositories/authentcation.reposito
 
 @Injectable()
 export class ProfileInterceptor implements HttpInterceptor {
-  private repository = inject(AuthenticationRepository);
-  private authenticationService = inject(AuthenticationService);
-  private router = inject(Router);
+  private readonly repository = inject(AuthenticationRepository);
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly router = inject(Router);
 
   public intercept(
     request: HttpRequest<any>,

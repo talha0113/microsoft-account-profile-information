@@ -1,18 +1,22 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router, Event, NavigationEnd } from '@angular/router';
+import { Router, Event, NavigationEnd, RouterLink } from '@angular/router';
 import { Observable, map } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 import { NavigationLink } from '../../Models/navigation-link.model';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'navigation',
+  imports: [RouterLink, AsyncPipe, TranslocoPipe],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css'],
+  standalone: true,
 })
 export class NavigationComponent implements OnInit {
-  private repository = inject(AuthenticationRepository);
-  private router = inject(Router);
+  private readonly repository = inject(AuthenticationRepository);
+  private readonly router = inject(Router);
 
   public navigationLinks: Array<NavigationLink> = new Array<NavigationLink>();
   public isAuthenticated$: Observable<boolean>;

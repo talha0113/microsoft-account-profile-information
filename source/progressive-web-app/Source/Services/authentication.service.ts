@@ -18,15 +18,15 @@ import { trackRequestResult } from '@ngneat/elf-requests';
 export class AuthenticationService {
   repository = inject(AuthenticationRepository);
 
-  private msalApp: IPublicClientApplication;
+  private readonly msalApp: IPublicClientApplication;
 
   constructor() {
     this.msalApp = new PublicClientApplication({
       auth: {
         authority: AuthenticationConfiguration.authority,
         clientId: AuthenticationConfiguration.applicationId,
-        redirectUri: `${window.location.origin}/login`,
-        postLogoutRedirectUri: `${window.location.origin}/login`,
+        redirectUri: `${globalThis.location.origin}/login`,
+        postLogoutRedirectUri: `${globalThis.location.origin}/login`,
         navigateToLoginRequestUrl: true,
       },
       cache: {
@@ -77,7 +77,7 @@ export class AuthenticationService {
         })
       )
       .subscribe({
-        error: error => {
+        error: (error: any) => {
           console.error(error);
         },
       });
@@ -89,7 +89,7 @@ export class AuthenticationService {
         scopes: AuthenticationConfiguration.scopes,
       })
     ).subscribe({
-      error: error => {
+      error: (error: any) => {
         console.error(error);
       },
     });

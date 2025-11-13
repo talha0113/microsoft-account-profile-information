@@ -9,8 +9,8 @@ import { GraphConstant } from '../Constants/graph.constant';
 
 @Injectable()
 export class ProfileService {
-  private httpClient = inject(HttpClient);
-  private repository = inject(ProfileRepository);
+  private readonly httpClient = inject(HttpClient);
+  private readonly repository = inject(ProfileRepository);
 
   get information$(): Observable<Profile> {
     const basicInformation: Observable<Profile> = this.httpClient

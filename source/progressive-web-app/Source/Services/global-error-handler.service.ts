@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
-  private injector = inject(Injector);
+  private readonly injector = inject(Injector);
 
   handleError(error: Error | HttpErrorResponse): void {
     let stackTrace = 'Server Stack Trace';

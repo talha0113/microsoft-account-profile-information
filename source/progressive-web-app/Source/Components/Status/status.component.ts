@@ -1,16 +1,20 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { TranslocoPipe } from '@ngneat/transloco';
 import { PushService } from 'Source/Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'status',
+  imports: [FormsModule, TranslocoPipe],
   templateUrl: './status.component.html',
+  standalone: true,
 })
 export class StatusComponent implements OnInit, OnDestroy {
-  private pushService = inject(PushService);
-  private signalRService = inject(SignalRService);
+  private readonly pushService = inject(PushService);
+  private readonly signalRService = inject(SignalRService);
 
   private subscriptionLiveCountSubscription: Subscription = null;
 

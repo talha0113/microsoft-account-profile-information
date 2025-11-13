@@ -1,9 +1,9 @@
 ﻿import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 import {
-  HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProfileService } from './profile.service';
 import { ProfileServiceMock } from './profile.service.mock';
@@ -24,16 +24,16 @@ describe('Profile Service', () => {
   beforeEach(() => {
     function noOp() {}
 
-    if (typeof window.URL.createObjectURL === 'undefined') {
-      Object.defineProperty(window.URL, 'createObjectURL', { value: noOp });
+    if (typeof globalThis.URL.createObjectURL === 'undefined') {
+      Object.defineProperty(globalThis.URL, 'createObjectURL', { value: noOp });
     }
   });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [ProfileService, ProfileRepository],
-    });
+    beforeEach(() => {
+        TestBed.configureTestingModule({            
+            providers: [provideHttpClient(),
+                provideHttpClientTesting(), ProfileService, ProfileRepository],
+        });
   });
 
   beforeEach(() => {

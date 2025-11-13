@@ -52,7 +52,7 @@ describe('Logout Component', () => {
   beforeAll(async () => {
     repository = TestBed.inject(AuthenticationRepository);
 
-    router = TestBed.get(Router);
+      router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl');
   });
 

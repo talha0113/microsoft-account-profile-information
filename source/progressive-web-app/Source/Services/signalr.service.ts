@@ -14,7 +14,7 @@ import { SignalRConnection } from 'Source/Models/signalr-connection.model';
 
 @Injectable()
 export class SignalRService {
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
   private liveCount$: BehaviorSubject<number>;
   private signalRConnection: HubConnection = null;

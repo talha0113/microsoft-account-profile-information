@@ -1,12 +1,13 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
 import { TranslationLoader } from './translation-loader.service';
 import { NgModule, isDevMode } from '@angular/core';
 import { TranslationConfiguration } from './translation.configuration';
 
 @NgModule({
-  imports: [TranslocoModule, HttpClientModule],
-  providers: [
+  imports: [TranslocoModule],
+    providers: [
+        provideHttpClient(),
     provideTransloco({
       config: {
         availableLangs: TranslationConfiguration.availableLanguages,
