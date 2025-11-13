@@ -4,7 +4,6 @@ using System;
 using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
 
 public class SubscriptionTriggerPushNotificationPoison(ILogger<SubscriptionTriggerPushNotificationPoison> logger)
