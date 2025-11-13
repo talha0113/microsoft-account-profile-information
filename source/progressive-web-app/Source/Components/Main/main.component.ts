@@ -1,28 +1,39 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router, Event, NavigationEnd } from '@angular/router';
+import { Router, Event, NavigationEnd, RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import {
   SwUpdate,
   VersionEvent,
   VersionReadyEvent,
 } from '@angular/service-worker';
 import { filter, map, switchMap } from 'rxjs';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService, TranslocoPipe } from '@ngneat/transloco';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
 import { Version } from 'Source/Models/version.model';
 import { VersionConstant } from 'Source/Constants/version.constant';
+import { FlagComponent } from '../Flag/flag.component';
+import { NavigationComponent } from '../Navigation/navigation.component';
 
 @Component({
   selector: 'main',
+  imports: [
+    RouterOutlet,
+    FormsModule,
+    TranslocoPipe,
+    FlagComponent,
+    NavigationComponent,
+  ],
   templateUrl: './main.component.html',
+  standalone: true,
 })
 export class MainComponent implements OnInit {
-  private translocoService = inject(TranslocoService);
-  private swUpdate = inject(SwUpdate);
-  private router = inject(Router);
-  private notificationService = inject(NotificationService);
-  private pushService = inject(PushService);
+  private readonly translocoService = inject(TranslocoService);
+  private readonly swUpdate = inject(SwUpdate);
+  private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
+  private readonly pushService = inject(PushService);
 
   public title: string = 'Profile Information!';
   public isOffline: boolean = !navigator.onLine;

@@ -19,9 +19,11 @@ describe('Safe Url Pipe', () => {
     });
   });
 
-  beforeAll(async () => {
-    domSanitizer = TestBed.inject(DomSanitizer);
-    safeUrlPipe = new SafeUrlPipe(domSanitizer);
+    beforeAll(async () => {
+        TestBed.runInInjectionContext(() => {
+            domSanitizer = TestBed.inject(DomSanitizer);
+            safeUrlPipe = new SafeUrlPipe();
+        });    
   });
 
   beforeAll(async () => {

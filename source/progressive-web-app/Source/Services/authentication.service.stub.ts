@@ -13,7 +13,7 @@ export class AuthenticationServiceStub extends AuthenticationService {
   constructor() {
     const repository = inject(AuthenticationRepository);
 
-    super(repository);
+    super();
 
     this.repository = repository;
   }
@@ -31,9 +31,7 @@ export class AuthenticationServiceStub extends AuthenticationService {
 
   override refreshToken(): Observable<null> {
     return of<string>('Test_Token').pipe(
-      tap((value: string) => {
-        new Authentication('Test_Token_Id', value);
-      }),
+        tap((value: string) => { }),
       map(() => {
         return null;
       })

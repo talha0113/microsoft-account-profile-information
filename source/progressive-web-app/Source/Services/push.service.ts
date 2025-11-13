@@ -10,11 +10,11 @@ import { environment } from 'Configurations/Environments/environment';
 
 @Injectable()
 export class PushService {
-  private swPush = inject(SwPush);
-  private notificationService = inject(NotificationService);
-  private httpClient = inject(HttpClient);
+  private readonly swPush = inject(SwPush);
+  private readonly notificationService = inject(NotificationService);
+  private readonly httpClient = inject(HttpClient);
 
-  private subscriptionCount$: BehaviorSubject<number> =
+  private readonly subscriptionCount$: BehaviorSubject<number> =
     new BehaviorSubject<number>(0);
 
   public subscribe(): Observable<boolean> {

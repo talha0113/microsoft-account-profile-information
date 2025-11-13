@@ -17,7 +17,6 @@ describe('Login Guard', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       providers: [AuthenticationRepository],
     });
   });

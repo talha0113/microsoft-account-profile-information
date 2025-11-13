@@ -13,7 +13,6 @@ import { NotificationService } from './Services/notification.service';
 import { PushService } from './Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './Routes/main.route';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -28,8 +27,6 @@ if (!isDevMode()) {
 bootstrapApplication(MainComponent, {
   providers: [
     importProvidersFrom(
-      BrowserModule,
-      FormsModule,
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: !isDevMode(),
         registrationStrategy: 'registerImmediately',

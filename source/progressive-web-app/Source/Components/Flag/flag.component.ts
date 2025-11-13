@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService, TranslocoDirective } from '@ngneat/transloco';
 import { TranslationConfiguration } from '../../Transloco/translation.configuration';
 import { Subscription } from 'rxjs';
 import { StorageManager } from '../../Managers/storage.manager';
@@ -17,7 +17,9 @@ import { PushService } from '../../Services/push.service';
 
 @Component({
   selector: 'flag',
+  imports: [TranslocoDirective],
   templateUrl: 'flag.component.html',
+  standalone: true,
 })
 export class FlagComponent implements OnInit, OnDestroy {
   private readonly domSanitizer = inject(DomSanitizer);

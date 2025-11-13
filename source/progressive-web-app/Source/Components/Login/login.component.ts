@@ -1,18 +1,22 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'login',
+  imports: [AsyncPipe, TranslocoPipe],
   templateUrl: './login.component.html',
+  standalone: true,
 })
 export class LoginComponent implements OnInit {
-  private authenticationService = inject(AuthenticationService);
-  private repository = inject(AuthenticationRepository);
-  private router = inject(Router);
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly repository = inject(AuthenticationRepository);
+  private readonly router = inject(Router);
 
   isInProgress$: Observable<boolean>;
   isOffline: boolean = !navigator.onLine;
