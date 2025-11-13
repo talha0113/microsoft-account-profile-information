@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of, map, catchError, tap } from 'rxjs';
 import { trackRequestResult } from '@ngneat/elf-requests';
@@ -9,10 +9,8 @@ import { GraphConstant } from '../Constants/graph.constant';
 
 @Injectable()
 export class ProfileService {
-  constructor(
-    private httpClient: HttpClient,
-    private repository: ProfileRepository
-  ) {}
+  private httpClient = inject(HttpClient);
+  private repository = inject(ProfileRepository);
 
   get information$(): Observable<Profile> {
     const basicInformation: Observable<Profile> = this.httpClient

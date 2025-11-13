@@ -3,13 +3,19 @@
 import { AuthenticationService } from './authentication.service';
 import { map, tap } from 'rxjs/operators';
 import { Authentication } from '../Models/authentication.model';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 @Injectable()
 export class AuthenticationServiceStub extends AuthenticationService {
-  constructor(public override repository: AuthenticationRepository) {
+  override repository: AuthenticationRepository;
+
+  constructor() {
+    const repository = inject(AuthenticationRepository);
+
     super(repository);
+
+    this.repository = repository;
   }
 
   override login(): void {

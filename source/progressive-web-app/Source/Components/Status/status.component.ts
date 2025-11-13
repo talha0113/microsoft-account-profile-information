@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { PushService } from 'Source/Services/push.service';
@@ -7,19 +7,16 @@ import { SignalRService } from 'Source/Services/signalr.service';
 @Component({
   selector: 'status',
   templateUrl: './status.component.html',
-  standalone: false,
 })
 export class StatusComponent implements OnInit, OnDestroy {
+  private pushService = inject(PushService);
+  private signalRService = inject(SignalRService);
+
   private subscriptionLiveCountSubscription: Subscription = null;
 
   public subscriptionCount: number = 0;
   public isOffline: boolean = true;
   public statsSubscribed: boolean = false;
-
-  constructor(
-    private pushService: PushService,
-    private signalRService: SignalRService
-  ) {}
 
   ngOnInit(): void {
     this.isOffline = !navigator.onLine;

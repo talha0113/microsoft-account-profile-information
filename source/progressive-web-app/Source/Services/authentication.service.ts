@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { Observable, from, map, catchError, switchMap, tap } from 'rxjs';
 import {
   AuthError,
@@ -16,9 +16,11 @@ import { trackRequestResult } from '@ngneat/elf-requests';
 
 @Injectable()
 export class AuthenticationService {
+  repository = inject(AuthenticationRepository);
+
   private msalApp: IPublicClientApplication;
 
-  constructor(public repository: AuthenticationRepository) {
+  constructor() {
     this.msalApp = new PublicClientApplication({
       auth: {
         authority: AuthenticationConfiguration.authority,

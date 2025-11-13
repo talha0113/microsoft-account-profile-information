@@ -5,6 +5,7 @@ import {
   WritableSignal,
   signal,
   effect,
+  inject,
 } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -17,19 +18,18 @@ import { PushService } from '../../Services/push.service';
 @Component({
   selector: 'flag',
   templateUrl: 'flag.component.html',
-  standalone: false,
 })
 export class FlagComponent implements OnInit, OnDestroy {
+  private readonly domSanitizer = inject(DomSanitizer);
+  private readonly translocoService = inject(TranslocoService);
+  private readonly router = inject(Router);
+  private readonly pushService = inject(PushService);
+
   public readonly currentLanguage: WritableSignal<string> = signal('');
   private readonly subscription: Subscription = null;
   public isOffline: boolean = !navigator.onLine;
 
-  constructor(
-    private readonly domSanitizer: DomSanitizer,
-    private readonly translocoService: TranslocoService,
-    private readonly router: Router,
-    private readonly pushService: PushService
-  ) {
+  constructor() {
     effect(() => {
       this.translocoService.setActiveLang(this.currentLanguage());
       StorageManager.add<string>(

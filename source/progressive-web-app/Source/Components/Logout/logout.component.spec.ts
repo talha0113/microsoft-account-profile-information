@@ -29,8 +29,7 @@ describe('Logout Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [getTranslationTestingModule()],
-      declarations: [LogoutComponent],
+      imports: [getTranslationTestingModule(), LogoutComponent],
       providers: [
         provideRouter([]),
         provideHttpClient(),

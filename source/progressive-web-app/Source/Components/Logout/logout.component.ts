@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../Services/authentication.service';
@@ -7,16 +7,13 @@ import { ProfileService } from '../../Services/profile.service';
 @Component({
   selector: 'logout',
   templateUrl: './logout.component.html',
-  standalone: false,
 })
 export class LogoutComponent implements OnInit {
-  isOffline: boolean = true;
+  private authenticationService = inject(AuthenticationService);
+  private profileService = inject(ProfileService);
+  private router = inject(Router);
 
-  constructor(
-    private authenticationService: AuthenticationService,
-    private profileService: ProfileService,
-    private router: Router
-  ) {}
+  isOffline: boolean = true;
 
   ngOnInit() {
     this.isOffline = !navigator.onLine;

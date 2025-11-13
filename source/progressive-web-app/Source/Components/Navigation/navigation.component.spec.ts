@@ -23,8 +23,11 @@ describe('Navigation Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, getTranslationTestingModule()],
-      declarations: [NavigationComponent],
+      imports: [
+        RouterTestingModule,
+        getTranslationTestingModule(),
+        NavigationComponent,
+      ],
       providers: [
         {
           provide: ComponentFixtureAutoDetect,

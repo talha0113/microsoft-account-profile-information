@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import {
@@ -14,10 +14,10 @@ import { SignalRConnection } from 'Source/Models/signalr-connection.model';
 
 @Injectable()
 export class SignalRService {
+  private httpClient = inject(HttpClient);
+
   private liveCount$: BehaviorSubject<number>;
   private signalRConnection: HubConnection = null;
-
-  constructor(private httpClient: HttpClient) {}
 
   public renewConnection(): void {
     this.liveCount$ = new BehaviorSubject<number>(-1);

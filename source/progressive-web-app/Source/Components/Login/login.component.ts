@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 
@@ -8,17 +8,14 @@ import { AuthenticationRepository } from '../../Repositories/authentcation.repos
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
-  standalone: false,
 })
 export class LoginComponent implements OnInit {
+  private authenticationService = inject(AuthenticationService);
+  private repository = inject(AuthenticationRepository);
+  private router = inject(Router);
+
   isInProgress$: Observable<boolean>;
   isOffline: boolean = !navigator.onLine;
-
-  constructor(
-    private authenticationService: AuthenticationService,
-    private repository: AuthenticationRepository,
-    private router: Router
-  ) {}
 
   ngOnInit() {
     this.isInProgress$ = of(this.isOffline);
