@@ -69,9 +69,12 @@ public class SubscriptionTriggerSignalR
             containerName: "Items",
             Connection = "cosmosdb_connection",
             LeaseContainerName = "leases",
-            CreateLeaseContainerIfNotExists = true)]IReadOnlyList<PushSubscriptionInformation> documents,
+            CreateLeaseContainerIfNotExists = true)] IReadOnlyList<PushSubscriptionInformation> documents,
             CancellationToken cancellationToken)
     {
+        // Suppress IDE0060 by explicitly discarding the unused parameter
+        _ = documents;
+
         logger.LogInformation($"{nameof(SendSignalRMessage)} Request Started.");
 
         var signalRMessageAction = new SignalRMessageAction("SignalRSubscriptionCountEvent");
