@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { from, of, Observable, BehaviorSubject } from 'rxjs';
 import { VAPIDConfiguration } from '../Configurations/vapid.configuration';
@@ -10,14 +10,12 @@ import { environment } from 'Configurations/Environments/environment';
 
 @Injectable()
 export class PushService {
+  private swPush = inject(SwPush);
+  private notificationService = inject(NotificationService);
+  private httpClient = inject(HttpClient);
+
   private subscriptionCount$: BehaviorSubject<number> =
     new BehaviorSubject<number>(0);
-
-  constructor(
-    private swPush: SwPush,
-    private notificationService: NotificationService,
-    private httpClient: HttpClient
-  ) {}
 
   public subscribe(): Observable<boolean> {
     if (this.swPush.isEnabled) {

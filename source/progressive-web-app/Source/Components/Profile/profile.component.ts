@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ProfileService } from '../../Services/profile.service';
@@ -8,16 +8,13 @@ import { ProfileRepository } from '../../Repositories/profile.repository';
 @Component({
   selector: 'profile',
   templateUrl: './profile.component.html',
-  standalone: false,
 })
 export class ProfileComponent implements OnInit {
+  private profileService = inject(ProfileService);
+  private repository = inject(ProfileRepository);
+
   profileInformation$: Observable<Profile>;
   isLoading$: Observable<boolean>;
-
-  constructor(
-    private profileService: ProfileService,
-    private repository: ProfileRepository
-  ) {}
 
   ngOnInit() {
     this.profileService.information$.subscribe();

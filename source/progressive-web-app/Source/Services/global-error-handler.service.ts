@@ -1,11 +1,11 @@
-﻿import { Injectable, ErrorHandler, Injector } from '@angular/core';
+﻿import { Injectable, ErrorHandler, Injector, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { InsightsManager } from '../Managers/insights.manager';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
-  constructor(private injector: Injector) {}
+  private injector = inject(Injector);
 
   handleError(error: Error | HttpErrorResponse): void {
     let stackTrace = 'Server Stack Trace';

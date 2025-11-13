@@ -7,7 +7,7 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, switchMap } from 'rxjs';
 
@@ -18,11 +18,9 @@ import { AuthenticationRepository } from '../Repositories/authentcation.reposito
 
 @Injectable()
 export class ProfileInterceptor implements HttpInterceptor {
-  constructor(
-    private repository: AuthenticationRepository,
-    private authenticationService: AuthenticationService,
-    private router: Router
-  ) {}
+  private repository = inject(AuthenticationRepository);
+  private authenticationService = inject(AuthenticationService);
+  private router = inject(Router);
 
   public intercept(
     request: HttpRequest<any>,

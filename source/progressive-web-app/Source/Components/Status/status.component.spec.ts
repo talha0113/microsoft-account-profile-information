@@ -25,8 +25,8 @@ describe('Status Component', () => {
           enabled: environment.production,
         }),
         getTranslationTestingModule(),
+        StatusComponent,
       ],
-      declarations: [StatusComponent],
       providers: [
         PushService,
         NotificationService,

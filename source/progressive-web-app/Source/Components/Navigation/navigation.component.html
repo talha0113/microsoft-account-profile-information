@@ -1,12 +1,14 @@
-<div *ngIf="isAuthenticated$ | async">
-  <nav>
-    @for (navigationLink of navigationLinks; track navigationLink.id) {
-      <span>
-        <a routerLinkActive="active" routerLink="{{ navigationLink.url }}">
-          {{ navigationLink.key | transloco }}
-        </a>
-        &nbsp;
-      </span>
-    }
-  </nav>
-</div>
+@if (isAuthenticated$ | async) {
+  <div>
+    <nav>
+      @for (navigationLink of navigationLinks; track navigationLink.id) {
+        <span>
+          <a routerLinkActive="active" routerLink="{{ navigationLink.url }}">
+            {{ navigationLink.key | transloco }}
+          </a>
+          &nbsp;
+        </span>
+      }
+    </nav>
+  </div>
+}

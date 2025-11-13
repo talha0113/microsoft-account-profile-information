@@ -25,8 +25,7 @@ describe('Login Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [getTranslationTestingModule()],
-      declarations: [LoginComponent],
+      imports: [getTranslationTestingModule(), LoginComponent],
       providers: [
         provideRouter([]),
         {

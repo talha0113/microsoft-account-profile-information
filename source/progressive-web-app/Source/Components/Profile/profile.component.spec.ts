@@ -34,8 +34,9 @@ describe('Profile Component', () => {
         RouterTestingModule,
         HttpClientTestingModule,
         BrowserTestingModule,
+        ProfileComponent,
+        SafeUrlPipe,
       ],
-      declarations: [ProfileComponent, SafeUrlPipe],
       providers: [
         {
           provide: ComponentFixtureAutoDetect,

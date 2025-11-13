@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import {
   SwUpdate,
@@ -16,23 +16,20 @@ import { VersionConstant } from 'Source/Constants/version.constant';
 @Component({
   selector: 'main',
   templateUrl: './main.component.html',
-  standalone: false,
 })
 export class MainComponent implements OnInit {
+  private translocoService = inject(TranslocoService);
+  private swUpdate = inject(SwUpdate);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
+  private pushService = inject(PushService);
+
   public title: string = 'Profile Information!';
   public isOffline: boolean = !navigator.onLine;
   public offlineNotificationDone: boolean = false;
   public notificationsSubscribed: boolean = false;
   public isSubscriptionInProgress: boolean = false;
   public hideSubscription: boolean = false;
-
-  constructor(
-    private translocoService: TranslocoService,
-    private swUpdate: SwUpdate,
-    private router: Router,
-    private notificationService: NotificationService,
-    private pushService: PushService
-  ) {}
 
   ngOnInit() {
     this.isOffline = !navigator.onLine;

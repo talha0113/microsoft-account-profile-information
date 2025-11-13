@@ -27,6 +27,7 @@ describe('Flag Component', () => {
           enabled: environment.production,
         }),
         getTranslationTestingModule(),
+        FlagComponent,
       ],
       providers: [
         provideRouter(appRoutes),
@@ -35,7 +36,6 @@ describe('Flag Component', () => {
         NotificationService,
         PushService,
       ],
-      declarations: [FlagComponent],
     }).compileComponents();
   });
 

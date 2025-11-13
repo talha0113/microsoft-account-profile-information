@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { Observable, map } from 'rxjs';
 
@@ -9,15 +9,13 @@ import { AuthenticationRepository } from '../../Repositories/authentcation.repos
   selector: 'navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css'],
-  standalone: false,
 })
 export class NavigationComponent implements OnInit {
+  private repository = inject(AuthenticationRepository);
+  private router = inject(Router);
+
   public navigationLinks: Array<NavigationLink> = new Array<NavigationLink>();
   public isAuthenticated$: Observable<boolean>;
-  constructor(
-    private repository: AuthenticationRepository,
-    private router: Router
-  ) {}
 
   ngOnInit() {
     this.router.events.subscribe((event: Event) => {

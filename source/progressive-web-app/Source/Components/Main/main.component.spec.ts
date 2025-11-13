@@ -51,8 +51,6 @@ describe('Main Component', () => {
           enabled: environment.production,
         }),
         getTranslationTestingModule(),
-      ],
-      declarations: [
         FlagComponent,
         MainComponent,
         NavigationComponent,
