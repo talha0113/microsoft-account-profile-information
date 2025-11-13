@@ -9,7 +9,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { LogoutComponent } from './logout.component';
 import { ProfileService } from '../../Services/profile.service';
 import { setUpMock } from '../../Managers/storage.mock';
-import { AuthenticationService } from '../../Services/authentication.service';
+import { AuthenticationService } from 'Source/Services/authentication.service';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
@@ -52,7 +52,7 @@ describe('Logout Component', () => {
   beforeAll(async () => {
     repository = TestBed.inject(AuthenticationRepository);
 
-      router = TestBed.inject(Router);
+    router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl');
   });
 

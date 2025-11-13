@@ -3,11 +3,10 @@ import {
   ComponentFixture,
   ComponentFixtureAutoDetect,
 } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { NavigationComponent } from './navigation.component';
 import { setUpMock } from '../../Managers/storage.mock';
-import { AuthenticationService } from '../../Services/authentication.service';
+import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
@@ -23,11 +22,7 @@ describe('Navigation Component', () => {
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        getTranslationTestingModule(),
-        NavigationComponent,
-      ],
+      imports: [getTranslationTestingModule(), NavigationComponent],
       providers: [
         {
           provide: ComponentFixtureAutoDetect,

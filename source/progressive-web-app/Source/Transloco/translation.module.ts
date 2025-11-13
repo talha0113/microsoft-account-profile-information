@@ -6,8 +6,8 @@ import { TranslationConfiguration } from './translation.configuration';
 
 @NgModule({
   imports: [TranslocoModule],
-    providers: [
-        provideHttpClient(),
+  providers: [
+    provideHttpClient(),
     provideTransloco({
       config: {
         availableLangs: TranslationConfiguration.availableLanguages,

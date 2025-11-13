@@ -13,7 +13,7 @@ import { Observable, catchError, switchMap } from 'rxjs';
 
 import { RequestManager } from '../Managers/request.manager';
 import { ErrorManager } from '../Managers/error.manager';
-import { AuthenticationService } from '../Services/authentication.service';
+import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 @Injectable()

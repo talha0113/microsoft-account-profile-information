@@ -16,7 +16,7 @@ describe('Authentication Guard', () => {
   });
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({      
+    TestBed.configureTestingModule({
       providers: [AuthenticationRepository],
     });
   });
