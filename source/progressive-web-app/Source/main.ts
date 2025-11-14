@@ -3,8 +3,8 @@ import { enableElfProdMode } from '@ngneat/elf';
 
 import { isDevMode, ErrorHandler, importProvidersFrom } from '@angular/core';
 import { applicationInitializationProvider } from './Initialization/app.initialization';
-import { provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ProfileInterceptor } from './Interceptors/profile.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { profileInterceptor } from './Interceptors/profile-functional.interceptor';
 import { GlobalErrorHandlerService } from './Services/global-error-handler.service';
 import { AuthenticationRepository } from './Repositories/authentcation.repository';
 import { ProfileRepository } from './Repositories/profile.repository';
@@ -34,12 +34,7 @@ bootstrapApplication(MainComponent, {
       TranslationModule
     ),
     applicationInitializationProvider,
-    provideHttpClient(),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ProfileInterceptor,
-      multi: true,
-    },
+    provideHttpClient(withInterceptors([profileInterceptor])),
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandlerService,
