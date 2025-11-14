@@ -51,7 +51,7 @@
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "@types/jasmine": "~5.1.12",
+    "@types/jasmine": "~5.1.13",
     "@types/jasminewd2": "~2.0.13",
     "jasmine-core": "~5.12.1",
     "karma": "~6.4.4",
