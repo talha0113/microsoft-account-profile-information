@@ -1,13 +1,13 @@
-﻿/* eslint-disable  @typescript-eslint/no-explicit-any */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import {
   HttpRequest,
-  HttpHandler,
+  HttpHandlerFn,
   HttpEvent,
-  HttpInterceptor,
   HttpErrorResponse,
+  HttpInterceptorFn,
 } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, switchMap } from 'rxjs';
 
@@ -16,88 +16,74 @@ import { ErrorManager } from '../Managers/error.manager';
 import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
-@Injectable()
-export class ProfileInterceptor implements HttpInterceptor {
-  private readonly repository = inject(AuthenticationRepository);
-  private readonly authenticationService = inject(AuthenticationService);
-  private readonly router = inject(Router);
+export const profileInterceptor: HttpInterceptorFn = (
+  request: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> => {
+  const repository = inject(AuthenticationRepository);
+  const authenticationService = inject(AuthenticationService);
+  const router = inject(Router);
 
-  public intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    return next
-      .handle(
-        RequestManager.secureRequest(
-          request,
-          this.repository.data != null ? this.repository.data.accessToken : null
-        )
-      )
-      .pipe(
-        catchError(error => {
-          let shouldLogout: boolean = false;
-          if (error instanceof HttpErrorResponse) {
-            switch ((<HttpErrorResponse>error).status) {
-              case 401: {
-                shouldLogout = false;
-                break;
-              }
-              case 404: {
-                shouldLogout = false;
-                break;
-              }
-              default: {
-                shouldLogout = true;
-                break;
-              }
-            }
-          } else {
-            shouldLogout = true;
+  const endSession = (error: any): Observable<never> => {
+    authenticationService.logout();
+    router.navigateByUrl('/login');
+    return ErrorManager.handleRequestError('profileInterceptor', error);
+  };
+
+  return next(
+    RequestManager.secureRequest(
+      request,
+      repository.data == null ? null : repository.data.accessToken
+    )
+  ).pipe(
+    catchError(error => {
+      let shouldLogout: boolean = false;
+      if (error instanceof HttpErrorResponse) {
+        switch (error.status) {
+          case 401: {
+            break;
           }
+          case 404: {
+            break;
+          }
+          default: {
+            shouldLogout = true;
+            break;
+          }
+        }
+      } else {
+        shouldLogout = true;
+      }
 
-          if (shouldLogout) {
-            return this.endSession(error);
-          } else {
-            if ((<HttpErrorResponse>error).status == 404) {
-              const req = new HttpRequest('GET', request.url, {
-                responseType: 'blob',
-              });
-              return next.handle(req);
-            } else {
-              return this.authenticationService.refreshToken().pipe(
-                switchMap((value: string, index: number) => {
-                  console.log(`${value} : ${index}`);
-                  return next
-                    .handle(
-                      RequestManager.secureRequest(
-                        request,
-                        this.repository.data != null
-                          ? this.repository.data.accessToken
-                          : null
-                      )
-                    )
-                    .pipe(
-                      catchError(error => {
-                        return this.endSession(error);
-                      })
-                    );
-                }),
+      if (shouldLogout) {
+        return endSession(error);
+      } else {
+        if ((<HttpErrorResponse>error).status == 404) {
+          const req = new HttpRequest('GET', request.url, {
+            responseType: 'blob',
+          });
+          return next(req);
+        } else {
+          return authenticationService.refreshToken().pipe(
+            switchMap((value: string, index: number) => {
+              console.log(`${value} : ${index}`);
+              return next(
+                RequestManager.secureRequest(
+                  request,
+                  repository.data == null ? null : repository.data.accessToken
+                )
+              ).pipe(
                 catchError(error => {
-                  return this.endSession(error);
+                  return endSession(error);
                 })
               );
-            }
-          }
-        })
-      );
-  }
-
-  private endSession(error: any): Observable<never> {
-    this.authenticationService.logout();
-    this.router.navigateByUrl('/login');
-    return ErrorManager.handleRequestError(
-      'ProfileInterceptor.intercept',
-      error
-    );
-  }
-}
+            }),
+            catchError(error => {
+              return endSession(error);
+            })
+          );
+        }
+      }
+    })
+  );
+};

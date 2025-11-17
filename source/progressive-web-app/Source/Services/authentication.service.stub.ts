@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Authentication } from '../Models/authentication.model';
 import { Injectable, inject } from '@angular/core';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
+import { TokenConstant } from '../Constants/token.constant';
 
 @Injectable()
 export class AuthenticationServiceStub extends AuthenticationService {
@@ -20,8 +21,8 @@ export class AuthenticationServiceStub extends AuthenticationService {
 
   override login(): void {
     this.repository.update = new Authentication(
-      'Test_Token_Id',
-      'Test_Access_Token'
+      TokenConstant.testtoken['token.id'],
+      TokenConstant.testtoken['token.access']
     );
   }
 
@@ -30,7 +31,7 @@ export class AuthenticationServiceStub extends AuthenticationService {
   }
 
   override refreshToken(): Observable<null> {
-    return of<string>('Test_Token').pipe(
+    return of<string>(TokenConstant.testtoken['token.refresh']).pipe(
       map(() => {
         return null;
       })
