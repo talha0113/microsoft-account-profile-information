@@ -4,7 +4,7 @@ import { enableElfProdMode } from '@ngneat/elf';
 import { isDevMode, ErrorHandler, importProvidersFrom } from '@angular/core';
 import { applicationInitializationProvider } from './Initialization/app.initialization';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { profileInterceptor } from './Interceptors/profile-functional.interceptor';
+import { profileInterceptor } from './Interceptors/profile.interceptor';
 import { GlobalErrorHandlerService } from './Services/global-error-handler.service';
 import { AuthenticationRepository } from './Repositories/authentcation.repository';
 import { ProfileRepository } from './Repositories/profile.repository';

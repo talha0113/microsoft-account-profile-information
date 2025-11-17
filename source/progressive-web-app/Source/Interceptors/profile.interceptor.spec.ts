@@ -1,19 +1,30 @@
-﻿import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
+import { Router, provideRouter } from '@angular/router';
 
-import { AuthenticationService } from 'Source/Services/authentication.service';
+import { profileInterceptor } from './profile.interceptor';
+import { AuthenticationService } from '../Services/authentication.service';
 import { AuthenticationServiceStub } from '../Services/authentication.service.stub';
 import { setUpMock } from '../Managers/storage.mock';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ProfileInterceptor } from './profile.interceptor';
+import { RequestManager } from '../Managers/request.manager';
+import { appRoutes } from '../Routes/main.route';
 
 describe('Profile Interceptor', () => {
+  const testUrl = '/api/test';
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
   let repository: AuthenticationRepository;
   let authenticationService: AuthenticationService;
   let router: Router;
-  let profileInterceptor: ProfileInterceptor;
 
   beforeEach(async () => {
     setUpMock();
@@ -22,13 +33,9 @@ describe('Profile Interceptor', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptors([profileInterceptor])),
         provideHttpClientTesting(),
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: ProfileInterceptor,
-          multi: true,
-        },
+        provideRouter(appRoutes),
         AuthenticationRepository,
         {
           provide: AuthenticationService,
@@ -39,18 +46,44 @@ describe('Profile Interceptor', () => {
   });
 
   beforeEach(async () => {
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
     repository = TestBed.inject(AuthenticationRepository);
     authenticationService = TestBed.inject(AuthenticationService);
     router = TestBed.inject(Router);
-    profileInterceptor = TestBed.inject(
-      HTTP_INTERCEPTORS
-    )[0] as ProfileInterceptor;
+
+    spyOn(RequestManager, 'secureRequest').and.callThrough();
+    spyOn(authenticationService, 'refreshToken').and.callThrough();
+    spyOn(authenticationService, 'logout').and.callThrough();
   });
 
   it('Should exist', async () => {
     expect(authenticationService).toBeDefined();
     expect(router).toBeDefined();
     expect(repository).toBeDefined();
-    expect(profileInterceptor).toBeDefined();
+  });
+
+  it('should intercept HTTP requests and add authorization', () => {
+    httpClient.get(testUrl).subscribe(() => {
+      expect(mockRequest.request.headers.has('Authorization')).toBeTrue();
+    });
+    const mockRequest = httpTestingController.expectOne(testUrl);
+    mockRequest.flush({ data: 'test' });
+  });
+
+  it('should handle non-HTTP errors by logging out', () => {
+    httpClient.get(testUrl).subscribe({
+      error: () => {
+        console.log('Expected network error');
+      },
+    });
+
+    const mockRequest = httpTestingController.expectOne(testUrl);
+    mockRequest.error(new ProgressEvent('Network error'));
+
+    expect(authenticationService.logout).toHaveBeenCalled();
+  });
+  afterEach(() => {
+    httpTestingController.verify();
   });
 });

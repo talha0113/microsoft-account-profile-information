@@ -1,6 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 import { StatusComponent } from './status.component';
@@ -19,7 +20,6 @@ describe('Status Component', () => {
   beforeAll(async () => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
         FormsModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
           enabled: environment.production,
@@ -28,6 +28,8 @@ describe('Status Component', () => {
         StatusComponent,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         PushService,
         NotificationService,
         {
