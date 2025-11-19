@@ -22,7 +22,7 @@
         <input
           name="notificationsSubscribed"
           type="checkbox"
-          [disabled]="isSubscriptionInProgress"
+          [disabled]="isSubscriptionInProgress()"
           [checked]="notificationsSubscribed()"
           (change)="subscriptionChanged()" />
       </label>
