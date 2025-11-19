@@ -73,6 +73,7 @@ export class AuthenticationRepository {
   }
 
   public remove() {
+    StorageManager.remove(TokenConstant.token);
     store.reset();
   }
 }
