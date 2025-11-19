@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router, Event, NavigationEnd, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
@@ -36,18 +36,19 @@ export class MainComponent implements OnInit {
   private readonly pushService = inject(PushService);
 
   public title: string = 'Profile Information!';
-  public isOffline: boolean = !navigator.onLine;
-  public offlineNotificationDone: boolean = false;
-  public notificationsSubscribed: boolean = false;
-  public isSubscriptionInProgress: boolean = false;
-  public hideSubscription: boolean = false;
+  isOffline = signal(!navigator.onLine);
+  offlineNotificationDone = signal(false);
+  notificationsSubscribed = signal(false);
+  isSubscriptionInProgress = signal(false);
+  hideSubscription = signal(false);
 
   ngOnInit() {
-    this.isOffline = !navigator.onLine;
-    this.hideSubscription = this.notificationService.isDenied;
-    if (!this.isOffline) {
+    this.isOffline.set(!navigator.onLine);
+    this.hideSubscription.set(this.notificationService.isDenied);
+
+    if (!this.isOffline()) {
       this.pushService.isSubscribed.subscribe((value: boolean) => {
-        this.notificationsSubscribed = value;
+        this.notificationsSubscribed.set(value);
         if (this.swUpdate.isEnabled) {
           this.swUpdate.versionUpdates
             .pipe(
@@ -87,12 +88,12 @@ export class MainComponent implements OnInit {
                 this.notificationService.generalNotification(
                   applicationVersionInformationNew.message,
                   () => {
-                    window.location.reload();
+                    globalThis.location.reload();
                   }
                 );
               } else {
                 if (confirm(applicationVersionInformationNew.message)) {
-                  window.location.reload();
+                  globalThis.location.reload();
                 }
               }
             });
@@ -105,9 +106,9 @@ export class MainComponent implements OnInit {
 
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.isOffline = !navigator.onLine;
-        if (this.isOffline && !this.offlineNotificationDone) {
-          this.offlineNotificationDone = true;
+        this.isOffline.set(!navigator.onLine);
+        if (this.isOffline() && !this.offlineNotificationDone()) {
+          this.offlineNotificationDone.set(true);
           this.notificationService.offline();
         }
       }
@@ -115,9 +116,9 @@ export class MainComponent implements OnInit {
   }
 
   subscriptionChanged(): void {
-    if (!this.isOffline) {
-      this.isSubscriptionInProgress = true;
-      if (this.notificationsSubscribed) {
+    if (!this.isOffline()) {
+      this.isSubscriptionInProgress.set(true);
+      if (this.notificationsSubscribed()) {
         this.pushService
           .subscribe()
           .pipe(
@@ -129,21 +130,21 @@ export class MainComponent implements OnInit {
           )
           .subscribe({
             next: (value: boolean) => {
-              this.notificationsSubscribed = value;
-              this.isSubscriptionInProgress = false;
+              this.notificationsSubscribed.set(value);
+              this.isSubscriptionInProgress.set(false);
             },
             error: error => {
               console.log(error);
-              this.notificationsSubscribed = !this.notificationsSubscribed;
-              this.hideSubscription = true;
-              this.isSubscriptionInProgress = false;
+              this.notificationsSubscribed.set(!this.notificationsSubscribed());
+              this.hideSubscription.set(true);
+              this.isSubscriptionInProgress.set(false);
             },
           });
       } else {
         this.pushService.unSubscribe.subscribe({
           next: () => {
-            this.isSubscriptionInProgress = false;
-            window.location.reload();
+            this.isSubscriptionInProgress.set(false);
+            globalThis.location.reload();
           },
         });
       }

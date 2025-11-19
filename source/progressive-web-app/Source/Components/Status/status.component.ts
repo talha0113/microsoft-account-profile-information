@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  signal,
+  effect,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { TranslocoPipe } from '@ngneat/transloco';
@@ -18,16 +25,56 @@ export class StatusComponent implements OnInit, OnDestroy {
 
   private subscriptionLiveCountSubscription: Subscription = null;
 
-  public subscriptionCount: number = 0;
-  public isOffline: boolean = true;
-  public statsSubscribed: boolean = false;
+  subscriptionCount = signal(0);
+  isOffline = signal(true);
+  statsSubscribed = signal(false);
+
+  constructor() {
+    effect(() => {
+      if (this.statsSubscribed()) {
+        this.startLiveCount();
+      } else {
+        this.stopLiveCount();
+      }
+    });
+  }
 
   ngOnInit(): void {
-    this.isOffline = !navigator.onLine;
+    this.isOffline.set(!navigator.onLine);
   }
 
   ngOnDestroy(): void {
     this.stopLiveCount();
+  }
+
+  private startLiveCount(): void {
+    this.stopLiveCount();
+
+    const subscriptionCountSubscription = this.pushService.count.subscribe({
+      next: (value: number) => {
+        this.subscriptionCount.set(value);
+      },
+      error: () => {
+        subscriptionCountSubscription.unsubscribe();
+      },
+    });
+
+    this.signalRService.renewConnection();
+    this.subscriptionLiveCountSubscription =
+      this.signalRService.liveCount.subscribe((value: number) => {
+        if (value > -1) {
+          this.subscriptionCount.set(value);
+        }
+        subscriptionCountSubscription.unsubscribe();
+      });
+
+    this.signalRService.renewConnection();
+    this.subscriptionLiveCountSubscription =
+      this.signalRService.liveCount.subscribe((value: number) => {
+        if (value > -1) {
+          this.subscriptionCount.set(value);
+        }
+      });
   }
 
   private stopLiveCount(): void {
@@ -35,31 +82,6 @@ export class StatusComponent implements OnInit, OnDestroy {
       this.subscriptionLiveCountSubscription.unsubscribe();
       this.subscriptionLiveCountSubscription = null;
       this.signalRService.stopConnection();
-    }
-  }
-
-  toogleStats(): void {
-    this.stopLiveCount();
-
-    if (this.statsSubscribed) {
-      const subscriptionCountSubscription = this.pushService.count.subscribe(
-        (value: number) => {
-          this.subscriptionCount = value;
-        },
-        null,
-        () => {
-          subscriptionCountSubscription.unsubscribe();
-        }
-      );
-      this.signalRService.renewConnection();
-      this.subscriptionLiveCountSubscription =
-        this.signalRService.liveCount.subscribe((value: number) => {
-          if (value > -1) {
-            this.subscriptionCount = value;
-          }
-        });
-    } else {
-      this.stopLiveCount();
     }
   }
 }

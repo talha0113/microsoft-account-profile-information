@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -19,12 +19,13 @@ export class LoginComponent implements OnInit {
   private readonly router = inject(Router);
 
   isInProgress$: Observable<boolean>;
-  isOffline: boolean = !navigator.onLine;
+  isOffline = signal(!navigator.onLine);
 
   ngOnInit() {
-    this.isInProgress$ = of(this.isOffline);
+    // this.isOffline.set(!navigator.onLine);
+    this.isInProgress$ = of(this.isOffline());
 
-    if (!this.isOffline) {
+    if (!this.isOffline()) {
       this.isInProgress$ = this.repository.data$.pipe(
         map(value => {
           return value.isLoading;

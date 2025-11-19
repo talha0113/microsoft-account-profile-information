@@ -1,15 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import { Observable, map } from 'rxjs';
+import { map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { ProfileService } from '../../Services/profile.service';
-import { Profile } from '../../Models/profile.model';
 import { ProfileRepository } from '../../Repositories/profile.repository';
 import { SafeUrlPipe } from '../../Pipes/safe-url.pipe';
 
 @Component({
   selector: 'profile',
-  imports: [AsyncPipe, SafeUrlPipe],
+  imports: [SafeUrlPipe],
   templateUrl: './profile.component.html',
   standalone: true,
 })
@@ -17,21 +16,16 @@ export class ProfileComponent implements OnInit {
   private readonly profileService = inject(ProfileService);
   private readonly repository = inject(ProfileRepository);
 
-  profileInformation$: Observable<Profile>;
-  isLoading$: Observable<boolean>;
+  profileInformation = toSignal(
+    this.repository.data$.pipe(map(value => value.data))
+  );
+
+  isLoading = toSignal(
+    this.repository.data$.pipe(map(value => value.isLoading)),
+    { initialValue: true }
+  );
 
   ngOnInit() {
     this.profileService.information$.subscribe();
-
-    this.isLoading$ = this.repository.data$.pipe(
-      map(value => {
-        return value.isLoading;
-      })
-    );
-    this.profileInformation$ = this.repository.data$.pipe(
-      map(value => {
-        return value.data;
-      })
-    );
   }
 }

@@ -26,10 +26,10 @@ export class FlagComponent implements OnInit, OnDestroy {
   private readonly translocoService = inject(TranslocoService);
   private readonly router = inject(Router);
   private readonly pushService = inject(PushService);
-
-  public readonly currentLanguage: WritableSignal<string> = signal('');
   private readonly subscription: Subscription = null;
-  public isOffline: boolean = !navigator.onLine;
+
+  readonly currentLanguage: WritableSignal<string> = signal('');
+  isOffline = signal(!navigator.onLine);
 
   constructor() {
     effect(() => {
@@ -46,7 +46,7 @@ export class FlagComponent implements OnInit, OnDestroy {
     this.currentLanguage.set(this.translocoService.getActiveLang());
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.isOffline = !navigator.onLine;
+        this.isOffline.set(!navigator.onLine);
       }
     });
   }
