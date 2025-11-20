@@ -26,7 +26,7 @@ if (!isDevMode()) {
 
 InsightsManager.initialize();
 
-await bootstrapApplication(MainComponent, {
+bootstrapApplication(MainComponent, {
   providers: [
     importProvidersFrom(TranslationModule),
     applicationInitializationProvider,

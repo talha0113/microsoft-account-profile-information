@@ -18,11 +18,10 @@ export class LoginComponent implements OnInit {
   private readonly repository = inject(AuthenticationRepository);
   private readonly router = inject(Router);
 
-  isInProgress$: Observable<boolean>;
+  isInProgress$: Observable<boolean> = of(false);
   isOffline = signal(!navigator.onLine);
 
   ngOnInit() {
-    // this.isOffline.set(!navigator.onLine);
     this.isInProgress$ = of(this.isOffline());
 
     if (!this.isOffline()) {
