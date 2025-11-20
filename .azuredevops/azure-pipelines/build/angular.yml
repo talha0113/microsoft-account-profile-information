@@ -42,7 +42,7 @@ stages:
       displayName: 'Node: 24.x'
       inputs:
         versionSource: 'spec'
-        versionSpec: '24.11.0'
+        versionSpec: '24.x'
         checkLatest: true
 
     # Perform Tokens Replacement
@@ -85,7 +85,7 @@ stages:
       inputs:
         workingDir: '${{parameters.source_directory}}'
         command: 'custom'
-        customCommand: 'ci --cache $(npm_config_cache) --prefer-offline'
+        customCommand: 'ci'
         verbose: false
 
     # Perform npm lint
