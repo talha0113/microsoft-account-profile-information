@@ -16,7 +16,6 @@
     "@angular/core": "^21.0.0",
     "@angular/forms": "^21.0.0",
     "@angular/platform-browser": "^21.0.0",
-    "@angular/platform-browser-dynamic": "^21.0.0",
     "@angular/router": "^21.0.0",
     "@angular/service-worker": "^21.0.0",
     "@ngneat/elf": "^2.5.1",
@@ -28,11 +27,11 @@
     "@azure/msal-browser": "^4.26.1",
     "@microsoft/applicationinsights-web": "^3.3.10",
     "@microsoft/signalr": "^10.0.0",
-    "core-js": "^3.47.0",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@angular/cli": "^21.0.0",
+    "@angular/build": "^21.0.0",
     "@angular/compiler-cli": "^21.0.0",
     "@angular-devkit/build-angular": "^21.0.0",
     "@angular-eslint/builder": "^20.6.0",

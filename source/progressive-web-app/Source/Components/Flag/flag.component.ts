@@ -26,7 +26,7 @@ export class FlagComponent implements OnInit, OnDestroy {
   private readonly translocoService = inject(TranslocoService);
   private readonly router = inject(Router);
   private readonly pushService = inject(PushService);
-  private readonly subscription: Subscription = null;
+  private readonly subscription: Subscription = new Subscription();
 
   readonly currentLanguage: WritableSignal<string> = signal('');
   isOffline = signal(!navigator.onLine);
