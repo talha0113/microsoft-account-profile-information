@@ -14,26 +14,26 @@ import { PushService } from './Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './Routes/main.route';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslationModule } from './Transloco/translation.module';
 import { MainComponent } from './Components/Main/main.component';
 import { InsightsManager } from './Managers/insights.manager';
 import { AuthenticationService } from './Services/authentication.service';
+import { provideServiceWorker } from '@angular/service-worker';
 
 if (!isDevMode()) {
   enableElfProdMode();
 }
 
-bootstrapApplication(MainComponent, {
+InsightsManager.initialize();
+
+await bootstrapApplication(MainComponent, {
   providers: [
-    importProvidersFrom(
-      ServiceWorkerModule.register('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerImmediately',
-      }),
-      TranslationModule
-    ),
+    importProvidersFrom(TranslationModule),
     applicationInitializationProvider,
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerImmediately',
+    }),
     provideHttpClient(withInterceptors([profileInterceptor])),
     {
       provide: ErrorHandler,
@@ -48,8 +48,4 @@ bootstrapApplication(MainComponent, {
     SignalRService,
     provideRouter(appRoutes),
   ],
-})
-  .then(() => {
-    InsightsManager.initialize();
-  })
-  .catch(err => console.error(err));
+});
