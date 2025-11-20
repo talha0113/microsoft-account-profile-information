@@ -1,8 +1,8 @@
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import {
-  TestBed,
-  ComponentFixture,
-} from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 
@@ -18,7 +18,6 @@ import { clearRequestsResult } from '@ngneat/elf-requests';
 describe('Profile Component', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let component: ProfileComponent;
-  let profileService: ProfileService;
   let httpClientMock: HttpTestingController;
 
   beforeEach(() => {
@@ -27,15 +26,12 @@ describe('Profile Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ProfileComponent,
-        SafeUrlPipe,
-      ],
-        providers: [
-            provideHttpClient(),
-            provideHttpClientTesting(),
-            provideRouter(appRoutes),
-        
+      imports: [ProfileComponent, SafeUrlPipe],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter(appRoutes),
+
         ProfileService,
         ProfileRepository,
       ],
@@ -43,15 +39,15 @@ describe('Profile Component', () => {
   });
 
   beforeEach(() => {
-      clearRequestsResult();
+    clearRequestsResult();
     httpClientMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     TestBed.inject(ProfileRepository).remove();
   });
 
-    it('Should exist', () => {
-        fixture.detectChanges();
+  it('Should exist', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
     ProfileServiceMock.metaDataRequest(httpClientMock);
     ProfileServiceMock.pictureRequest(httpClientMock);
@@ -64,7 +60,7 @@ describe('Profile Component', () => {
     expect(profileNameDiv).toBeDefined();
   });
 
-    afterEach(() => {
-        httpClientMock.verify();
-    });
+  afterEach(() => {
+    httpClientMock.verify();
+  });
 });
