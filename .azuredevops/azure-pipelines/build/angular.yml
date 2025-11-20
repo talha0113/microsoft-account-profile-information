@@ -42,7 +42,7 @@ stages:
       displayName: 'Node: 24.x'
       inputs:
         versionSource: 'spec'
-        versionSpec: '24.x'
+        versionSpec: '24.11.0'
         checkLatest: true
 
     # Perform Tokens Replacement
