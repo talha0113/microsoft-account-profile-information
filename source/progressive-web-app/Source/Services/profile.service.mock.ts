@@ -30,11 +30,10 @@ export class ProfileServiceMock {
   public static metaDataRequest(
     httpMockRequest: HttpTestingController
   ): TestRequest {
-      const mockRequest: TestRequest = httpMockRequest.expectOne((request) => {
-          console.log("metaDataRequest: ", request.url);
-          return request.url === GraphConstant.profileMetaDataUrl;
-      }
-    );
+    const mockRequest: TestRequest = httpMockRequest.expectOne(request => {
+      console.log('metaDataRequest: ', request.url);
+      return request.url === GraphConstant.profileMetaDataUrl;
+    });
     mockRequest.flush({
       '@odata.context':
         'https://graph.microsoft.com/beta/$metadata#users/$entity',
