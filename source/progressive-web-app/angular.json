@@ -22,7 +22,6 @@
             },
             "index": "Source/index.html",
             "polyfills": [
-              "zone.js"
             ],
             "tsConfig": "Source/tsconfig.app.json",
             "inlineStyleLanguage": "css",
@@ -108,8 +107,6 @@
             "tsConfig": ".karma/tsconfig.spec.json",
             "karmaConfig": ".karma/karma.config.js",
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ],
             "assets": [
               "Source/favicon.ico",

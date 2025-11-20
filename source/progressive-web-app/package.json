@@ -29,8 +29,7 @@
     "@microsoft/applicationinsights-web": "^3.3.10",
     "@microsoft/signalr": "^10.0.0",
     "core-js": "^3.47.0",
-    "rxjs": "^7.8.2",
-    "zone.js": "~0.16.0"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@angular/cli": "^21.0.0",

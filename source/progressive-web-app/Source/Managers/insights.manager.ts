@@ -5,7 +5,7 @@
 import { environment } from '../../Configurations/Environments/environment';
 
 export class InsightsManager {
-  private static applicationInsights = new ApplicationInsights({
+  private static readonly applicationInsights = new ApplicationInsights({
     config: {
       connectionString:
         'InstrumentationKey=02db383e-c586-47be-91a4-1aa6a1847d97;',
@@ -28,8 +28,7 @@ export class InsightsManager {
   }
 
   static trackException(message: string, stack: string): void {
-    const error = new Error();
-    error.message = message;
+    const error = new Error(message);
     error.stack = stack;
 
     InsightsManager.applicationInsights.trackException({
