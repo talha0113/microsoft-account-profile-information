@@ -9,7 +9,8 @@
         <input
           class="stats-subscribed"
           type="checkbox"
-          [checked]="statsSubscribed()" />
+          [checked]="statsSubscribed()"
+          (change)="statsSubscribed.set($event.target.checked)" />
       </label>
     </div>
     @if (statsSubscribed()) {
