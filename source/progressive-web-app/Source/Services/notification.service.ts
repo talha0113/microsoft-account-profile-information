@@ -26,7 +26,7 @@ export class NotificationService {
           this.generalNotification(
             'Notifications Successfully Subscribed',
             () => {
-              window.location.reload();
+              globalThis.location.reload();
             }
           );
         }
@@ -43,7 +43,7 @@ export class NotificationService {
   }
 
   public get isSupportNotification(): boolean {
-    return 'Notification' in window && !BrowserManager.isMobile;
+    return 'Notification' in globalThis && !BrowserManager.isMobile;
   }
 
   public generalNotification(body: string, eventCallBack?: () => void): void {

@@ -24,7 +24,10 @@
           type="checkbox"
           [disabled]="isSubscriptionInProgress()"
           [checked]="notificationsSubscribed()"
-          (change)="subscriptionChanged()" />
+          (change)="
+            notificationsSubscribed.set($event.target.checked);
+            subscriptionChanged()
+          " />
       </label>
     </div>
   }
