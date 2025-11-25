@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
@@ -19,56 +20,52 @@ let component: FlagComponent;
 let translocoService: TranslocoService;
 
 describe('Flag Component', () => {
-  beforeAll(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: environment.production,
-        }),
-        getTranslationTestingModule(),
-        FlagComponent,
-      ],
-      providers: [
-        provideRouter(appRoutes),
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        NotificationService,
-        PushService,
-      ],
-    }).compileComponents();
-  });
+    beforeAll(async () => {
+        TestBed.configureTestingModule({
+            imports: [
+                FormsModule,
+                ServiceWorkerModule.register('ngsw-worker.js', {
+                    enabled: environment.production,
+                }),
+                getTranslationTestingModule(),
+                FlagComponent,
+            ],
+            providers: [
+                provideRouter(appRoutes),
+                provideHttpClient(),
+                provideHttpClientTesting(),
+                NotificationService,
+                PushService,
+            ],
+        }).compileComponents();
+    });
 
-  beforeAll(() => {
-    translocoService = TestBed.inject(TranslocoService);
-  });
+    beforeAll(() => {
+        translocoService = TestBed.inject(TranslocoService);
+    });
 
-  beforeAll(async () => {
-    fixture = TestBed.createComponent(FlagComponent);
-    component = fixture.componentInstance;
-    fixture.autoDetectChanges();
-  });
+    beforeAll(async () => {
+        fixture = TestBed.createComponent(FlagComponent);
+        component = fixture.componentInstance;
+        fixture.autoDetectChanges();
+    });
 
-  it('Should exist', async () => {
-    expect(component).toBeTruthy();
-  });
+    it('Should exist', async () => {
+        expect(component).toBeTruthy();
+    });
 
-  it('Should render flag', async () => {
-    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const flagImg: HTMLImageElement = nativeElement.querySelector('img');
-    expect(flagImg.src).toBeTruthy();
-  });
+    it('Should render flag', async () => {
+        const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+        const flagImg: HTMLImageElement = nativeElement.querySelector('img');
+        expect(flagImg.src).toBeTruthy();
+    });
 
-  it('Should switch language', async () => {
-    expect(translocoService.getActiveLang()).toBe(
-      TranslationConfiguration.availableLanguages[0]
-    );
-    component.switchLanguage();
-    TestBed.tick();
-    setTimeout(() => {
-      expect(translocoService.getActiveLang()).toBe(
-        TranslationConfiguration.availableLanguages[1]
-      );
-    }, 1000);
-  });
+    it('Should switch language', async () => {
+        expect(translocoService.getActiveLang()).toBe(TranslationConfiguration.availableLanguages[0]);
+        component.switchLanguage();
+        TestBed.tick();
+        setTimeout(() => {
+            expect(translocoService.getActiveLang()).toBe(TranslationConfiguration.availableLanguages[1]);
+        }, 1000);
+    });
 });

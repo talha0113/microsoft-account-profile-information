@@ -4,7 +4,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build --configuration production --clear-screen=true --source-map=true --stats-json=true && gzipper compress ./Distributions ./Distributions --include js,css,html --gzip --skip-compressed --output-file-format [filename].[ext].[compressExt]",
-    "test": "ng test --code-coverage",
+    "test": "ng test --watch=false",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
   },
@@ -19,14 +19,11 @@
     "@angular/router": "^21.0.1",
     "@angular/service-worker": "^21.0.1",
     "@ngneat/elf": "^2.5.1",
-    "@ngneat/elf-requests": "^1.9.2",
     "@ngneat/elf-entities": "^5.0.2",
     "@ngneat/elf-persist-state": "^1.2.1",
+    "@ngneat/elf-requests": "^1.9.2",
     "@ngneat/elf-state-history": "^1.4.0",
     "@ngneat/transloco": "^6.0.4",
-    "@azure/msal-browser": "^4.26.2",
-    "@microsoft/applicationinsights-web": "^3.3.10",
-    "@microsoft/signalr": "^10.0.0",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
@@ -45,16 +42,18 @@
     "prettier-eslint": "^16.4.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "gzipper": "~8.2.1",
+    "jasmine-core": "~5.12.1",
+    "jsdom": "^27.2.0",
+    "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "@types/jasmine": "~5.1.13",
-    "@types/jasminewd2": "~2.0.13",
-    "jasmine-core": "~5.12.1",
-    "karma": "~6.4.4",
     "karma-junit-reporter": "~2.0.1",
-    "gzipper": "~8.2.1",
-    "typescript": "~5.9.3"
+    "prettier": "^3.6.2",
+    "prettier-eslint": "^16.4.2",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.13"
   }
 }
