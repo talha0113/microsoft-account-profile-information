@@ -1,4 +1,6 @@
-﻿let store = {};
+﻿import { vi } from "vitest";
+
+let store = {};
 const mockLocalStorage = {
   getItem: (key: string): string => {
     return key in store ? store[key] : null;
@@ -15,9 +17,9 @@ const mockLocalStorage = {
 };
 
 export function setUpMock(): void {
-  spyOn(localStorage, 'getItem').and.callFake(mockLocalStorage.getItem);
-  spyOn(localStorage, 'setItem').and.callFake(mockLocalStorage.setItem);
-  spyOn(localStorage, 'removeItem').and.callFake(mockLocalStorage.removeItem);
-  spyOn(localStorage, 'clear').and.callFake(mockLocalStorage.clear);
+    vi.spyOn(localStorage, 'getItem').mockImplementation(mockLocalStorage.getItem);
+    vi.spyOn(localStorage, 'setItem').mockImplementation(mockLocalStorage.setItem);
+    vi.spyOn(localStorage, 'removeItem').mockImplementation(mockLocalStorage.removeItem);
+    vi.spyOn(localStorage, 'clear').mockImplementation(mockLocalStorage.clear);
   localStorage.clear();
 }
