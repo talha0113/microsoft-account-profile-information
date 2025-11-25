@@ -1,6 +1,10 @@
-import { vi, describe, expect, it } from "vitest";
+import { vi, describe, expect, it } from 'vitest';
 import { Router, provideRouter } from '@angular/router';
-import { TestBed, ComponentFixture, ComponentFixtureAutoDetect, } from '@angular/core/testing';
+import {
+  TestBed,
+  ComponentFixture,
+  ComponentFixtureAutoDetect,
+} from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { LogoutComponent } from './logout.component';
@@ -15,67 +19,71 @@ import { tap } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('Logout Component', () => {
-    let fixture: ComponentFixture<LogoutComponent>;
-    let component: LogoutComponent;
-    let router: Router;
-    let repository: AuthenticationRepository;
+  let fixture: ComponentFixture<LogoutComponent>;
+  let component: LogoutComponent;
+  let router: Router;
+  let repository: AuthenticationRepository;
 
-    beforeAll(async () => {
-        setUpMock();
-    });
+  beforeAll(async () => {
+    setUpMock();
+  });
 
-    beforeAll(async () => {
-        TestBed.configureTestingModule({
-            imports: [getTranslationTestingModule(), LogoutComponent],
-            providers: [
-                provideRouter([]),
-                provideHttpClient(),
-                provideHttpClientTesting(),
-                {
-                    provide: ComponentFixtureAutoDetect,
-                    useValue: true,
-                },
-                ProfileService,
-                ProfileRepository,
-                {
-                    provide: AuthenticationService,
-                    useClass: AuthenticationServiceStub,
-                },
-                AuthenticationRepository,
-            ],
-        }).compileComponents();
-    });
+  beforeAll(async () => {
+    TestBed.configureTestingModule({
+      imports: [getTranslationTestingModule(), LogoutComponent],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: ComponentFixtureAutoDetect,
+          useValue: true,
+        },
+        ProfileService,
+        ProfileRepository,
+        {
+          provide: AuthenticationService,
+          useClass: AuthenticationServiceStub,
+        },
+        AuthenticationRepository,
+      ],
+    }).compileComponents();
+  });
 
-    beforeAll(async () => {
-        repository = TestBed.inject(AuthenticationRepository);
+  beforeAll(async () => {
+    repository = TestBed.inject(AuthenticationRepository);
 
-        router = TestBed.inject(Router);
-        vi.spyOn(router, 'navigateByUrl');
-    });
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigateByUrl');
+  });
 
-    beforeAll(async () => {
-        fixture = TestBed.createComponent(LogoutComponent);
-        component = fixture.componentInstance;
-    });
+  beforeAll(async () => {
+    fixture = TestBed.createComponent(LogoutComponent);
+    component = fixture.componentInstance;
+  });
 
-    it('Should exist', async () => {
-        expect(component).toBeTruthy();
-    });
+  it('Should exist', async () => {
+    expect(component).toBeTruthy();
+  });
 
-    it('Should render logout', async () => {
-        const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        const logoutButton: HTMLButtonElement = nativeElement.querySelector('button');
+  it('Should render logout', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const logoutButton: HTMLButtonElement =
+      nativeElement.querySelector('button');
 
-        expect(logoutButton).toBeDefined();
-    });
+    expect(logoutButton).toBeDefined();
+  });
 
-    it('Should logout', async () => {
-        const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-        const logoutButton: HTMLButtonElement = nativeElement.querySelector('button');
+  it('Should logout', async () => {
+    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
+    const logoutButton: HTMLButtonElement =
+      nativeElement.querySelector('button');
 
-        logoutButton.click();
-        repository.data$.pipe(tap(value => {
-            expect(value.data).toBeNull();
-        }));
-    });
+    logoutButton.click();
+    repository.data$.pipe(
+      tap(value => {
+        expect(value.data).toBeNull();
+      })
+    );
+  });
 });

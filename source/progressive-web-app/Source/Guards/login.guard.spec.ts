@@ -1,4 +1,4 @@
-import { vi, describe, expect, it } from "vitest";
+import { vi, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
@@ -8,44 +8,44 @@ import { AuthenticationRepository } from '../Repositories/authentcation.reposito
 import { Authentication } from '../Models/authentication.model';
 
 describe('Login Guard', () => {
-    let repository: AuthenticationRepository;
-    let router: Router;
+  let repository: AuthenticationRepository;
+  let router: Router;
 
-    beforeEach(async () => {
-        setUpMock();
-    });
+  beforeEach(async () => {
+    setUpMock();
+  });
 
-    beforeEach(async () => {
-        TestBed.configureTestingModule({
-            providers: [AuthenticationRepository],
-        });
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [AuthenticationRepository],
     });
+  });
 
-    beforeEach(async () => {
-        repository = TestBed.inject(AuthenticationRepository);
-        router = TestBed.inject(Router);
-        vi.spyOn(router, 'parseUrl');
-    });
+  beforeEach(async () => {
+    repository = TestBed.inject(AuthenticationRepository);
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'parseUrl');
+  });
 
-    it('Should exist', async () => {
-        expect(loginGuard).toBeDefined();
-        expect(repository).toBeDefined();
-        expect(router).toBeDefined();
-    });
+  it('Should exist', async () => {
+    expect(loginGuard).toBeDefined();
+    expect(repository).toBeDefined();
+    expect(router).toBeDefined();
+  });
 
-    it('Should allow for un authenticated user', async () => {
-        repository.remove();
-        const guardResult = TestBed.runInInjectionContext(() => {
-            return loginGuard(null, null);
-        });
-        expect(guardResult).toBeDefined();
+  it('Should allow for un authenticated user', async () => {
+    repository.remove();
+    const guardResult = TestBed.runInInjectionContext(() => {
+      return loginGuard(null, null);
     });
+    expect(guardResult).toBeDefined();
+  });
 
-    it('Should not allow for authenticated user', async () => {
-        repository.update = new Authentication('', '');
-        const guardResult = TestBed.runInInjectionContext(() => {
-            return loginGuard(null, null);
-        });
-        expect(guardResult).toBeDefined();
+  it('Should not allow for authenticated user', async () => {
+    repository.update = new Authentication('', '');
+    const guardResult = TestBed.runInInjectionContext(() => {
+      return loginGuard(null, null);
     });
+    expect(guardResult).toBeDefined();
+  });
 });
