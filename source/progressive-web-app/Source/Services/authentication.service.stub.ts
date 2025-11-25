@@ -9,7 +9,7 @@ import { TokenConstant } from '../Constants/token.constant';
 
 @Injectable()
 export class AuthenticationServiceStub extends AuthenticationService {
-  override repository: AuthenticationRepository;
+  declare repository: AuthenticationRepository;
 
   constructor() {
     const repository = inject(AuthenticationRepository);

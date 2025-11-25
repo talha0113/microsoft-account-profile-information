@@ -1,4 +1,4 @@
-﻿import { vi } from "vitest";
+﻿import { vi } from 'vitest';
 
 let store = {};
 const mockLocalStorage = {
@@ -17,9 +17,15 @@ const mockLocalStorage = {
 };
 
 export function setUpMock(): void {
-    vi.spyOn(localStorage, 'getItem').mockImplementation(mockLocalStorage.getItem);
-    vi.spyOn(localStorage, 'setItem').mockImplementation(mockLocalStorage.setItem);
-    vi.spyOn(localStorage, 'removeItem').mockImplementation(mockLocalStorage.removeItem);
-    vi.spyOn(localStorage, 'clear').mockImplementation(mockLocalStorage.clear);
+  vi.spyOn(localStorage, 'getItem').mockImplementation(
+    mockLocalStorage.getItem
+  );
+  vi.spyOn(localStorage, 'setItem').mockImplementation(
+    mockLocalStorage.setItem
+  );
+  vi.spyOn(localStorage, 'removeItem').mockImplementation(
+    mockLocalStorage.removeItem
+  );
+  vi.spyOn(localStorage, 'clear').mockImplementation(mockLocalStorage.clear);
   localStorage.clear();
 }

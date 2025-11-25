@@ -121,6 +121,7 @@
     }
   },
   "cli": {
+    "packageManager": "npm",
     "analytics": "555dc42f-6732-45dd-8fc9-c8d6ba9d2c2b",
     "cache": {
       "environment": "all"

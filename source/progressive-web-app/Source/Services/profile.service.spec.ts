@@ -1,7 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting, } from '@angular/common/http/testing';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 
 import { ProfileService } from './profile.service';
 import { ProfileServiceMock } from './profile.service.mock';
@@ -11,72 +14,76 @@ import { tap } from 'rxjs';
 import { clearRequestsResult } from '@ngneat/elf-requests';
 
 describe('Profile Service', () => {
-    let profileService: ProfileService;
-    let repository: ProfileRepository;
-    let httpClientMock: HttpTestingController;
+  let profileService: ProfileService;
+  let repository: ProfileRepository;
+  let httpClientMock: HttpTestingController;
 
-    beforeEach(() => {
-        setUpMock();
+  beforeEach(() => {
+    setUpMock();
+  });
+
+  beforeEach(() => {
+    function noOp() {}
+
+    if (typeof globalThis.URL.createObjectURL === 'undefined') {
+      Object.defineProperty(globalThis.URL, 'createObjectURL', { value: noOp });
+    }
+  });
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        ProfileService,
+        ProfileRepository,
+      ],
     });
+  });
 
-    beforeEach(() => {
-        function noOp() { }
+  beforeEach(() => {
+    profileService = TestBed.inject(ProfileService);
+    repository = TestBed.inject(ProfileRepository);
+    httpClientMock = TestBed.inject(HttpTestingController);
+    clearRequestsResult();
+    repository.remove();
+  });
 
-        if (typeof globalThis.URL.createObjectURL === 'undefined') {
-            Object.defineProperty(globalThis.URL, 'createObjectURL', { value: noOp });
-        }
-    });
+  it('Should exist', () => {
+    expect(profileService).toBeDefined();
+    expect(repository).toBeDefined();
+    expect(httpClientMock).toBeDefined();
+  });
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [
-                provideHttpClient(),
-                provideHttpClientTesting(),
-                ProfileService,
-                ProfileRepository,
-            ],
-        });
-    });
+  it(`Should be an empty repository`, () => {
+    repository.data$
+      .pipe(
+        tap(value => {
+          expect(value.data).toBeDefined();
+        })
+      )
+      .subscribe();
+    profileService.information$.subscribe();
 
-    beforeEach(() => {
-        profileService = TestBed.inject(ProfileService);
-        repository = TestBed.inject(ProfileRepository);
-        httpClientMock = TestBed.inject(HttpTestingController);
-        clearRequestsResult();
-        repository.remove();
-    });
+    ProfileServiceMock.metaDataErrorRequest(httpClientMock);
+    ProfileServiceMock.pictureErrorRequest(httpClientMock);
+  });
 
-    it('Should exist', () => {
-        expect(profileService).toBeDefined();
-        expect(repository).toBeDefined();
-        expect(httpClientMock).toBeDefined();
-    });
+  it(`Should not be an empty repository`, () => {
+    repository.data$
+      .pipe(
+        tap(value => {
+          expect(value.data).toBeDefined();
+        })
+      )
+      .subscribe();
+    profileService.information$.subscribe();
 
-    it(`Should be an empty repository`, () => {
-        repository.data$
-            .pipe(tap(value => {
-            expect(value.data).toBeDefined();
-        }))
-            .subscribe();
-        profileService.information$.subscribe();
+    ProfileServiceMock.metaDataRequest(httpClientMock);
+    ProfileServiceMock.pictureRequest(httpClientMock);
+  });
 
-        ProfileServiceMock.metaDataErrorRequest(httpClientMock);
-        ProfileServiceMock.pictureErrorRequest(httpClientMock);
-    });
-
-    it(`Should not be an empty repository`, () => {
-        repository.data$
-            .pipe(tap(value => {
-            expect(value.data).toBeDefined();
-        }))
-            .subscribe();
-        profileService.information$.subscribe();
-
-        ProfileServiceMock.metaDataRequest(httpClientMock);
-        ProfileServiceMock.pictureRequest(httpClientMock);
-    });
-
-    afterEach(() => {
-        httpClientMock.verify();
-    });
+  afterEach(() => {
+    httpClientMock.verify();
+  });
 });
