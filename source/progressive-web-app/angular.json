@@ -112,7 +112,7 @@
             "coverageExclude": [ "**/*.(mock|stub|prod).ts" ],
             "reporters": [
               [
-                "default"
+                "tree"
               ],
               [
                 "json",
