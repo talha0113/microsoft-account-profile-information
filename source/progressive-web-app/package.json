@@ -4,7 +4,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build --configuration production --clear-screen=true --source-map=true --stats-json=true && gzipper compress ./Distributions ./Distributions --include js,css,html --gzip --skip-compressed --output-file-format [filename].[ext].[compressExt]",
-    "test": "ng test --watch=false",
+    "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
   },
