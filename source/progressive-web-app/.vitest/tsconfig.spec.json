@@ -3,12 +3,10 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "types": [
-      "vitest/globals",
-      "node"
+      "vitest/globals"
     ]
   },
   "include": [
-    "../Source/**/*.spec.ts",
-    "../Source/**/*.d.ts"
+    "../Source/**/*.ts"
   ]
 }

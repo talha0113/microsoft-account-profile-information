@@ -104,16 +104,34 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "watch": false,
             "tsConfig": ".vitest/tsconfig.spec.json",
-            "runnerConfig": ".vitest/vitest-base.config.ts"
+            "runnerConfig": ".vitest/vitest.config.ts",
+            "buildTarget": "::development",
+            "coverageInclude": [ "**/*.ts" ],
+            "coverageExclude": [ "**/*.(mock|stub|prod).ts" ],
+            "reporters": [
+              [
+                "tree"
+              ],
+              [
+                "json",
+                { "outputFile": "Reports/json/results.json" }
+              ],
+              [
+                "junit",
+                { "outputFile": "Reports/junit/results.xml" }
+              ]
+            ],
+            "coverage": true,
+            "coverageReporters": [ "text", "text-summary", "html", "cobertura", "json" ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "Source/**/*.ts",
-              "Source/**/*.html"
+              "**/*.(ts|html|json)"
             ]
           }
         }

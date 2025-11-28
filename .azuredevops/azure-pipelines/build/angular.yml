@@ -113,7 +113,7 @@ stages:
       displayName: 'Report Tests'
       inputs:
         testRunner: JUnit
-        testResultsFiles: '${{parameters.source_directory}}/Reports/Results.xml'
+        testResultsFiles: '${{parameters.source_directory}}/Reports/junit/results.xml'
         mergeTestResults: true
         testRunTitle: 'Microsoft Account Profile Information'
       condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
