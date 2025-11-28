@@ -66,7 +66,7 @@ describe('Login Component', () => {
     // const progressImage: HTMLImageElement = nativeElement.querySelector('img');
 
     expect(loginButton.textContent.toLowerCase()).toContain('login');
-    // expect(loginButton.disabled).toBeTruthy();
+    expect(loginButton.disabled).toBeTruthy();
     // expect(progressImage).toBeDefined();
   });
 
