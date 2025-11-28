@@ -122,8 +122,8 @@ stages:
     - task: PublishCodeCoverageResults@2
       displayName: 'Report Coverage'
       inputs:
-        summaryFileLocation: '${{parameters.source_directory}}/Reports/Coverage/cobertura-coverage.xml'
-        pathToSources: '${{parameters.source_directory}}/Reports/Coverage'
+        summaryFileLocation: '${{parameters.source_directory}}/**/cobertura-coverage.xml'
+        pathToSources: '${{parameters.source_directory}}/coverage'
       condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
       
     # Perform Angular Build

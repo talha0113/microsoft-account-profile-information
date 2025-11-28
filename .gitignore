@@ -332,5 +332,6 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 /source/progressive-web-app/Reports
+/source/progressive-web-app/coverage
 /source/progressive-web-app/Distributions
 /source/ui-tests/puppeteer/Reports
