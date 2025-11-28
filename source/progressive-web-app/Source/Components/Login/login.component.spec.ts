@@ -63,11 +63,11 @@ describe('Login Component', () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
     const loginButton: HTMLButtonElement =
       nativeElement.querySelector('button');
-    // const progressImage: HTMLImageElement = nativeElement.querySelector('img');
+    const progressImage: HTMLImageElement = nativeElement.querySelector('img');
 
     expect(loginButton.textContent.toLowerCase()).toContain('login');
-    expect(loginButton.disabled).toBeTruthy();
-    // expect(progressImage).toBeDefined();
+    expect(loginButton.disabled).toBeFalsy();
+    expect(progressImage).toBeDefined();
   });
 
   it('Should render login success process', async () => {
