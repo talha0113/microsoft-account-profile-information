@@ -2,14 +2,14 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const FUNCTION_BASE_URL = "http://localhost:7071/api";
+const FUNCTION_BASE_URL = 'http://localhost:7071/api';
 export const environment = {
-    production: false,
-    PWASubscribeUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerSubscribe`,
-    PWAUnSubscribeUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerUnSubscribe`,
-    PWASubscribeCountUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerCount`,
-    PWASignalRConnectionUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerSignalR`,
-    PWAUpdateLanguageUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerUpdateLanguage`
+  production: false,
+  PWASubscribeUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerSubscribe`,
+  PWAUnSubscribeUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerUnSubscribe`,
+  PWASubscribeCountUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerCount`,
+  PWASignalRConnectionUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerSignalR`,
+  PWAUpdateLanguageUrl: `${FUNCTION_BASE_URL}/SubscriptionTriggerUpdateLanguage`,
 };
 
 /*
