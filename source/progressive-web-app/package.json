@@ -48,6 +48,6 @@
     "prettier": "^3.7.3",
     "prettier-eslint": "^16.4.2",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.15"
   }
 }
