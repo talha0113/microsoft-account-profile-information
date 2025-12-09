@@ -12,7 +12,7 @@
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.SignalRService" Version="2.0.1" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="6.8.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="Scrutor" Version="7.0.0" />
     <PackageVersion Include="Lib.AspNetCore.WebPush" Version="2.2.2" />
