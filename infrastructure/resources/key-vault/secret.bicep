@@ -14,8 +14,8 @@ param secretName string
 @description('Secret Value')
 param secretValue string
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {     
-  name: 'kv-${applicationName}-${environment}-${index}'  
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: 'kv-${applicationName}-${environment}-${index}'
 }
 
 resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {

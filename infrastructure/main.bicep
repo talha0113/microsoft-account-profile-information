@@ -26,12 +26,12 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${applicationName}-${environment}-${index}'
   location: location
   tags: {
-	ProjectOwner: 'DevOps'
-	Project: applicationName
-	Environment: environment
-	Cost: applicationName
-	CreatedBy: 'DevOps'
-	CreatedOn: deploymentTime
+    ProjectOwner: 'DevOps'
+    Project: applicationName
+    Environment: environment
+    Cost: applicationName
+    CreatedBy: 'DevOps'
+    ModifiedOn: deploymentTime
   }
 }
 
@@ -40,10 +40,10 @@ module staticWebApplication './resources/static-web.bicep' = {
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
-    index: index    
-  }  
+    index: index
+  }
 }
 
 module frontDoor './resources/front-door.bicep' = {
@@ -52,8 +52,11 @@ module frontDoor './resources/front-door.bicep' = {
   params: {
     applicationName: applicationName
     environment: environment
-    index: index    
-  }  
+    index: index
+  }
+  dependsOn: [
+    staticWebApplication
+  ]
 }
 
 module managedIdentity './resources/managed-identity.bicep' = {
@@ -61,7 +64,7 @@ module managedIdentity './resources/managed-identity.bicep' = {
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
   }
@@ -72,80 +75,72 @@ module keyVault './resources/key-vault/resource.bicep' = {
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
     userAssignedIdentityServicePrincipalId: managedIdentity.outputs.userAssignedIdentityServicePrincipalId
     secrets: [
-        {
-            name: 'VAPID-Subject'
-            value: vapId.subject
-        }
-        {
-            name: 'VAPID-Public-Key'
-            value: vapId.publicKey
-        }
-        {
-            name: 'VAPID-Private-Key'
-            value: vapId.privateKey
-        }
+      {
+        name: 'VAPID-Subject'
+        value: vapId.subject
+      }
+      {
+        name: 'VAPID-Public-Key'
+        value: vapId.publicKey
+      }
+      {
+        name: 'VAPID-Private-Key'
+        value: vapId.privateKey
+      }
     ]
   }
-  dependsOn: [
-    managedIdentity
-  ]
 }
 
-module monitoring './resources/monitoring.bicep' = {
+module monitoring './resources/monitoring/resource.bicep' = {
   name: 'monitoringDeployment'
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
+    userAssignedIdentityServicePrincipalId: managedIdentity.outputs.userAssignedIdentityServicePrincipalId
   }
-  dependsOn: [
-    keyVault
-  ]
 }
 
-module signalR './resources/signalr.bicep' = {
+module signalR './resources/signalr/resource.bicep' = {
   name: 'signalRDeployment'
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
+    userAssignedIdentityServicePrincipalId: managedIdentity.outputs.userAssignedIdentityServicePrincipalId
   }
-  dependsOn: [
-    keyVault
-  ]
 }
 
-module cosmosDB './resources/cosmosdb.bicep' = {
+module cosmosDB './resources/cosmosdb/resource.bicep' = {
   name: 'cosmosDBDeployment'
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
+    userAssignedIdentityServicePrincipalId: managedIdentity.outputs.userAssignedIdentityServicePrincipalId
   }
-  dependsOn: [
-    keyVault
-  ]
 }
 
-module storageAccount './resources/storage-account.bicep' = {
+module storageAccount './resources/storage-account/resource.bicep' = {
   name: 'storageAccountDeployment'
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
+    userAssignedIdentityServicePrincipalId: managedIdentity.outputs.userAssignedIdentityServicePrincipalId
   }
 }
 
@@ -154,15 +149,18 @@ module functionApplication './resources/func-app/resource.bicep' = {
   scope: resourceGroup
   params: {
     applicationName: applicationName
-	location: location
+    location: location
     environment: environment
     index: index
     userAssignedIdentityId: managedIdentity.outputs.userAssignedIdentityId
+    userAssignedIdentityClientId: managedIdentity.outputs.userAssignedIdentityClientId
     frontDoorHostName: frontDoor.outputs.endpointHostName
   }
   dependsOn: [
-    storageAccount
     keyVault
+    monitoring
+    signalR
+    cosmosDB
+    storageAccount
   ]
 }
-
