@@ -73,7 +73,6 @@ updates:
       angular:
         patterns:
         - "@angular/*"
-        - "@angular-devkit/*"
         update-types:
         - "major"
         - "minor"
@@ -106,9 +105,9 @@ updates:
         - "patch"
       test:
         patterns:
-        - "karma*"
-        - "@types/*"
-        - "jasmine*"
+        - "vitest*"        
+        - "@vitest/*"
+        - "jsdom"
         update-types:
         - "major"
         - "minor"

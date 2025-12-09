@@ -20,46 +20,47 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'kv-${applicationName}-${environment}-${index}'
   location: location
   properties: {
-    enabledForDeployment: true
+    publicNetworkAccess: 'Enabled'
+    enabledForDeployment: false
     enabledForDiskEncryption: true
-    enabledForTemplateDeployment: true
+    enabledForTemplateDeployment: false
     enableSoftDelete: false
+    enableRbacAuthorization: true
     tenantId: subscription().tenantId
-    accessPolicies: [
-      {
-        tenantId: subscription().tenantId
-        objectId: userAssignedIdentityServicePrincipalId
-        permissions: {
-          keys: [
-              'get'
-          ]
-          secrets: [              
-              'get'
-          ]
-        }
-      }
-    ]
     sku: {
       name: 'standard'
       family: 'A'
     }
-    networkAcls: {
-      defaultAction: 'Allow'
-      bypass: 'AzureServices'
-    }
-  } 
+  }
 }
 
-module commonSecrets './secret.bicep' = [for secretItem in secrets: {
-  name: '${secretItem.name}SecretDeployment'
-  params: {
-    applicationName: applicationName
-    environment: environment
-    index: index
-    secretName: secretItem.name
-    secretValue: secretItem.value
+var keyVaultSecretsUserRoleDefinitionId = '4633458b-17de-408a-b874-0445c86b69e6'
+resource keyVaultSecretsUserRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
+  name: keyVaultSecretsUserRoleDefinitionId
+}
+
+resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, userAssignedIdentityServicePrincipalId, keyVaultSecretsUserRoleDefinition.id)
+  scope: keyVault
+  properties: {
+    principalType: 'ServicePrincipal'
+    principalId: userAssignedIdentityServicePrincipalId
+    roleDefinitionId: keyVaultSecretsUserRoleDefinition.id
   }
-  dependsOn: [
-    keyVault
-  ]
-}]
+}
+
+module commonSecrets './secret.bicep' = [
+  for secretItem in secrets: {
+    name: '${secretItem.name}SecretDeployment'
+    params: {
+      applicationName: applicationName
+      environment: environment
+      index: index
+      secretName: secretItem.name
+      secretValue: secretItem.value
+    }
+    dependsOn: [
+      keyVault
+    ]
+  }
+]

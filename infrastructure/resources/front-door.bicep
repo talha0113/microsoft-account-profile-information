@@ -7,11 +7,11 @@ param environment string = 'dev'
 @description('Index')
 param index string = '001'
 
-resource staticWebApplication 'Microsoft.Web/staticSites@2022-09-01' existing = {
-    name: 'stapp-${applicationName}-${environment}-${index}'
+resource staticWebApplication 'Microsoft.Web/staticSites@2024-11-01' existing = {
+  name: 'stapp-${applicationName}-${environment}-${index}'
 }
 
-resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
+resource frontDoorProfile 'Microsoft.Cdn/profiles@2025-04-15' = {
   name: 'afd-${applicationName}-${environment}-${index}'
   location: 'global'
   sku: {
@@ -19,7 +19,7 @@ resource frontDoorProfile 'Microsoft.Cdn/profiles@2021-06-01' = {
   }
 }
 
-resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
+resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2025-04-15' = {
   name: 'fde-${applicationName}-${environment}-${index}'
   parent: frontDoorProfile
   location: 'global'
@@ -28,7 +28,7 @@ resource frontDoorEndpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
   }
 }
 
-resource frontDoorOriginGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {
+resource frontDoorOriginGroup 'Microsoft.Cdn/profiles/originGroups@2025-04-15' = {
   name: 'fdog-${applicationName}-${environment}-${index}'
   parent: frontDoorProfile
   properties: {
@@ -45,7 +45,7 @@ resource frontDoorOriginGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' =
   }
 }
 
-resource frontDoorOrigin 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = {
+resource frontDoorOrigin 'Microsoft.Cdn/profiles/originGroups/origins@2025-04-15' = {
   name: 'fdon-${applicationName}-${environment}-${index}'
   parent: frontDoorOriginGroup
   properties: {
@@ -58,7 +58,7 @@ resource frontDoorOrigin 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01
   }
 }
 
-resource frontDoorRoute 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
+resource frontDoorRoute 'Microsoft.Cdn/profiles/afdEndpoints/routes@2025-04-15' = {
   name: 'fdrn-${applicationName}-${environment}-${index}'
   parent: frontDoorEndpoint
   dependsOn: [

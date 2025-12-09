@@ -11,9 +11,10 @@ param environment string = 'dev'
 param index string = '001'
 
 resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'id-${applicationName}-${environment}-${index}'  
+  name: 'id-${applicationName}-${environment}-${index}'
   location: location
 }
 
 output userAssignedIdentityId string = userAssignedIdentity.id
+output userAssignedIdentityClientId string = userAssignedIdentity.properties.clientId
 output userAssignedIdentityServicePrincipalId string = userAssignedIdentity.properties.principalId

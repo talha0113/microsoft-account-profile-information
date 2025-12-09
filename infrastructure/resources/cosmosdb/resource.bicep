@@ -10,10 +10,13 @@ param environment string = 'dev'
 @description('Index')
 param index string = '001'
 
+@description('Managed Identity Principal ID')
+param userAssignedIdentityServicePrincipalId string
+
 var databaseName = 'Subscriptions'
 var containerName = 'Items'
 
-resource cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
+resource cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2025-11-01-preview' = {
   name: 'cosmos-${applicationName}-${environment}-${index}'
   location: location
   tags: {
@@ -21,10 +24,11 @@ resource cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
   }
   kind: 'GlobalDocumentDB'
   properties: {
-    enableAutomaticFailover: false
+    disableLocalAuth: true
+    enableAutomaticFailover: true
     enableMultipleWriteLocations: false
     isVirtualNetworkFilterEnabled: false
-    virtualNetworkRules: [ ]
+    virtualNetworkRules: []
     enableFreeTier: true
     databaseAccountOfferType: 'Standard'
     consistencyPolicy: {
@@ -39,7 +43,8 @@ resource cosmosDBAccount 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
         isZoneRedundant: false
       }
     ]
-    capabilities: [ ]
+    publicNetworkAccess: 'Enabled'
+    minimalTlsVersion: 'Tls12'
   }
 }
 
@@ -85,13 +90,15 @@ resource cosmosDBContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/c
   }
 }
 
-module cosmosDBConnectionStringSecret './key-vault/secret.bicep' = {
-  name: 'cosmosDBConnectionStringSecret'
+module cosmosDBRoleAssignments './role-assignments.bicep' = {
+  name: 'cosmosDBRoleAssignmentsDeployment'
   params: {
     applicationName: applicationName
     environment: environment
     index: index
-    secretName: 'COSMOS-DB-CONNECTION-STRING'
-    secretValue: cosmosDBAccount.listConnectionStrings().connectionStrings[0].connectionString
+    userAssignedIdentityServicePrincipalId: userAssignedIdentityServicePrincipalId
   }
+  dependsOn: [
+    cosmosDBAccount
+  ]
 }
