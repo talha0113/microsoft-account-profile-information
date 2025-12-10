@@ -1,7 +1,7 @@
 import {
   TranslocoTestingModule,
   TranslocoTestingOptions,
-} from '@ngneat/transloco';
+} from '@jsverse/transloco';
 import en_US from '../Assets/i18n/en-US.json';
 import da_DK from '../Assets/i18n/da-DK.json';
 import { TranslationConfiguration } from './translation.configuration';

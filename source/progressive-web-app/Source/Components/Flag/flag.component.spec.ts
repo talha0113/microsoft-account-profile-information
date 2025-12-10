@@ -3,7 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 
 import { FlagComponent } from './flag.component';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';

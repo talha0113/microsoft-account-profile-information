@@ -5,7 +5,7 @@ import { AsyncPipe } from '@angular/common';
 
 import { NavigationLink } from '../../Models/navigation-link.model';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
-import { TranslocoPipe } from '@ngneat/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'navigation',

@@ -1,4 +1,4 @@
-<ng-container *transloco="let translate; read: 'LANGUAGE'">
+<ng-container *transloco="let translate; prefix: 'LANGUAGE'">
   @if (!isOffline()) {
     <a (click)="switchLanguage()" (keyup)="switchLanguage()" tabindex="0">
       <img

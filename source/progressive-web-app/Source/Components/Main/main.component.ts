@@ -7,7 +7,7 @@ import {
   VersionReadyEvent,
 } from '@angular/service-worker';
 import { filter, map, switchMap } from 'rxjs';
-import { TranslocoService, TranslocoPipe } from '@ngneat/transloco';
+import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
