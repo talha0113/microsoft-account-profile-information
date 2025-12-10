@@ -1,7 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { enableElfProdMode } from '@ngneat/elf';
 
-import { isDevMode, ErrorHandler, importProvidersFrom } from '@angular/core';
+import { isDevMode, ErrorHandler } from '@angular/core';
 import { applicationInitializationProvider } from './Initialization/app.initialization';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { profileInterceptor } from './Interceptors/profile.interceptor';
@@ -12,13 +12,11 @@ import { ProfileService } from './Services/profile.service';
 import { NotificationService } from './Services/notification.service';
 import { PushService } from './Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
-import { provideRouter } from '@angular/router';
-import { appRoutes } from './Routes/main.route';
-import { TranslationModule } from './Transloco/translation.module';
 import { MainComponent } from './Components/Main/main.component';
 import { InsightsManager } from './Managers/insights.manager';
 import { AuthenticationService } from './Services/authentication.service';
 import { provideServiceWorker } from '@angular/service-worker';
+import { translationProvider } from './Transloco/translation.provider';
 
 if (!isDevMode()) {
   enableElfProdMode();
@@ -28,7 +26,6 @@ InsightsManager.initialize();
 
 bootstrapApplication(MainComponent, {
   providers: [
-    importProvidersFrom(TranslationModule),
     applicationInitializationProvider,
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
@@ -46,6 +43,6 @@ bootstrapApplication(MainComponent, {
     NotificationService,
     PushService,
     SignalRService,
-    provideRouter(appRoutes),
+    translationProvider,
   ],
 });

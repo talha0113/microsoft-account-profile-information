@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { inject, provideAppInitializer } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import { StorageManager } from '../Managers/storage.manager';
 import { TranslationConfiguration } from '../Transloco/translation.configuration';
 

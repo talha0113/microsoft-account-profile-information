@@ -4,9 +4,10 @@
   </div>
   @if (!isOffline()) {
     <div>
-      <label>
+      <label htmlFor="statsSubscribed">
         {{ 'MESSAGES.STATS' | transloco }}:
         <input
+          name="statsSubscribed"
           class="stats-subscribed"
           type="checkbox"
           [checked]="statsSubscribed()"

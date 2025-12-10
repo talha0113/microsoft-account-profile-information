@@ -5,7 +5,7 @@ import { AsyncPipe } from '@angular/common';
 
 import { AuthenticationService } from 'Source/Services/authentication.service';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
-import { TranslocoPipe } from '@ngneat/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'login',

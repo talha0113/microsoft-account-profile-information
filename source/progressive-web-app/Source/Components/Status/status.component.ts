@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TranslocoPipe } from '@ngneat/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { PushService } from 'Source/Services/push.service';
 import { SignalRService } from 'Source/Services/signalr.service';
 import { FormsModule } from '@angular/forms';
