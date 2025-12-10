@@ -1,7 +1,6 @@
 ﻿namespace ms.account.push.subscription.func.models;
-
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using ms.account.push.subscription.func.examples;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 [OpenApiExample(typeof(SubscriptionTriggerSubscribeExample))]
 public class PushSubscriptionInformation
