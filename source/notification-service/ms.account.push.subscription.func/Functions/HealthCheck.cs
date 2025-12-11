@@ -1,6 +1,4 @@
 ﻿namespace ms.account.push.subscription.func.functions;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 using System;
 using System.Net;
@@ -8,6 +6,8 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ms.account.push.subscription.core.models;
@@ -34,8 +34,8 @@ public class HealthCheck(ILogger<HealthCheck> logger, IRepository<PushSubscripti
 
         try
         {
-            var healthData = new HealthCheckModel 
-            { 
+            var healthData = new HealthCheckModel
+            {
                 Items =
                 [
                     new() {

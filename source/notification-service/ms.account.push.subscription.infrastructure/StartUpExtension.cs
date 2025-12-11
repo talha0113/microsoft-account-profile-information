@@ -18,23 +18,25 @@ public static class StartUpExtension
 
         var configuration = services.BuildServiceProvider().GetService<IConfiguration>() ?? throw new Exception($"{nameof(IConfiguration)} is null");
 
-        _ = services.Scan((ITypeSourceSelector typeSourceSelector) => {
+        _ = services.Scan((ITypeSourceSelector typeSourceSelector) =>
+        {
             typeSourceSelector.FromApplicationDependencies().
-            AddClasses((IImplementationTypeFilter implementationTypeFilter) => {
+            AddClasses((IImplementationTypeFilter implementationTypeFilter) =>
+            {
                 implementationTypeFilter.AssignableToAny(typeof(IWebPushService), typeof(INotificationQueueService));
             }).
             UsingRegistrationStrategy(RegistrationStrategy.Throw).AsImplementedInterfaces().WithSingletonLifetime();
         }).
         AddSingleton<VAPIDOption>(new VAPIDOption { Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.Subject)} is null"), PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null"), PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null") }).
-        AddPushServiceClient((PushServiceClientOptions serviceClientOptions) => 
+        AddPushServiceClient((PushServiceClientOptions serviceClientOptions) =>
         {
             serviceClientOptions.Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.Subject)} is null");
             serviceClientOptions.PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null");
             serviceClientOptions.PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null");
         }).
         AddSingleton<QueueClient>(new QueueClient(
-            new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"), 
-            new DefaultAzureCredential(new DefaultAzureCredentialOptions { }), 
+            new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"),
+            new DefaultAzureCredential(new DefaultAzureCredentialOptions { }),
             new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
         return services;
