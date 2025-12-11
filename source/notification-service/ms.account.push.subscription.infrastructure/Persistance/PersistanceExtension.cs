@@ -30,9 +30,11 @@ public static class PersistanceExtension
         cosmosClient.CreateDatabaseIfNotExistsAsync(dataBaseSettings.Id).GetAwaiter().GetResult();
         cosmosClient.GetDatabase(dataBaseSettings.Id).CreateContainerIfNotExistsAsync(new ContainerProperties { Id = dataBaseSettings.CollectionId, PartitionKeyPath = $"/{nameof(Entity.Id).ToLower()}" }).GetAwaiter().GetResult();
 
-        _ = services.Scan((ITypeSourceSelector typeSourceSelector) => {
+        _ = services.Scan((ITypeSourceSelector typeSourceSelector) =>
+        {
             typeSourceSelector.FromApplicationDependencies().
-            AddClasses((IImplementationTypeFilter implementationTypeFilter) => { 
+            AddClasses((IImplementationTypeFilter implementationTypeFilter) =>
+            {
                 implementationTypeFilter.AssignableTo(typeof(IRepository<>));
             }).UsingRegistrationStrategy(RegistrationStrategy.Throw).AsImplementedInterfaces().WithSingletonLifetime();
         }).

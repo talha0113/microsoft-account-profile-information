@@ -25,7 +25,7 @@ public class SubscriptionService(IRepository<PushSubscriptionInformation> reposi
                 subscription = item
             };
             await notificationQueueService.InsertAsync(notificationQueueItem, cancellationToken: cancellationToken);
-        }        
+        }
     }
 
     public async Task UnSubscribeAsync(string endPoint, CancellationToken cancellationToken)
@@ -51,5 +51,5 @@ public class SubscriptionService(IRepository<PushSubscriptionInformation> reposi
     public async Task<long> CountAsync(CancellationToken cancellationToken)
     {
         return await repository.CountAsync(item => item.EndPoint != null, cancellationToken: cancellationToken);
-    }    
+    }
 }

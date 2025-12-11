@@ -1,8 +1,9 @@
 ﻿namespace ms.account.push.subscription.func.examples;
+
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
 using ms.account.push.subscription.domain.entities;
 using Newtonsoft.Json.Serialization;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Resolvers;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 
 public class SubscriptionTriggerSubscribeExample : OpenApiExample<PushSubscriptionInformation>
 {

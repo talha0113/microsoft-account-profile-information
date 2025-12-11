@@ -24,7 +24,7 @@ try
         .Build();
     await host.RunAsync();
 }
-catch (Exception ex) 
+catch (Exception ex)
 {
     Console.WriteLine(ex.Message);
     Console.WriteLine(ex.StackTrace);
