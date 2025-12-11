@@ -9,7 +9,7 @@ using ms.account.push.subscription.infrastructure;
 try
 {
     var host = new HostBuilder()
-        .ConfigureFunctionsWebApplication()
+        .ConfigureFunctionsWorkerDefaults()
         .ConfigureServices((IServiceCollection services) =>
         {
             _ = services.AddCore();

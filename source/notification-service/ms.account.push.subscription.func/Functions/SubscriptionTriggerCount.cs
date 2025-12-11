@@ -12,19 +12,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ms.account.push.subscription.core.services;
 
-public class SubscriptionTriggerCount
+public class SubscriptionTriggerCount(ILogger<SubscriptionTriggerCount> logger, ISubscriptionService subscriptionService)
 {
-    private readonly ILogger<SubscriptionTriggerCount> logger;
-    private readonly ISubscriptionService subscriptionService;
-
-    public SubscriptionTriggerCount(ILogger<SubscriptionTriggerCount> logger, ISubscriptionService subscriptionService)
-    {
-        this.logger = logger;
-        this.subscriptionService = subscriptionService;
-    }
+    private readonly ILogger<SubscriptionTriggerCount> logger = logger;
+    private readonly ISubscriptionService subscriptionService = subscriptionService;
 
     [Function(name: nameof(SubscriptionTriggerCount))]
-    [OpenApiOperation(operationId: nameof(SubscriptionTriggerCount), tags: new[] { "subscriptions" }, Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiOperation(operationId: nameof(SubscriptionTriggerCount), tags: ["subscriptions"], Visibility = OpenApiVisibilityType.Important)]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(int), Description = "Number of subscriptions")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]

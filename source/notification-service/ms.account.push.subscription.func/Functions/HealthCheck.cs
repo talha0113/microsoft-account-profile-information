@@ -15,21 +15,14 @@ using ms.account.push.subscription.core.persistance;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
 
-public class HealthCheck
+public class HealthCheck(ILogger<HealthCheck> logger, IRepository<PushSubscriptionInformation> repository, INotificationQueueService notificationQueueService)
 {
-    private readonly ILogger<HealthCheck> logger;
-    private readonly IRepository<PushSubscriptionInformation> repository;
-    private readonly INotificationQueueService notificationQueueService;
-
-    public HealthCheck(ILogger<HealthCheck> logger, IRepository<PushSubscriptionInformation> repository, INotificationQueueService notificationQueueService)
-    {
-        this.logger = logger;        
-        this.repository = repository;
-        this.notificationQueueService = notificationQueueService;
-    }
+    private readonly ILogger<HealthCheck> logger = logger;
+    private readonly IRepository<PushSubscriptionInformation> repository = repository;
+    private readonly INotificationQueueService notificationQueueService = notificationQueueService;
 
     [Function(name: nameof(HealthCheck))]
-    [OpenApiOperation(operationId: nameof(HealthCheck), tags: new[] { "health" }, Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiOperation(operationId: nameof(HealthCheck), tags: ["health"], Visibility = OpenApiVisibilityType.Important)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(HealthCheckModel), Description = "health of a service")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: MediaTypeNames.Application.Json, bodyType: typeof(HealthCheckModel), Description = "health of a service")]
     public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequestData httpRequestData, CancellationToken cancellationToken)
@@ -43,21 +36,19 @@ public class HealthCheck
         {
             var healthData = new HealthCheckModel 
             { 
-                Items = new List<HealthCheckItemModel>
-                {
-                    new HealthCheckItemModel 
-                    {
+                Items =
+                [
+                    new() {
                         Component = "CosmosDB",
                         Description = "CosmosDB connectivity",
-                        Status = repository.IsAvailable() == true ? "Healthy" : "UnHealthy"
+                        Status = repository.IsAvailable() ? "Healthy" : "UnHealthy"
                     },
-                    new HealthCheckItemModel
-                    {
+                    new() {
                         Component = "Queue Storage",
                         Description = "Queue storage connectivity",
-                        Status = (await notificationQueueService.IsAvailableAsync(cancellationToken)) == true ? "Healthy" : "UnHealthy"
+                        Status = (await notificationQueueService.IsAvailableAsync(cancellationToken)) ? "Healthy" : "UnHealthy"
                     }
-                }
+                ]
             };
 
             healthData.Status = healthData.Items.Any(item => item.Status == "UnHealthy") ? "UnHealthy" : "Healthy";

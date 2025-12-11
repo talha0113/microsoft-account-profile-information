@@ -1,4 +1,6 @@
-﻿namespace ms.account.push.subscription.infrastructure.tests;
+﻿[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
+
+namespace ms.account.push.subscription.infrastructure.tests;
 
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;

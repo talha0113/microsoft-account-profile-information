@@ -9,7 +9,10 @@
     "StorageQueueName": "process-notifications",
     "VAPID_Subject": "",
     "VAPID_PublicKey": "",
-    "VAPID_PrivateKey": ""
+    "VAPID_PrivateKey": "",
+    "CosmosDBConnection": {
+      "accountEndpoint": "https://localhost:8081/"
+    }      
   },
   "Host": {
     "CORS": "*"

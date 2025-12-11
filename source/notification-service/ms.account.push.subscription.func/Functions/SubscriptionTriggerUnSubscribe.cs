@@ -12,19 +12,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ms.account.push.subscription.core.services;
 
-public class SubscriptionTriggerUnSubscribe
+public class SubscriptionTriggerUnSubscribe(ILogger<SubscriptionTriggerUnSubscribe> logger, ISubscriptionService subscriptionService)
 {
-    private readonly ILogger<SubscriptionTriggerUnSubscribe> logger;
-    private readonly ISubscriptionService subscriptionService;
-
-    public SubscriptionTriggerUnSubscribe(ILogger<SubscriptionTriggerUnSubscribe> logger, ISubscriptionService subscriptionService)
-    {
-        this.logger = logger;
-        this.subscriptionService = subscriptionService;
-    }
+    private readonly ILogger<SubscriptionTriggerUnSubscribe> logger = logger;
+    private readonly ISubscriptionService subscriptionService = subscriptionService;
 
     [Function(name: nameof(SubscriptionTriggerUnSubscribe))]
-    [OpenApiOperation(operationId: nameof(SubscriptionTriggerUnSubscribe), tags: new[] { "subscriptions" }, Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiOperation(operationId: nameof(SubscriptionTriggerUnSubscribe), tags: ["subscriptions"], Visibility = OpenApiVisibilityType.Important)]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiParameter("endPoint", In = ParameterLocation.Query, Type = typeof(string), Description = "Un Subscribe for notifications", Required = true)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]

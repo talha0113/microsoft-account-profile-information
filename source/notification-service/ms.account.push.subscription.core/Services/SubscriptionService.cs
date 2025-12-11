@@ -3,17 +3,11 @@
 using ms.account.push.subscription.core.persistance;
 using ms.account.push.subscription.domain.entities;
 
-public class SubscriptionService : ISubscriptionService
+public class SubscriptionService(IRepository<PushSubscriptionInformation> repository, INotificationQueueService notificationQueueService) : ISubscriptionService
 {
-    private readonly IRepository<PushSubscriptionInformation> repository;
+    private readonly IRepository<PushSubscriptionInformation> repository = repository;
 
-    private readonly INotificationQueueService notificationQueueService;
-
-    public SubscriptionService(IRepository<PushSubscriptionInformation> repository, INotificationQueueService notificationQueueService)
-    {
-        this.repository = repository;
-        this.notificationQueueService = notificationQueueService;
-    }
+    private readonly INotificationQueueService notificationQueueService = notificationQueueService;
 
     public async Task SubscribeAsync(PushSubscriptionInformation subscription, CancellationToken cancellationToken)
     {
@@ -46,11 +40,11 @@ public class SubscriptionService : ISubscriptionService
     {
         if ((await repository.FindAsync(item => item.EndPoint == endPoint, cancellationToken: cancellationToken)).FirstOrDefault() == null)
         {
-            throw new ApplicationException($"{nameof(endPoint)} doesn't exist");
+            throw new InvalidOperationException($"{nameof(endPoint)} doesn't exist");
         }
 
         var item = (await repository.FindAsync(item => item.EndPoint == endPoint, cancellationToken: cancellationToken)).FirstOrDefault();
-        item.Language = language;
+        item!.Language = language;
         await repository.FindOneAndReplaceAsync(item => item.EndPoint == endPoint, item, cancellationToken: cancellationToken);
     }
 
