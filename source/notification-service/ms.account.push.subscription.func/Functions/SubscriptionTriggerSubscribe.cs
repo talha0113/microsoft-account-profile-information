@@ -14,19 +14,13 @@ using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.func.examples;
 using ms.account.push.subscription.func.models;
 
-public class SubscriptionTriggerSubscribe
+public class SubscriptionTriggerSubscribe(ILogger<SubscriptionTriggerSubscribe> logger, ISubscriptionService subscriptionService)
 {
-    private readonly ILogger<SubscriptionTriggerSubscribe> logger;
-    private readonly ISubscriptionService subscriptionService;
-
-    public SubscriptionTriggerSubscribe(ILogger<SubscriptionTriggerSubscribe> logger, ISubscriptionService subscriptionService)
-    {
-        this.logger = logger;
-        this.subscriptionService = subscriptionService;
-    }
+    private readonly ILogger<SubscriptionTriggerSubscribe> logger = logger;
+    private readonly ISubscriptionService subscriptionService = subscriptionService;
 
     [Function(name: nameof(SubscriptionTriggerSubscribe))]
-    [OpenApiOperation(operationId: nameof(SubscriptionTriggerSubscribe), tags: new[] { "subscriptions" }, Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiOperation(operationId: nameof(SubscriptionTriggerSubscribe), tags: ["subscriptions"], Visibility = OpenApiVisibilityType.Important)]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiRequestBody(contentType: MediaTypeNames.Application.Json, bodyType: typeof(PushSubscriptionInformation), Description = "Subscribe for notifications", Example = typeof(SubscriptionTriggerSubscribeExample), Required = true)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Created)]

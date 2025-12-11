@@ -13,19 +13,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ms.account.push.subscription.core.services;
 
-public class SubscriptionTriggerUpdateLanguage
+public class SubscriptionTriggerUpdateLanguage(ILogger<SubscriptionTriggerUpdateLanguage> logger, ISubscriptionService subscriptionService)
 {
-    private readonly ILogger<SubscriptionTriggerUpdateLanguage> logger;
-    private readonly ISubscriptionService subscriptionService;
-
-    public SubscriptionTriggerUpdateLanguage(ILogger<SubscriptionTriggerUpdateLanguage> logger, ISubscriptionService subscriptionService)
-    {
-        this.logger = logger;
-        this.subscriptionService = subscriptionService;
-    }
+    private readonly ILogger<SubscriptionTriggerUpdateLanguage> logger = logger;
+    private readonly ISubscriptionService subscriptionService = subscriptionService;
 
     [Function(name: nameof(SubscriptionTriggerUpdateLanguage))]
-    [OpenApiOperation(operationId: nameof(SubscriptionTriggerUpdateLanguage), tags: new[] { "metadata" }, Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiOperation(operationId: nameof(SubscriptionTriggerUpdateLanguage), tags: ["metadata"], Visibility = OpenApiVisibilityType.Important)]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiRequestBody(contentType: MediaTypeNames.Application.Json, bodyType: typeof(string), Description = "language code", Required = true)]
     [OpenApiParameter("endPoint", In = ParameterLocation.Query, Type = typeof(string), Description = "client end point", Required = true)]

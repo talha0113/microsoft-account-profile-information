@@ -1,5 +1,6 @@
 ﻿namespace ms.account.push.subscription.infrastructure.persistance;
 
+using Azure.Identity;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +14,10 @@ public static class PersistanceExtension
     {
         var configuration = services.BuildServiceProvider().GetService<IConfiguration>() ?? throw new Exception($"{nameof(IConfiguration)} is null");
 
-        var dataBaseSettings = new DatabaseSetting { Id = configuration?["DatabaseId"] ?? "", CollectionId = configuration?["CollectionId"] ?? "", ConnectionString = ConnectionStringManager.GetCustomConnectionString("cosmosdb_connection") ??  throw new Exception($"{nameof(DatabaseSetting.ConnectionString)} is null") };
+        var dataBaseSettings = new DatabaseSetting { Id = configuration?["DatabaseId"] ?? "", CollectionId = configuration?["CollectionId"] ?? "", AccountEndpoint = configuration?["CosmosDBConnection:accountEndpoint"] ?? throw new Exception($"{nameof(DatabaseSetting.AccountEndpoint)} is null") };
 
-        var cosmosClient = new CosmosClient(dataBaseSettings.ConnectionString,
+        var cosmosClient = new CosmosClient(dataBaseSettings.AccountEndpoint,
+            new DefaultAzureCredential(new DefaultAzureCredentialOptions { }),
             new CosmosClientOptions
             {
                 SerializerOptions = new CosmosSerializationOptions

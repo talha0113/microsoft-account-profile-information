@@ -11,23 +11,18 @@ using Microsoft.OpenApi.Models;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 
-public class SubscriptionTriggerSignalR
+public class SubscriptionTriggerSignalR(ILogger<SubscriptionTriggerSignalR> logger, ISubscriptionService subscriptionService)
 {
-    private readonly ILogger<SubscriptionTriggerSignalR> logger;
-    private readonly ISubscriptionService subscriptionService;
+    private readonly ILogger<SubscriptionTriggerSignalR> logger = logger;
+    private readonly ISubscriptionService subscriptionService = subscriptionService;
     private const string SIGNALR_CONNECTION_STRING_KEY = "SignalRConnection";
     private const string SIGNALR_HUB_NAME = "msaccprofinfohub";
 
-    public SubscriptionTriggerSignalR(ILogger<SubscriptionTriggerSignalR> logger, ISubscriptionService subscriptionService)
-    {
-        this.logger = logger;
-        this.subscriptionService = subscriptionService;
-    }
-
     [Function(name: nameof(SubscriptionTriggerSignalR))]
-    [OpenApiOperation(operationId: nameof(SubscriptionTriggerSignalR), tags: new[] { "notification" }, Visibility = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums.OpenApiVisibilityType.Important)]
-    [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums.OpenApiSecurityLocationType.Query)]
+    [OpenApiOperation(operationId: nameof(SubscriptionTriggerSignalR), tags: ["notification"], Visibility = OpenApiVisibilityType.Important)]
+    [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: MediaTypeNames.Application.Json, bodyType: typeof(SignalRConnectionInfo), Description = "SignalR connection info")]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Unauthorized)]
     [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError)]
@@ -63,12 +58,12 @@ public class SubscriptionTriggerSignalR
     [Function(name: nameof(SendSignalRMessage))]
     [SignalROutput(HubName = SIGNALR_HUB_NAME, ConnectionStringSetting = SIGNALR_CONNECTION_STRING_KEY)]
     public async Task<SignalRMessageAction> SendSignalRMessage(
-            [Microsoft.Azure.Functions.Worker.CosmosDBTrigger(
+            [CosmosDBTrigger(
             databaseName: "Subscriptions",
-            collectionName: "Items",
-            ConnectionStringSetting = "cosmosdb_connection",
-            LeaseCollectionName = "leases",
-            CreateLeaseCollectionIfNotExists = true)] IReadOnlyList<PushSubscriptionInformation> documents,
+            containerName: "Items",
+            Connection = "cosmosdb_connection",
+            LeaseContainerName = "leases",
+            CreateLeaseContainerIfNotExists = true)] IReadOnlyList<PushSubscriptionInformation> documents,
             CancellationToken cancellationToken)
     {
         // Suppress IDE0060 by explicitly discarding the unused parameter
@@ -80,7 +75,7 @@ public class SubscriptionTriggerSignalR
 
         try
         {
-            signalRMessageAction.Arguments = new[] { new { Count = await subscriptionService.CountAsync(cancellationToken) } };
+            signalRMessageAction.Arguments = [new { Count = await subscriptionService.CountAsync(cancellationToken) }];
         }
         catch (Exception ex)
         {

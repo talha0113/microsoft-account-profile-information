@@ -1,5 +1,6 @@
 ﻿namespace ms.account.push.subscription.infrastructure;
 
+using Azure.Identity;
 using Azure.Storage.Queues;
 using Lib.AspNetCore.WebPush;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +32,10 @@ public static class StartUpExtension
             serviceClientOptions.PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null");
             serviceClientOptions.PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null");
         }).
-        AddSingleton<QueueClient>(new QueueClient(configuration?["AzureWebJobsStorage"], configuration?["StorageQueueName"], new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
+        AddSingleton<QueueClient>(new QueueClient(
+            new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"), 
+            new DefaultAzureCredential(new DefaultAzureCredentialOptions { }), 
+            new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
         return services;
     }

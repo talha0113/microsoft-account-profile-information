@@ -17,8 +17,6 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.SignalRService" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ms.account.push.subscription.infrastructure\ms.account.push.subscription.infrastructure.csproj" />

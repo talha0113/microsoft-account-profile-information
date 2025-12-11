@@ -172,14 +172,13 @@
           "Microsoft.NETCore.Platforms": "1.1.0"
         }
       },
-      "ms.account.push.subscription.domain": {
-        "type": "Project"
-      },
       "Newtonsoft.Json": {
-        "type": "CentralTransitive",
-        "requested": "[13.0.3, )",
+        "type": "Transitive",
         "resolved": "13.0.3",
         "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      },
+      "ms.account.push.subscription.domain": {
+        "type": "Project"
       }
     }
   }

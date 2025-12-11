@@ -1,4 +1,6 @@
-﻿//https://www.automatetheplanet.com/mstest-cheat-sheet/
+﻿[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
+
+//https://www.automatetheplanet.com/mstest-cheat-sheet/
 
 namespace ms.account.push.subscription.domain.tests;
 

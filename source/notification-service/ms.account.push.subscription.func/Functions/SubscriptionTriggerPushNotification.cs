@@ -6,16 +6,10 @@ using Microsoft.Extensions.Logging;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
 
-public class SubscriptionTriggerPushNotification
+public class SubscriptionTriggerPushNotification(ILogger<SubscriptionTriggerPushNotification> logger, IWebPushService webPushService)
 {
-    private readonly ILogger<SubscriptionTriggerPushNotification> logger;
-    private readonly IWebPushService webPushService;
-
-    public SubscriptionTriggerPushNotification(ILogger<SubscriptionTriggerPushNotification> logger, IWebPushService webPushService)
-    {
-        this.logger = logger;
-        this.webPushService = webPushService;
-    }
+    private readonly ILogger<SubscriptionTriggerPushNotification> logger = logger;
+    private readonly IWebPushService webPushService = webPushService;
 
     [Function(name: nameof(SubscriptionTriggerPushNotification))]
     public async Task RunAsync([QueueTrigger("process-notifications", Connection = "AzureWebJobsStorage")] NotificationQueueItem queueItem, CancellationToken cancellationToken)

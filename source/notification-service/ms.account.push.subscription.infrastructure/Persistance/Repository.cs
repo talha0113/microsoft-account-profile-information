@@ -10,14 +10,9 @@ using Microsoft.Azure.Cosmos.Linq;
 using ms.account.push.subscription.core.persistance;
 using ms.account.push.subscription.domain.entities;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+public class Repository<TEntity>(CosmosClient client, DatabaseSetting databaseSetting) : IRepository<TEntity> where TEntity : Entity
 {
-    private readonly Container container;
-
-    public Repository(CosmosClient client, DatabaseSetting databaseSetting)
-    {
-        container = client.GetContainer(databaseSetting.Id, databaseSetting.CollectionId);
-    }
+    private readonly Container container = client.GetContainer(databaseSetting.Id, databaseSetting.CollectionId);
 
     public virtual async Task<long> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken) => await container.GetItemLinqQueryable<TEntity>().Where(predicate).CountAsync(cancellationToken);
 
@@ -45,11 +40,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
             return;
         }
 
-        await container.DeleteItemAsync<TEntity>(itemId, new PartitionKey(items.First().Id), cancellationToken: cancellationToken);
+        _ = await container.DeleteItemAsync<TEntity>(itemId, new PartitionKey(items.First().Id), cancellationToken: cancellationToken);
     }
 
     public bool IsAvailable()
     {
-        return string.IsNullOrEmpty(container.Id) ? false : true;
+        return !string.IsNullOrEmpty(container.Id);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ms.account.push.subscription.core.tests;
+﻿[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
+
+namespace ms.account.push.subscription.core.tests;
 
 [TestClass]
 public abstract class TestInitializer

@@ -11,23 +11,16 @@ using ms.account.push.subscription.domain.entities;
 using ms.account.push.subscription.infrastructure.options;
 using WebPush;
 
-public class WebPushService : IWebPushService
+public class WebPushService(VAPIDOption vapidOption, PushServiceClient pushClient, ILogger<WebPushService> logger) : IWebPushService
 {
-    private readonly VAPIDOption vapidOption;
-    private readonly PushServiceClient pushClient;
-    private readonly ILogger<WebPushService> logger;
-
-    public WebPushService(VAPIDOption vapidOption, PushServiceClient pushClient, ILogger<WebPushService> logger)
-    {
-        this.vapidOption = vapidOption;
-        this.pushClient = pushClient;
-        this.logger = logger;
-    }
+    private readonly VAPIDOption vapidOption = vapidOption;
+    private readonly PushServiceClient pushClient = pushClient;
+    private readonly ILogger<WebPushService> logger = logger;
 
     public async Task SendNotificationWebPushAsync(PushSubscriptionInformation subscription, long count, CancellationToken cancellationToken)
     {
-        var pushClient = new WebPushClient();
-        await pushClient.SendNotificationAsync(new WebPush.PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(count, subscription.Language)), new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey), cancellationToken);
+        var webPushClient = new WebPushClient();
+        await webPushClient.SendNotificationAsync(new WebPush.PushSubscription(subscription.EndPoint, subscription.Keys.p256dh, subscription.Keys.Auth), JsonSerializer.Serialize(new RootNotificationModel(count, subscription.Language)), new VapidDetails(vapidOption.Subject, vapidOption.PublicKey, vapidOption.PrivateKey), cancellationToken);
     }
 
     public async Task SendNotificationPushClientAsync(PushSubscriptionInformation subscription, long count, CancellationToken cancellationToken)
