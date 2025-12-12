@@ -47,7 +47,7 @@ resource storageBlobDataContributorRoleDefinition 'Microsoft.Authorization/roleD
 }
 
 resource storageBlobDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccount.id, userAssignedIdentity.principalId, storageBlobDataContributorRoleDefinition.id)
+  name: guid(storageAccount.id, userAssignedIdentityServicePrincipalId, storageBlobDataContributorRoleDefinition.id)
   scope: storageAccount
   properties: {
     principalType: 'ServicePrincipal'
