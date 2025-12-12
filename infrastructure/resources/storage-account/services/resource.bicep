@@ -19,3 +19,13 @@ module storageAccountQueueService './queue.bicep' = {
     userAssignedIdentityServicePrincipalId: userAssignedIdentityServicePrincipalId
   }
 }
+
+module storageAccountContainerService './container.bicep' = {
+  name: 'storageAccountContainerServiceDeployment'
+  params: {
+    applicationName: applicationName
+    environment: environment
+    index: index
+    userAssignedIdentityServicePrincipalId: userAssignedIdentityServicePrincipalId
+  }
+}
