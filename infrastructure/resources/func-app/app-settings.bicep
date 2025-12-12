@@ -50,7 +50,6 @@ output appSettings object = {
   APPLICATIONINSIGHTS_AUTHENTICATION_STRING: 'Authorization=AAD;ClientId=${userAssignedIdentityClientId}'
   APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString
 
-  FUNCTIONS_EXTENSION_VERSION: '~4'
   APPINSIGHTS_PROFILERFEATURE_VERSION: '1.0.0'
   APPINSIGHTS_SNAPSHOTFEATURE_VERSION: '1.0.0'
   ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
