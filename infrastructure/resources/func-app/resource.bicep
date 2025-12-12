@@ -127,8 +127,8 @@ module functionApplicationConnectionStrings './connection-strings.bicep' = {
   ]
 }
 
-resource connectionStrings 'Microsoft.Web/sites/config@2025-03-01' = {
-  name: 'connectionstrings'
-  parent: functionApplication
-  properties: functionApplicationConnectionStrings.outputs.connectionStrings
-}
+// resource connectionStrings 'Microsoft.Web/sites/config@2025-03-01' = {
+//   name: 'connectionstrings'
+//   parent: functionApplication
+//   properties: functionApplicationConnectionStrings.outputs.connectionStrings
+// }

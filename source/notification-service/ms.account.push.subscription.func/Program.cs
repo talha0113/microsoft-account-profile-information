@@ -6,9 +6,7 @@ using Microsoft.Extensions.Hosting;
 using ms.account.push.subscription.core;
 using ms.account.push.subscription.infrastructure;
 
-try
-{
-    var host = new HostBuilder()
+var host = new HostBuilder()
         .ConfigureFunctionsWorkerDefaults()
         .ConfigureServices((IServiceCollection services) =>
         {
@@ -22,10 +20,4 @@ try
         })
         .ConfigureOpenApi()
         .Build();
-    await host.RunAsync();
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-    Console.WriteLine(ex.StackTrace);
-}
+await host.RunAsync();

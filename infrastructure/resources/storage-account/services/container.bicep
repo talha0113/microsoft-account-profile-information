@@ -41,7 +41,7 @@ resource storageAccountBlobServiceContainer 'Microsoft.Storage/storageAccounts/b
   }
 }
 
-var storageBlobDataContributorRoleDefinitionId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+var storageBlobDataContributorRoleDefinitionId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 resource storageBlobDataContributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
   name: storageBlobDataContributorRoleDefinitionId
 }
