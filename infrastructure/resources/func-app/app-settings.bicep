@@ -31,7 +31,6 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 }
 
 output appSettings object = {
-  // AzureWebJobsStorage__accountName: storageAccount.name
   AzureWebJobsStorage__blobServiceUri: 'https://${storageAccount.name}.blob.${az.environment().suffixes.storage}'
   AzureWebJobsStorage__fileServiceUri: 'https://${storageAccount.name}.file.${az.environment().suffixes.storage}'
   AzureWebJobsStorage__queueServiceUri: 'https://${storageAccount.name}.queue.${az.environment().suffixes.storage}'
