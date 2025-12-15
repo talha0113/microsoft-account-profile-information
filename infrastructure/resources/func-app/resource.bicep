@@ -49,7 +49,6 @@ resource functionApplication 'Microsoft.Web/sites@2025-03-01' = {
     keyVaultReferenceIdentity: userAssignedIdentityId
     httpsOnly: true
     siteConfig: {
-      linuxFxVersion: 'DOTNET-ISOLATED|10.0'
       minimumElasticInstanceCount: 1
       numberOfWorkers: 1
       cors: {
@@ -72,7 +71,7 @@ resource functionApplication 'Microsoft.Web/sites@2025-03-01' = {
       }
       runtime: {
         name: 'dotnet-isolated'
-        version: '10.0'
+        version: '9.0'
       }
       siteUpdateStrategy: {
         type: 'RollingUpdate'
