@@ -49,6 +49,7 @@ resource functionApplication 'Microsoft.Web/sites@2025-03-01' = {
     keyVaultReferenceIdentity: userAssignedIdentityId
     httpsOnly: true
     siteConfig: {
+      linuxFxVersion: 'DOTNET-ISOLATED|10.0'
       minimumElasticInstanceCount: 1
       numberOfWorkers: 1
       cors: {
