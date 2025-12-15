@@ -2,7 +2,6 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "DatabaseId": "Subscriptions",
     "CollectionId": "Items",
     "SignalRConnection": "",
@@ -10,9 +9,7 @@
     "VAPID_Subject": "",
     "VAPID_PublicKey": "",
     "VAPID_PrivateKey": "",
-    "CosmosDBConnection": {
-      "accountEndpoint": "https://localhost:8081/"
-    }      
+    "CosmosDBConnection__accountEndpoint": "https://localhost:8081/"
   },
   "Host": {
     "CORS": "*"
