@@ -30,7 +30,8 @@ resource applicationServicePlan 'Microsoft.Web/serverfarms@2025-03-01' = {
     tier: 'FlexConsumption'
   }
   properties: {
-    reserved: true
+    elasticScaleEnabled: true
+    targetWorkerCount: 1
   }
 }
 
@@ -49,6 +50,7 @@ resource functionApplication 'Microsoft.Web/sites@2025-03-01' = {
     keyVaultReferenceIdentity: userAssignedIdentityId
     httpsOnly: true
     siteConfig: {
+      elasticScaleEnabled: true // Enables per-function scaling
       minimumElasticInstanceCount: 1
       numberOfWorkers: 1
       cors: {
@@ -71,7 +73,7 @@ resource functionApplication 'Microsoft.Web/sites@2025-03-01' = {
       }
       runtime: {
         name: 'dotnet-isolated'
-        version: '9.0'
+        version: '10.0'
       }
       siteUpdateStrategy: {
         type: 'RollingUpdate'
