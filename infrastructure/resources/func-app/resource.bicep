@@ -28,10 +28,21 @@ resource applicationServicePlan 'Microsoft.Web/serverfarms@2025-03-01' = {
   sku: {
     name: 'FC1'
     tier: 'FlexConsumption'
+    size: 'FC1'
+    family: 'FC'
+    capacity: 0
   }
   properties: {
     elasticScaleEnabled: true
     targetWorkerCount: 1
+    perSiteScaling: false
+    maximumElasticWorkerCount: 1
+    reserved: true
+    isXenon: false
+    hyperV: false
+    targetWorkerCount: 1
+    targetWorkerSizeId: 1
+    asyncScalingEnabled: false
   }
 }
 
