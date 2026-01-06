@@ -40,7 +40,6 @@ resource applicationServicePlan 'Microsoft.Web/serverfarms@2025-03-01' = {
     reserved: true
     isXenon: false
     hyperV: false
-    targetWorkerCount: 1
     targetWorkerSizeId: 1
     asyncScalingEnabled: false
   }
