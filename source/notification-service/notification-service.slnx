@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Packages.props" />
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Project Path="ms.account.push.subscription.core.tests/ms.account.push.subscription.core.tests.csproj" />
+  <Project Path="ms.account.push.subscription.core/ms.account.push.subscription.core.csproj" />
+  <Project Path="ms.account.push.subscription.domain.tests/ms.account.push.subscription.domain.tests.csproj" />
+  <Project Path="ms.account.push.subscription.domain/ms.account.push.subscription.domain.csproj" />
+  <Project Path="ms.account.push.subscription.func/ms.account.push.subscription.func.csproj" />
+  <Project Path="ms.account.push.subscription.infrastructure.tests/ms.account.push.subscription.infrastructure.tests.csproj" />
+  <Project Path="ms.account.push.subscription.infrastructure/ms.account.push.subscription.infrastructure.csproj" />
+</Solution>

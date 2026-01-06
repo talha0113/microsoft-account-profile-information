@@ -44,14 +44,14 @@ stages:
               az bicep build-params --file main.bicepparam --outfile main.bicepparam.json              
             workingDirectory: '$(DropRoot)'
             displayName: 'Parameter FIle'
-          
-          - task: FileTransform@1
+
+          - task: FileTransform@2
             displayName: 'Environment Settings'
             inputs:
-              folderPath: '$(DropRoot)' 
-              fileType: 'json'
-              targetFiles: 'main.bicepparam.json'
-              xmlTransformationRules: '' #disabled
+              folderPath: '$(DropRoot)'
+              enableXmlTransform: false
+              errorOnInvalidSubstitution: true
+              jsonTargetFiles: 'main.bicepparam.json' 
           
           - task: AzureCLI@2
             inputs:

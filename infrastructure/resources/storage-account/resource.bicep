@@ -56,18 +56,18 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
-var storageAccountContributorRoleDefinitionId = '17d1049b-9a84-46fb-8f53-869881c3d3ab'
-resource storageAccountContributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
-  name: storageAccountContributorRoleDefinitionId
+var storageAccountDataOwnerRoleDefinitionId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+resource storageAccountDataOwnerRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
+  name: storageAccountDataOwnerRoleDefinitionId
 }
 
-resource storageAccountContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccount.id, userAssignedIdentityServicePrincipalId, storageAccountContributorRoleDefinition.id)
+resource storageAccountDataOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(storageAccount.id, userAssignedIdentityServicePrincipalId, storageAccountDataOwnerRoleDefinition.id)
   scope: storageAccount
   properties: {
     principalType: 'ServicePrincipal'
     principalId: userAssignedIdentityServicePrincipalId
-    roleDefinitionId: storageAccountContributorRoleDefinition.id
+    roleDefinitionId: storageAccountDataOwnerRoleDefinition.id
   }
 }
 
