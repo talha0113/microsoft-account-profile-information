@@ -30,8 +30,8 @@ resource applicationServicePlan 'Microsoft.Web/serverfarms@2025-03-01' = {
     tier: 'FlexConsumption'
   }
   properties: {
-    // elasticScaleEnabled: true
-    // targetWorkerCount: 1
+    elasticScaleEnabled: true
+    targetWorkerCount: 1
   }
 }
 

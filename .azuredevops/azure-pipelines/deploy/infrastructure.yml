@@ -61,8 +61,8 @@ stages:
               workingDirectory: '$(DropRoot)'
               inlineScript: |
                 az --version                
-                az deployment sub what-if --location westus2 --template-file main.bicep --parameters main.bicepparam.json
-                az deployment sub create --location westus2 --name ${{ format('{0}', parameters.environment_name) }} --template-file main.bicep --parameters main.bicepparam.json
+                az deployment sub what-if --location westus3 --template-file main.bicep --parameters main.bicepparam.json
+                az deployment sub create --location westus3 --name ${{ format('{0}', parameters.environment_name) }} --template-file main.bicep --parameters main.bicepparam.json
             displayName: 'Resources'
 
   - template: ../common/release-annotations.yml
