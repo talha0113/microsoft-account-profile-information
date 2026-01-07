@@ -17,7 +17,7 @@ public static class PersistanceExtension
         var dataBaseSettings = new DatabaseSetting { Id = configuration?["DatabaseId"] ?? "", CollectionId = configuration?["CollectionId"] ?? "", AccountEndpoint = configuration?["CosmosDBConnection:accountEndpoint"] ?? throw new Exception($"{nameof(DatabaseSetting.AccountEndpoint)} is null") };
 
         var cosmosClient = new CosmosClient(dataBaseSettings.AccountEndpoint,
-            new DefaultAzureCredential(new DefaultAzureCredentialOptions { }),
+            new DefaultAzureCredential(),
             new CosmosClientOptions
             {
                 SerializerOptions = new CosmosSerializationOptions
@@ -27,8 +27,6 @@ public static class PersistanceExtension
                     PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
                 }
             });
-        cosmosClient.CreateDatabaseIfNotExistsAsync(dataBaseSettings.Id).GetAwaiter().GetResult();
-        cosmosClient.GetDatabase(dataBaseSettings.Id).CreateContainerIfNotExistsAsync(new ContainerProperties { Id = dataBaseSettings.CollectionId, PartitionKeyPath = $"/{nameof(Entity.Id).ToLower()}" }).GetAwaiter().GetResult();
 
         _ = services.Scan((ITypeSourceSelector typeSourceSelector) =>
         {

@@ -61,7 +61,7 @@ public class SubscriptionTriggerSignalR(ILogger<SubscriptionTriggerSignalR> logg
             [CosmosDBTrigger(
             databaseName: "Subscriptions",
             containerName: "Items",
-            Connection = "cosmosdb_connection",
+            Connection = "CosmosDBConnection",
             LeaseContainerName = "leases",
             CreateLeaseContainerIfNotExists = true)] IReadOnlyList<PushSubscriptionInformation> documents,
             CancellationToken cancellationToken)

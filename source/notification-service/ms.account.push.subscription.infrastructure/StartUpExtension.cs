@@ -36,7 +36,7 @@ public static class StartUpExtension
         }).
         AddSingleton<QueueClient>(new QueueClient(
             new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"),
-            new DefaultAzureCredential(new DefaultAzureCredentialOptions { }),
+            new DefaultAzureCredential(),
             new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
         return services;
