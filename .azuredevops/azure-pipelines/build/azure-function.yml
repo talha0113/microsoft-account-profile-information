@@ -117,11 +117,11 @@ stages:
         summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
       condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.branch_name }}'))
     
-    - pwsh: |
-        Get-ChildItem -Filter "local.settings.json" -Recurse:$true | % { Remove-Item $_ }
-      displayName: 'Clean Up'
-      failOnStderr: true
-      errorActionPreference: stop
+    # - pwsh: |
+    #     Get-ChildItem -Filter "local.settings.json" -Recurse:$true | % { Remove-Item $_ }
+    #   displayName: 'Clean Up'
+    #   failOnStderr: true
+    #   errorActionPreference: stop
 
     - task: DotNetCoreCLI@2
       displayName: 'Publish'
