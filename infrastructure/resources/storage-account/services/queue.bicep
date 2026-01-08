@@ -21,14 +21,24 @@ resource storageQueues 'Microsoft.Storage/storageAccounts/queueServices@2022-09-
   parent: storageAccount
 }
 
-resource storageQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
+resource storageQueueMain 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
   name: queueName
   parent: storageQueues
+  properties: {
+    metadata: {
+      type: 'main'
+    }
+  }
 }
 
 resource storageQueuePoison 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
   name: '${queueName}-poison'
   parent: storageQueues
+  properties: {
+    metadata: {
+      type: 'error'
+    }
+  }
 }
 
 var storageQueueDataContributorRoleDefinitionId = '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
@@ -36,9 +46,19 @@ resource storageQueueDataContributorRoleDefinition 'Microsoft.Authorization/role
   name: storageQueueDataContributorRoleDefinitionId
 }
 
-resource storageQueueDataContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccount.id, userAssignedIdentityServicePrincipalId, storageQueueDataContributorRoleDefinition.id)
-  scope: storageAccount
+resource storageQueueDataContributorRoleAssignmentMain 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(storageQueueMain.id, userAssignedIdentityServicePrincipalId, storageQueueDataContributorRoleDefinition.id)
+  scope: storageQueueMain
+  properties: {
+    principalType: 'ServicePrincipal'
+    principalId: userAssignedIdentityServicePrincipalId
+    roleDefinitionId: storageQueueDataContributorRoleDefinition.id
+  }
+}
+
+resource storageQueueDataContributorRoleAssignmentPoison 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(storageQueuePoison.id, userAssignedIdentityServicePrincipalId, storageQueueDataContributorRoleDefinition.id)
+  scope: storageQueuePoison
   properties: {
     principalType: 'ServicePrincipal'
     principalId: userAssignedIdentityServicePrincipalId

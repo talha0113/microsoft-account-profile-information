@@ -11,5 +11,5 @@ public class NotificationQueueService(QueueClient queueClient) : INotificationQu
 
     public async Task InsertAsync(NotificationQueueItem item, CancellationToken cancellationToken) => await queueClient.SendMessageAsync(JsonSerializer.Serialize(item), cancellationToken);
 
-    public async Task<bool> IsAvailableAsync(CancellationToken cancellationToken) => (await queueClient.ExistsAsync(cancellationToken)).Value;
+    public async Task<bool> IsAvailableAsync(CancellationToken cancellationToken) => (await queueClient.GetPropertiesAsync(cancellationToken)).Value.Metadata.Count > 0;
 }
