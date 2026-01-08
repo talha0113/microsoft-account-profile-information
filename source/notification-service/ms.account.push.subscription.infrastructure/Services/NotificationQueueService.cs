@@ -5,23 +5,11 @@ using Azure.Storage.Queues;
 using ms.account.push.subscription.core.services;
 using ms.account.push.subscription.domain.entities;
 
-public class NotificationQueueService : INotificationQueueService
+public class NotificationQueueService(QueueClient queueClient) : INotificationQueueService
 {
-    private readonly QueueClient queueClient;
+    private readonly QueueClient queueClient = queueClient;
 
-    public NotificationQueueService(QueueClient queueClient)
-    {
-        this.queueClient = queueClient;
-        queueClient.CreateIfNotExistsAsync().Wait();
-    }
+    public async Task InsertAsync(NotificationQueueItem item, CancellationToken cancellationToken) => await queueClient.SendMessageAsync(JsonSerializer.Serialize(item), cancellationToken);
 
-    public async Task InsertAsync(NotificationQueueItem item, CancellationToken cancellationToken)
-    {
-        await queueClient.SendMessageAsync(JsonSerializer.Serialize(item), cancellationToken);
-    }
-
-    public async Task<bool> IsAvailableAsync(CancellationToken cancellationToken)
-    {
-        return (await queueClient.ExistsAsync(cancellationToken)).Value;
-    }
+    public async Task<bool> IsAvailableAsync(CancellationToken cancellationToken) => (await queueClient.ExistsAsync(cancellationToken)).Value;
 }

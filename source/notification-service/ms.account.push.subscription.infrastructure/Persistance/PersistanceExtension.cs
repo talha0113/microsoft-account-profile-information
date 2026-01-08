@@ -5,7 +5,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ms.account.push.subscription.core.persistance;
-using ms.account.push.subscription.domain.entities;
 using Scrutor;
 
 public static class PersistanceExtension
