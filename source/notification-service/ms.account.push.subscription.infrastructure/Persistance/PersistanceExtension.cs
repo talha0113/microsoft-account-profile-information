@@ -1,6 +1,7 @@
 ﻿namespace ms.account.push.subscription.infrastructure.persistance;
 
 using Azure.Identity;
+using Azure.Storage.Queues;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,11 @@ public static class PersistanceExtension
         var dataBaseSettings = new DatabaseSetting { Id = configuration?["DatabaseId"] ?? "", CollectionId = configuration?["CollectionId"] ?? "", AccountEndpoint = configuration?["CosmosDBConnection:accountEndpoint"] ?? throw new Exception($"{nameof(DatabaseSetting.AccountEndpoint)} is null") };
 
         var cosmosClient = new CosmosClient(dataBaseSettings.AccountEndpoint,
-            new DefaultAzureCredential(),
+            new DefaultAzureCredential(new DefaultAzureCredentialOptions
+            {
+                // If not specified any Client ID configure AZURE_CLIENT_ID for user assigned managed identity
+                ManagedIdentityClientId = configuration?["CosmosDBConnection:clientId"]
+            }),
             new CosmosClientOptions
             {
                 SerializerOptions = new CosmosSerializationOptions
@@ -36,7 +41,15 @@ public static class PersistanceExtension
             }).UsingRegistrationStrategy(RegistrationStrategy.Throw).AsImplementedInterfaces().WithSingletonLifetime();
         }).
         AddSingleton<DatabaseSetting>(dataBaseSettings).
-        AddSingleton<CosmosClient>(cosmosClient);
+        AddSingleton<CosmosClient>(cosmosClient).
+        AddSingleton<QueueClient>(new QueueClient(
+            new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"),
+            new DefaultAzureCredential(new DefaultAzureCredentialOptions
+            {
+                // If not specified any Client ID configure AZURE_CLIENT_ID for user assigned managed identity
+                ManagedIdentityClientId = configuration?["AzureWebJobsStorage:clientId"]
+            }),
+            new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
         return services;
     }
