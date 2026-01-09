@@ -8,7 +8,7 @@ export class InsightsManager {
   private static readonly applicationInsights = new ApplicationInsights({
     config: {
       connectionString:
-        'InstrumentationKey=02db383e-c586-47be-91a4-1aa6a1847d97;',
+        'InstrumentationKey=1d5e47d1-586a-4b3c-be26-ceeef1da8fe0;',
     },
   });
 
