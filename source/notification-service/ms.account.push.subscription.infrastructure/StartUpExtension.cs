@@ -1,7 +1,5 @@
 ﻿namespace ms.account.push.subscription.infrastructure;
 
-using Azure.Identity;
-using Azure.Storage.Queues;
 using Lib.AspNetCore.WebPush;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
