@@ -2,6 +2,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { enableElfProdMode } from '@ngneat/elf';
 
 import { isDevMode, ErrorHandler } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { applicationInitializationProvider } from './Initialization/app.initialization';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { profileInterceptor } from './Interceptors/profile.interceptor';
@@ -17,6 +18,7 @@ import { InsightsManager } from './Managers/insights.manager';
 import { AuthenticationService } from './Services/authentication.service';
 import { provideServiceWorker } from '@angular/service-worker';
 import { translationProvider } from './Transloco/translation.provider';
+import { appRoutes } from './Routes/main.route';
 
 if (!isDevMode()) {
   enableElfProdMode();
@@ -27,6 +29,7 @@ InsightsManager.initialize();
 bootstrapApplication(MainComponent, {
   providers: [
     applicationInitializationProvider,
+    provideRouter(appRoutes),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerImmediately',
