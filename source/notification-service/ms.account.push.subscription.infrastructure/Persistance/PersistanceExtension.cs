@@ -20,7 +20,7 @@ public static class PersistanceExtension
             new DefaultAzureCredential(new DefaultAzureCredentialOptions
             {
                 // If not specified any Client ID configure AZURE_CLIENT_ID for user assigned managed identity
-                ManagedIdentityClientId = configuration?["CosmosDBConnection:clientId"]
+                ManagedIdentityClientId = configuration["CosmosDBConnection:clientId"]
             }),
             new CosmosClientOptions
             {
@@ -43,11 +43,11 @@ public static class PersistanceExtension
         AddSingleton<DatabaseSetting>(dataBaseSettings).
         AddSingleton<CosmosClient>(cosmosClient).
         AddSingleton<QueueClient>(new QueueClient(
-            new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"),
+            new Uri($"{configuration["AzureWebJobsStorage:queueServiceUri"]}/{configuration["StorageQueueName"]}"),
             new DefaultAzureCredential(new DefaultAzureCredentialOptions
             {
                 // If not specified any Client ID configure AZURE_CLIENT_ID for user assigned managed identity
-                ManagedIdentityClientId = configuration?["AzureWebJobsStorage:clientId"]
+                ManagedIdentityClientId = configuration["AzureWebJobsStorage:clientId"]
             }),
             new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
 
