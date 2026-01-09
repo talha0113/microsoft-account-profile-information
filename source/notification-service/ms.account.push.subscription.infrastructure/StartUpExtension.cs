@@ -33,11 +33,7 @@ public static class StartUpExtension
             serviceClientOptions.Subject = configuration?[$"VAPID_{nameof(VAPIDOption.Subject)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.Subject)} is null");
             serviceClientOptions.PublicKey = configuration?[$"VAPID_{nameof(VAPIDOption.PublicKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PublicKey)} is null");
             serviceClientOptions.PrivateKey = configuration?[$"VAPID_{nameof(VAPIDOption.PrivateKey)}"] ?? throw new Exception($"VAPID_{nameof(VAPIDOption.PrivateKey)} is null");
-        }).
-        AddSingleton<QueueClient>(new QueueClient(
-            new Uri($"{configuration?["AzureWebJobsStorage:queueServiceUri"]}/{configuration?["StorageQueueName"]}"),
-            new DefaultAzureCredential(),
-            new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 }));
+        });
 
         return services;
     }
