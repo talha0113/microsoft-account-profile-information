@@ -20,7 +20,7 @@
 ## Microsoft Account Information Application
 - A basic progressive web application with front-end and back-end to utilize major concepts of **Angular**, **Serverless** and **Monitoring**
 Application display user profile like image, email and name of logged in user defined in `Microsoft Entra ID`
-- [Demo](https://fde-msaccprofinfo-dev-001-daa3b0a8bxbdgfc8.z01.azurefd.net)
+- [Demo](https://fde-msaccprofinfo-dev-001-daa3b0a8bxbdgfc8.z03.azurefd.net)
 
 ## Application Flow
 ### Front-End
