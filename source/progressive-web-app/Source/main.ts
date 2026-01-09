@@ -22,7 +22,7 @@ if (!isDevMode()) {
   enableElfProdMode();
 }
 
-// InsightsManager.initialize();
+InsightsManager.initialize();
 
 bootstrapApplication(MainComponent, {
   providers: [

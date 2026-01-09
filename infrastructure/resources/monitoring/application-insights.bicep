@@ -30,7 +30,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     Request_Source: 'rest'
     RetentionInDays: 30
     ImmediatePurgeDataOn30Days: true
-    DisableLocalAuth: true
+    DisableLocalAuth: false
   }
 }
 
