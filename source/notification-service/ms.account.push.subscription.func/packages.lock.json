@@ -14,9 +14,9 @@
       },
       "Microsoft.Azure.Cosmos": {
         "type": "Direct",
-        "requested": "[3.56.0, )",
-        "resolved": "3.56.0",
-        "contentHash": "YGdZL2FOHZ5W9DlPqobS7bwmq4PRnTMGGMkCA1O5aRtSiyklmbxAjAgur5Au0U23A/hh2k/vYkIJVcmmW1XRIw==",
+        "requested": "[3.57.0, )",
+        "resolved": "3.57.0",
+        "contentHash": "35uoYG8m7l0gEIRwV7z/1g1iewgMw7OiqBJV4uKkxjxQxc/rOgf9k5HgxQrAtOMgFtkBErU+/9e/2x8exzPNIg==",
         "dependencies": {
           "Azure.Core": "1.44.1",
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
@@ -839,8 +839,8 @@
       },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
-        "resolved": "10.0.1",
-        "contentHash": "DO8XrJkp5x4PddDuc/CH37yDBCs9BYN6ijlKyR3vMb55BP1Vwh90vOX8bNfnKxr5B2qEI3D8bvbY1fFbDveDHQ=="
+        "resolved": "10.0.2",
+        "contentHash": "QmSiO+oLBEooGgB3i0GRXyeYRDHjllqt3k365jwfZlYWhvSHA3UL2NEVV5m8aZa041eIlblo6KMI5txvTMpTwA=="
       },
       "Microsoft.Identity.Client": {
         "type": "Transitive",
@@ -998,8 +998,8 @@
           "Azure.Identity": "[1.17.1, )",
           "Azure.Storage.Queues": "[12.25.0, )",
           "Lib.AspNetCore.WebPush": "[2.2.2, )",
-          "Microsoft.Azure.Cosmos": "[3.56.0, )",
-          "Microsoft.Extensions.Configuration.Abstractions": "[10.0.1, )",
+          "Microsoft.Azure.Cosmos": "[3.57.0, )",
+          "Microsoft.Extensions.Configuration.Abstractions": "[10.0.2, )",
           "Newtonsoft.Json": "[13.0.4, )",
           "WebPush": "[1.0.12, )",
           "ms.account.push.subscription.core": "[1.0.0, )"
@@ -1027,11 +1027,11 @@
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[10.0.1, )",
-        "resolved": "10.0.1",
-        "contentHash": "kPlU11hql+L9RjrN2N9/0GcRcRcZrNFlLLjadasFWeBORT6pL6OE+RYRk90GGCyVGSxTK+e1/f3dsMj5zpFFiQ==",
+        "requested": "[10.0.2, )",
+        "resolved": "10.0.2",
+        "contentHash": "KC5PslaTDnTuTvyke0KYAVBYdZ7IVTsU3JhHe69BpEbHLcj1YThP3bIGtZNOkZfast2AuLnul5lk4rZKxAdUGQ==",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.1"
+          "Microsoft.Extensions.Primitives": "10.0.2"
         }
       },
       "Microsoft.Extensions.DependencyInjection": {
