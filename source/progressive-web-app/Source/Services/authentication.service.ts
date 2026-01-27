@@ -27,12 +27,10 @@ export class AuthenticationService {
         clientId: AuthenticationConfiguration.applicationId,
         redirectUri: `${globalThis.location.origin}/login`,
         postLogoutRedirectUri: `${globalThis.location.origin}/login`,
-        navigateToLoginRequestUrl: true,
+        onRedirectNavigate: () => true,
       },
       cache: {
         cacheLocation: 'sessionStorage',
-        storeAuthStateInCookie: false,
-        claimsBasedCachingEnabled: true,
       },
       system: {
         loggerOptions: {
@@ -96,8 +94,11 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.msalApp.logout();
-    this.repository.remove();
+    from(this.msalApp.logoutRedirect()).subscribe({
+      next: () => {
+        this.repository.remove();
+      },
+    });
   }
 
   refreshToken(): Observable<null> {
