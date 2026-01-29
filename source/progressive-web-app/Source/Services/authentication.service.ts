@@ -94,11 +94,8 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    from(this.msalApp.logoutRedirect()).subscribe({
-      next: () => {
-        this.repository.remove();
-      },
-    });
+    this.repository.remove();
+    from(this.msalApp.logoutRedirect()).subscribe({ });
   }
 
   refreshToken(): Observable<null> {

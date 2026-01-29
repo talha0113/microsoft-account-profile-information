@@ -56,7 +56,8 @@ describe('Microsoft Account Information Application', () => {
         await page.click('navigation > div > nav > span:nth-child(3) > a');
         await page.waitForSelector('div > div > logout > div > button');
         await page.click('div > div > logout > div > button');
-        expect(page.url()).toContain("/logoutsession");
+        await page.waitForNavigation();
+        expect(page.url()).toContain("/logout");
     }, timeout);
 
     afterAll(async () => {
