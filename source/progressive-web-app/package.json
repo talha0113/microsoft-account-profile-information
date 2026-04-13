@@ -38,7 +38,7 @@
     "@angular/build": "^21.2.7",
     "@angular/cli": "^21.2.7",
     "@angular/compiler-cli": "^21.2.8",
-    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.48.0",
     "@vitest/coverage-v8": "^4.1.4",
     "eslint-config-prettier": "^10.1.8",
