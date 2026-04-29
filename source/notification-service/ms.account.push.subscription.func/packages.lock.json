@@ -36,9 +36,9 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.CosmosDB": {
         "type": "Direct",
-        "requested": "[4.14.0, )",
-        "resolved": "4.14.0",
-        "contentHash": "xIAD63vyTslis/7EYx9vqdwHLzY7aRK83xyYIciEKame/WWH+TDJR8TlwHUdClM1/B7PZUfEOgXpDbFG2heAKQ==",
+        "requested": "[4.15.0, )",
+        "resolved": "4.15.0",
+        "contentHash": "lA5fqe/zITV+BJ/rHRNmblfe9DcOpW6vO8pJXR7VyiYssPasomBCUOH+6gtuJfGVjgkVCUZfyUHGh23JxkWkCg==",
         "dependencies": {
           "Microsoft.Azure.Cosmos": "3.39.1",
           "Microsoft.Azure.Functions.Worker.Core": "1.19.0",
@@ -910,8 +910,8 @@
       },
       "Portable.BouncyCastle": {
         "type": "Transitive",
-        "resolved": "1.8.1.3",
-        "contentHash": "1jUpszv0ETm+hl78HKnYgY3wPzt6qRtjxaPENNrGCuB8nondbR/j75WAKdd6sxXzOzBcX07WMZhZEYc4s5jVWg=="
+        "resolved": "1.9.0",
+        "contentHash": "eZZBCABzVOek+id9Xy04HhmgykF0wZg9wpByzrWN7q8qEI0Qen9b7tfd7w8VA3dOeesumMG7C5ZPy0jk7PSRHw=="
       },
       "System.ClientModel": {
         "type": "Transitive",
@@ -1007,7 +1007,7 @@
           "Microsoft.Azure.Cosmos": "[3.59.0, )",
           "Microsoft.Extensions.Configuration.Abstractions": "[10.0.7, )",
           "Newtonsoft.Json": "[13.0.4, )",
-          "WebPush": "[1.0.12, )",
+          "WebPush": "[1.0.13, )",
           "ms.account.push.subscription.core": "[1.0.0, )"
         }
       },
@@ -1065,12 +1065,11 @@
       },
       "WebPush": {
         "type": "CentralTransitive",
-        "requested": "[1.0.12, )",
-        "resolved": "1.0.12",
-        "contentHash": "vc91Uby6UaQQijOPRY4B1tWFaQJlbfOyfOMIPpdAT6mANcPhHcvDJeLjr6B0Adjij71WIAH718MC7coQdrJZAw==",
+        "requested": "[1.0.13, )",
+        "resolved": "1.0.13",
+        "contentHash": "Qyypsk6j+GqncCa/IgbmZLnL7DxqKFGz3jIdquGSLeiD3NtN+HPnIFBMwIJHffDU9ZEztTkaMMYxvW3PJxJL7Q==",
         "dependencies": {
-          "Newtonsoft.Json": "10.0.3",
-          "Portable.BouncyCastle": "1.8.1.3"
+          "Portable.BouncyCastle": "1.9.0"
         }
       }
     }
