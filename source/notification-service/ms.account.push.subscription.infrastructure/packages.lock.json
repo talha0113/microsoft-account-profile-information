@@ -13,12 +13,12 @@
       },
       "Azure.Storage.Queues": {
         "type": "Direct",
-        "requested": "[12.25.0, )",
-        "resolved": "12.25.0",
-        "contentHash": "52+X1K+XuUWG3XzcCQDhJ+gz+NjpH22L0FpMyydhmdhk+3FNM2JZHyhGLPUxFIq9MEW9I8JdSuVyHPalxzMYhA==",
+        "requested": "[12.26.0, )",
+        "resolved": "12.26.0",
+        "contentHash": "Ay/lsuyKadiFeikhI/EjPmpLJyxovCMhVNDlaeNNqArrN9glPYI19S8Ou4DQp9FuC81EWMZu2CMAD1cXHzL7yA==",
         "dependencies": {
-          "Azure.Core": "1.50.0",
-          "Azure.Storage.Common": "12.26.0"
+          "Azure.Core": "1.51.1",
+          "Azure.Storage.Common": "12.27.0"
         }
       },
       "Lib.AspNetCore.WebPush": {
@@ -82,11 +82,11 @@
       },
       "Azure.Storage.Common": {
         "type": "Transitive",
-        "resolved": "12.26.0",
-        "contentHash": "XaT6CDcSshZb7KaCTwc6m4EouZbLBg7ciOEpsJSdJCvkNsZJQCvPKw7V5TtXno19AA1NpwtsZriYque8mzbQVg==",
+        "resolved": "12.27.0",
+        "contentHash": "PBucMNzot6cYyN0isdte50iPCefJ4Ylg0B+KP4kxmqsc3ciOiDYh1MwVV6fPZPjoPnPvNRLN9TI6J5hgNf4huA==",
         "dependencies": {
-          "Azure.Core": "1.50.0",
-          "System.IO.Hashing": "10.0.1"
+          "Azure.Core": "1.51.1",
+          "System.IO.Hashing": "10.0.3"
         }
       },
       "Lib.Net.Http.EncryptedContentEncoding": {
@@ -235,8 +235,8 @@
       },
       "System.IO.Hashing": {
         "type": "Transitive",
-        "resolved": "10.0.1",
-        "contentHash": "Dy6ULPb2S0GmNndjKrEIpfibNsc8+FTOoZnqygtFDuyun8vWboQbfMpQtKUXpgTxokR5E4zFHETpNnGfeWY6NA=="
+        "resolved": "10.0.3",
+        "contentHash": "La6ICwsdTKhVX+LKN+pvFjQRR3LhLwq3uKdi2knjLzRyPYBSydF4cjXidYxIiTcDD6XVYdsBWQEI8ZxiZ/OdIg=="
       },
       "System.Memory.Data": {
         "type": "Transitive",
