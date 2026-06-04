@@ -36,11 +36,11 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.CosmosDB": {
         "type": "Direct",
-        "requested": "[4.15.0, )",
-        "resolved": "4.15.0",
-        "contentHash": "lA5fqe/zITV+BJ/rHRNmblfe9DcOpW6vO8pJXR7VyiYssPasomBCUOH+6gtuJfGVjgkVCUZfyUHGh23JxkWkCg==",
+        "requested": "[4.16.1, )",
+        "resolved": "4.16.1",
+        "contentHash": "FYBd2ZIJZ+XZWKDXVufuFy0Z34dRapsW/R3YkFZIP6X15kCF/BvY7Zzl1h5oLKVFma9iN6W0yfyTgmPrdo4e0g==",
         "dependencies": {
-          "Microsoft.Azure.Cosmos": "3.39.1",
+          "Microsoft.Azure.Cosmos": "3.60.0",
           "Microsoft.Azure.Functions.Worker.Core": "1.19.0",
           "Microsoft.Azure.Functions.Worker.Extensions.Abstractions": "1.3.0",
           "Microsoft.Extensions.Azure": "1.12.0",
