@@ -37,12 +37,12 @@ stages:
   
     steps:
 
-    # Install node version 24.x
-    - task: NodeTool@0
+    # Install node version 26.x
+    - task: UseNode@1
       displayName: 'Node: 26.x'
       inputs:
-        versionSource: 'spec'
-        versionSpec: '26.0.0'
+        checkLatest: true
+        version: '26.0.0'
         checkLatest: true
 
     # Perform Tokens Replacement
