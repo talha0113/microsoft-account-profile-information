@@ -43,8 +43,7 @@ stages:
       inputs:
         checkLatest: true
         version: '26.0.0'
-        checkLatest: true
-
+        
     # Perform Tokens Replacement
     - task: replacetokens@6
       displayName: Replace
