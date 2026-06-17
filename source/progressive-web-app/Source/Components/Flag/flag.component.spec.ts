@@ -56,8 +56,8 @@ describe('Flag Component', () => {
 
   it('Should render flag', async () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const flagImg: HTMLImageElement = nativeElement.querySelector('img');
-    expect(flagImg.src).toBeTruthy();
+    const flagImg: HTMLImageElement | null = nativeElement.querySelector('img');
+    expect(flagImg?.src).toBeTruthy();
   });
 
   it('Should switch language', async () => {

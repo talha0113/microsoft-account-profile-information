@@ -12,7 +12,7 @@ import { ProfileRepository } from './Repositories/profile.repository';
 import { ProfileService } from './Services/profile.service';
 import { NotificationService } from './Services/notification.service';
 import { PushService } from './Services/push.service';
-import { SignalRService } from 'Source/Services/signalr.service';
+import { SignalRService } from './Services/signalr.service';
 import { MainComponent } from './Components/Main/main.component';
 import { InsightsManager } from './Managers/insights.manager';
 import { AuthenticationService } from './Services/authentication.service';

@@ -13,7 +13,7 @@ import { Observable, catchError, switchMap } from 'rxjs';
 
 import { RequestManager } from '../Managers/request.manager';
 import { ErrorManager } from '../Managers/error.manager';
-import { AuthenticationService } from 'Source/Services/authentication.service';
+import { AuthenticationService } from '../Services/authentication.service';
 import { AuthenticationRepository } from '../Repositories/authentcation.repository';
 
 export const profileInterceptor: HttpInterceptorFn = (
@@ -65,7 +65,7 @@ export const profileInterceptor: HttpInterceptorFn = (
           return next(req);
         } else {
           return authenticationService.refreshToken().pipe(
-            switchMap((value: string, index: number) => {
+            switchMap((value: null, index: number) => {
               console.log(`${value} : ${index}`);
               return next(
                 RequestManager.secureRequest(

@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
-import { AuthenticationService } from 'Source/Services/authentication.service';
+import { AuthenticationService } from '../../Services/authentication.service';
 import { ProfileService } from '../../Services/profile.service';
 
 @Component({

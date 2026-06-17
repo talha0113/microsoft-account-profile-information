@@ -9,18 +9,17 @@ import {
 
 import { catchError, tap } from 'rxjs/operators';
 import { ErrorManager } from '../Managers/error.manager';
-import { environment } from 'Configurations/Environments/environment';
-import { SignalRConnection } from 'Source/Models/signalr-connection.model';
+import { environment } from '../../Configurations/Environments/environment';
+import { SignalRConnection } from '../Models/signalr-connection.model';
 
 @Injectable()
 export class SignalRService {
   private readonly httpClient = inject(HttpClient);
 
-  private liveCount$: BehaviorSubject<number>;
-  private signalRConnection: HubConnection = null;
+  private liveCount$: BehaviorSubject<number> = new BehaviorSubject<number>(-1);
+  private signalRConnection: HubConnection | null = null;
 
   public renewConnection(): void {
-    this.liveCount$ = new BehaviorSubject<number>(-1);
     this.httpClient
       .get<SignalRConnection>(environment.PWASignalRConnectionUrl)
       .pipe(

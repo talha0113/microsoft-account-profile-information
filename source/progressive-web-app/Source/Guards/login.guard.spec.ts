@@ -1,6 +1,10 @@
 import { vi, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 
 import { loginGuard } from './login.guard';
 import { setUpMock } from '../Managers/storage.mock';
@@ -36,7 +40,10 @@ describe('Login Guard', () => {
   it('Should allow for un authenticated user', async () => {
     repository.remove();
     const guardResult = TestBed.runInInjectionContext(() => {
-      return loginGuard(null, null);
+      return loginGuard(
+        {} as ActivatedRouteSnapshot,
+        {} as RouterStateSnapshot
+      );
     });
     expect(guardResult).toBeDefined();
   });
@@ -44,7 +51,10 @@ describe('Login Guard', () => {
   it('Should not allow for authenticated user', async () => {
     repository.update = new Authentication('', '');
     const guardResult = TestBed.runInInjectionContext(() => {
-      return loginGuard(null, null);
+      return loginGuard(
+        {} as ActivatedRouteSnapshot,
+        {} as RouterStateSnapshot
+      );
     });
     expect(guardResult).toBeDefined();
   });

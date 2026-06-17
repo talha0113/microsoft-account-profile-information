@@ -9,8 +9,8 @@ import {
 import { Subscription } from 'rxjs';
 
 import { TranslocoPipe } from '@jsverse/transloco';
-import { PushService } from 'Source/Services/push.service';
-import { SignalRService } from 'Source/Services/signalr.service';
+import { PushService } from '../../Services/push.service';
+import { SignalRService } from '../../Services/signalr.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -23,7 +23,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   private readonly pushService = inject(PushService);
   private readonly signalRService = inject(SignalRService);
 
-  private subscriptionLiveCountSubscription: Subscription = null;
+  private subscriptionLiveCountSubscription: Subscription | null = null;
 
   subscriptionCount = signal(0);
   isOffline = signal(true);
@@ -66,14 +66,6 @@ export class StatusComponent implements OnInit, OnDestroy {
           this.subscriptionCount.set(value);
         }
         subscriptionCountSubscription.unsubscribe();
-      });
-
-    this.signalRService.renewConnection();
-    this.subscriptionLiveCountSubscription =
-      this.signalRService.liveCount.subscribe((value: number) => {
-        if (value > -1) {
-          this.subscriptionCount.set(value);
-        }
       });
   }
 

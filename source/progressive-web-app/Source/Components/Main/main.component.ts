@@ -11,8 +11,8 @@ import { TranslocoService, TranslocoPipe } from '@jsverse/transloco';
 
 import { NotificationService } from '../../Services/notification.service';
 import { PushService } from '../../Services/push.service';
-import { Version } from 'Source/Models/version.model';
-import { VersionConstant } from 'Source/Constants/version.constant';
+import { Version } from '../../Models/version.model';
+import { VersionConstant } from '../../Constants/version.constant';
 import { FlagComponent } from '../Flag/flag.component';
 import { NavigationComponent } from '../Navigation/navigation.component';
 
@@ -71,15 +71,13 @@ export class MainComponent implements OnInit {
               const applicationVersionInformationOld: Version = <Version>(
                 versionData.current.appData
               );
-              if (applicationVersionInformationOld == null) {
-                applicationVersionInformationOld.version = '0.0.0';
-              }
+
+              const oldVersion =
+                applicationVersionInformationOld?.version ?? '0.0.0';
+
               applicationVersionInformationNew.message =
                 applicationVersionInformationNew.message
-                  .replace(
-                    VersionConstant.versionOld,
-                    applicationVersionInformationOld.version
-                  )
+                  .replace(VersionConstant.versionOld, oldVersion)
                   .replace(
                     VersionConstant.versionNew,
                     applicationVersionInformationNew.version

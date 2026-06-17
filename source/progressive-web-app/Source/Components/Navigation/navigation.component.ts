@@ -19,26 +19,20 @@ export class NavigationComponent implements OnInit {
   private readonly router = inject(Router);
 
   public navigationLinks: Array<NavigationLink> = new Array<NavigationLink>();
-  public isAuthenticated$: Observable<boolean>;
+  public isAuthenticated$: Observable<boolean> = this.repository.data$.pipe(
+    map(value => value.data !== null)
+  );
 
   ngOnInit() {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.isAuthenticated$ = this.repository.data$.pipe(
-          map(value => {
-            return value.data === null ? false : true;
-          })
-        );
+        // TODO: Add navigation handling logic
       }
     });
 
     this.navigationLinks.push(
-      new NavigationLink(1, 'NAVIGATION.STATUS', '/status')
-    );
-    this.navigationLinks.push(
-      new NavigationLink(2, 'NAVIGATION.PROFILE', '/profile')
-    );
-    this.navigationLinks.push(
+      new NavigationLink(1, 'NAVIGATION.STATUS', '/status'),
+      new NavigationLink(2, 'NAVIGATION.PROFILE', '/profile'),
       new NavigationLink(3, 'NAVIGATION.LOGOUT', '/logout')
     );
   }

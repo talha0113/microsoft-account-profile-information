@@ -10,10 +10,10 @@ export class GlobalErrorHandlerService implements ErrorHandler {
   handleError(error: Error | HttpErrorResponse): void {
     let stackTrace = 'Server Stack Trace';
     if (!(error instanceof HttpErrorResponse)) {
-      stackTrace = error.stack;
+      stackTrace = error.stack ?? 'Client Stack Trace Unavailable';
     }
     InsightsManager.trackException(
-      `${this.injector.get(Router)} : ${error.message}`,
+      `${this.injector.get(Router).url} : ${error.message}`,
       stackTrace
     );
     console.error(error.message);

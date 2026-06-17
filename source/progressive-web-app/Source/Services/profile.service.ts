@@ -12,8 +12,8 @@ export class ProfileService {
   private readonly httpClient = inject(HttpClient);
   private readonly repository = inject(ProfileRepository);
 
-  get information$(): Observable<Profile> {
-    const basicInformation: Observable<Profile> = this.httpClient
+  get information$(): Observable<Profile | null> {
+    const basicInformation: Observable<Profile | null> = this.httpClient
       .get<Profile>(GraphConstant.profileMetaDataUrl)
       .pipe(
         catchError(error => {
@@ -21,7 +21,7 @@ export class ProfileService {
           return of(null);
         })
       );
-    const profilePicture: Observable<Blob> = this.httpClient
+    const profilePicture: Observable<Blob | null> = this.httpClient
       .get(GraphConstant.profilePictureUrl, { responseType: 'blob' })
       .pipe(
         catchError(error => {
@@ -30,16 +30,20 @@ export class ProfileService {
         })
       );
     return forkJoin({ basicInformation, profilePicture }).pipe(
-      map((values: { basicInformation: Profile; profilePicture: Blob }) => {
-        if (values.basicInformation == null && values.profilePicture == null) {
-          return null;
-        } else {
+      map(
+        (values: {
+          basicInformation: Profile | null;
+          profilePicture: Blob | null;
+        }) => {
+          if (values.basicInformation == null) {
+            return null;
+          }
           const profileInformation: Profile = values.basicInformation;
           profileInformation.imageUrl = values.profilePicture;
           return profileInformation;
         }
-      }),
-      tap((value: Profile) => {
+      ),
+      tap((value: Profile | null) => {
         if (value != null) {
           this.repository.update = value;
         }

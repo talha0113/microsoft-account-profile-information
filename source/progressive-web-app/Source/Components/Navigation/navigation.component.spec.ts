@@ -7,7 +7,7 @@ import {
 
 import { NavigationComponent } from './navigation.component';
 import { setUpMock } from '../../Managers/storage.mock';
-import { AuthenticationService } from 'Source/Services/authentication.service';
+import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
@@ -53,7 +53,8 @@ describe('Navigation Component', () => {
 
   it('Should not render navigation', async () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const navigationElement: HTMLElement = nativeElement.querySelector('nav');
+    const navigationElement: HTMLElement | null =
+      nativeElement.querySelector('nav');
 
     expect(navigationElement).toBeNull();
   });
@@ -62,7 +63,8 @@ describe('Navigation Component', () => {
     authenticationService.login();
     authenticationService.refreshToken().subscribe(() => {
       const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-      const navigationElement: HTMLElement = nativeElement.querySelector('nav');
+      const navigationElement: HTMLElement | null =
+        nativeElement.querySelector('nav');
       expect(navigationElement).toBeDefined();
     });
   });

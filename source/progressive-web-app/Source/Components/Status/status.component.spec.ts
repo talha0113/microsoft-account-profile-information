@@ -6,11 +6,11 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 import { StatusComponent } from './status.component';
-import { PushService } from 'Source/Services/push.service';
-import { SignalRService } from 'Source/Services/signalr.service';
-import { SignalRServiceStub } from 'Source/Services/signalr.service.stub';
-import { environment } from 'Configurations/Environments/environment';
-import { NotificationService } from 'Source/Services/notification.service';
+import { PushService } from '../../Services/push.service';
+import { SignalRService } from '../../Services/signalr.service';
+import { SignalRServiceStub } from '../../Services/signalr.service.stub';
+import { environment } from '../../../Configurations/Environments/environment';
+import { NotificationService } from '../../Services/notification.service';
 import { By } from '@angular/platform-browser';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 
@@ -53,17 +53,18 @@ describe('Status Component', () => {
 
   it('Should render message', async () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const messageDiv: HTMLDivElement = nativeElement.querySelector('div');
+    const messageDiv: HTMLDivElement | null =
+      nativeElement.querySelector('div');
 
-    expect(messageDiv.textContent).toBeTruthy();
+    expect(messageDiv?.textContent).toBeTruthy();
   });
 
   it('Should render live stats input', async () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const liveStatsLabel: HTMLLabelElement =
+    const liveStatsLabel: HTMLLabelElement | null =
       nativeElement.querySelector('label');
 
-    expect(liveStatsLabel.textContent).toBeTruthy();
+    expect(liveStatsLabel?.textContent).toBeTruthy();
   });
 
   it('Should not render live stats number', async () => {

@@ -9,7 +9,7 @@ import { from } from 'rxjs';
 
 import { LoginComponent } from './login.component';
 import { setUpMock } from '../../Managers/storage.mock';
-import { AuthenticationService } from 'Source/Services/authentication.service';
+import { AuthenticationService } from '../../Services/authentication.service';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
@@ -61,12 +61,13 @@ describe('Login Component', () => {
 
   it('Should render login process', async () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const loginButton: HTMLButtonElement =
+    const loginButton: HTMLButtonElement | null =
       nativeElement.querySelector('button');
-    const progressImage: HTMLImageElement = nativeElement.querySelector('img');
+    const progressImage: HTMLImageElement | null =
+      nativeElement.querySelector('img');
 
-    expect(loginButton.textContent.toLowerCase()).toContain('login');
-    expect(loginButton.disabled).toBeFalsy();
+    expect(loginButton?.textContent.toLowerCase()).toContain('login');
+    expect(loginButton?.disabled).toBeFalsy();
     expect(progressImage).toBeDefined();
   });
 

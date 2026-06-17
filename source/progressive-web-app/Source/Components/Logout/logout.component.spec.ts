@@ -10,7 +10,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { LogoutComponent } from './logout.component';
 import { ProfileService } from '../../Services/profile.service';
 import { setUpMock } from '../../Managers/storage.mock';
-import { AuthenticationService } from 'Source/Services/authentication.service';
+import { AuthenticationService } from '../../Services/authentication.service';
 import { getTranslationTestingModule } from '../../Transloco/translation-testing.module';
 import { AuthenticationRepository } from '../../Repositories/authentcation.repository';
 import { AuthenticationServiceStub } from '../../Services/authentication.service.stub';
@@ -67,19 +67,21 @@ describe('Logout Component', () => {
   });
 
   it('Should render logout', async () => {
-    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const logoutButton: HTMLButtonElement =
-      nativeElement.querySelector('button');
+    const nativeElement: HTMLElement | null =
+      fixture.debugElement.nativeElement;
+    const logoutButton: HTMLButtonElement | null | undefined =
+      nativeElement?.querySelector('button');
 
     expect(logoutButton).toBeDefined();
   });
 
   it('Should logout', async () => {
-    const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const logoutButton: HTMLButtonElement =
-      nativeElement.querySelector('button');
+    const nativeElement: HTMLElement | null =
+      fixture.debugElement.nativeElement;
+    const logoutButton: HTMLButtonElement | null | undefined =
+      nativeElement?.querySelector('button');
 
-    logoutButton.click();
+    logoutButton?.click();
     repository.data$.pipe(
       tap(value => {
         expect(value.data).toBeNull();

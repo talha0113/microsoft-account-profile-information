@@ -6,7 +6,7 @@ import { NotificationService } from './notification.service';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { ErrorManager } from '../Managers/error.manager';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'Configurations/Environments/environment';
+import { environment } from '../../Configurations/Environments/environment';
 
 @Injectable()
 export class PushService {
@@ -48,11 +48,11 @@ export class PushService {
     if (this.swPush.isEnabled) {
       return from(
         this.swPush.subscription.pipe(
-          switchMap((value: PushSubscription) => {
+          switchMap((value: PushSubscription | null) => {
             return this.httpClient.patch(
               `${
                 environment.PWAUpdateLanguageUrl
-              }&endpoint=${encodeURIComponent(value.endpoint)}`,
+              }&endpoint=${encodeURIComponent(value?.endpoint ?? '')}`,
               language
             );
           }),
@@ -73,7 +73,7 @@ export class PushService {
 
   public get count(): Observable<number> {
     this.httpClient
-      .get(`${environment.PWASubscribeCountUrl}`)
+      .get<number>(`${environment.PWASubscribeCountUrl}`)
       .pipe(
         catchError(error => {
           return ErrorManager.generalError(
@@ -91,7 +91,7 @@ export class PushService {
   public get isSubscribed(): Observable<boolean> {
     if (this.swPush.isEnabled) {
       return this.swPush.subscription.pipe(
-        map((value: PushSubscription) => {
+        map((value: PushSubscription | null) => {
           return value != null;
         })
       );
@@ -102,22 +102,21 @@ export class PushService {
   public get unSubscribe(): Observable<void> {
     if (this.swPush.isEnabled) {
       return this.swPush.subscription.pipe(
-        switchMap((value: PushSubscription) => {
-          if (value != null) {
-            return this.httpClient.delete(
-              `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
-                value.endpoint
-              )}`
-            );
-          } else {
-            return of(null);
+        switchMap((value: PushSubscription | null) => {
+          if (value == null) {
+            return of(void 0);
           }
+          return this.httpClient.delete(
+            `${environment.PWAUnSubscribeUrl}&endpoint=${encodeURIComponent(
+              value.endpoint
+            )}`
+          );
         }),
         switchMap(() => {
           return from(this.swPush.unsubscribe()).pipe(
             catchError(error => {
               console.error(error);
-              return of(null);
+              return of(void 0);
             })
           );
         }),
@@ -126,6 +125,6 @@ export class PushService {
         })
       );
     }
-    return of(null);
+    return of(void 0);
   }
 }

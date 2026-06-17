@@ -56,7 +56,7 @@ describe('Profile Component', () => {
 
   it('Should render profile', () => {
     const nativeElement: HTMLElement = fixture.debugElement.nativeElement;
-    const profileNameDiv: HTMLHeadingElement =
+    const profileNameDiv: HTMLHeadingElement | null =
       nativeElement.querySelector('h3');
     expect(profileNameDiv).toBeDefined();
   });

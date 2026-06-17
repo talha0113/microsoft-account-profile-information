@@ -1,6 +1,10 @@
 import { vi, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 
 import { authenticationGuard } from './authentication.guard';
 import { setUpMock } from '../Managers/storage.mock';
@@ -39,7 +43,11 @@ describe('Authentication Guard', () => {
     expect(repository).toBeDefined();
 
     const guardResult = TestBed.runInInjectionContext(
-      () => authenticationGuard(null, null) as Observable<boolean>
+      () =>
+        authenticationGuard(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot
+        ) as Observable<boolean>
     );
     guardResult.subscribe({
       next: value => {
@@ -52,7 +60,11 @@ describe('Authentication Guard', () => {
     repository.remove();
     expect(repository).toBeDefined();
     const guardResult = TestBed.runInInjectionContext(
-      () => authenticationGuard(null, null) as Observable<boolean>
+      () =>
+        authenticationGuard(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot
+        ) as Observable<boolean>
     );
     guardResult.subscribe({
       next: value => {

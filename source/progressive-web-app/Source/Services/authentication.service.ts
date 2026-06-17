@@ -63,7 +63,7 @@ export class AuthenticationService {
           return from(this.msalApp.handleRedirectPromise());
         }),
         trackRequestResult([this.repository.storeName]),
-        tap((value: AuthenticationResult) => {
+        tap((value: AuthenticationResult | null) => {
           if (value) {
             if (value.tokenType === 'Bearer') {
               this.repository.update = new Authentication(

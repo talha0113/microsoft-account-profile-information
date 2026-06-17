@@ -1,12 +1,10 @@
-﻿/* eslint-disable  @typescript-eslint/no-explicit-any */
-
-import { HttpRequest } from '@angular/common/http';
+﻿import { HttpRequest } from '@angular/common/http';
 
 export class RequestManager {
   public static secureRequest(
-    request: HttpRequest<any>,
-    token: string
-  ): HttpRequest<any> {
+    request: HttpRequest<unknown>,
+    token: string | null
+  ): HttpRequest<unknown> {
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

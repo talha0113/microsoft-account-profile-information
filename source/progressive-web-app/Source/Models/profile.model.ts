@@ -3,6 +3,6 @@
     public id: number,
     public userPrincipalName: string,
     public displayName: string,
-    public imageUrl: Blob
+    public imageUrl: Blob | null = null
   ) {}
 }

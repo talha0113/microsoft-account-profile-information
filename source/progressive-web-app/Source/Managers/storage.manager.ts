@@ -1,5 +1,5 @@
 ﻿export class StorageManager {
-  static add<T>(key: string, item: T): void {
+  static add<T>(key: string, item: T | null): void {
     localStorage.setItem(key, JSON.stringify(item));
   }
 
@@ -7,11 +7,12 @@
     localStorage.removeItem(key);
   }
 
-  static get<T>(key: string): T {
-    if (localStorage.getItem(key) == null) {
+  static get<T>(key: string): T | null {
+    const item = localStorage.getItem(key);
+    if (item == null) {
       return null;
     } else {
-      return <T>JSON.parse(localStorage.getItem(key));
+      return <T>JSON.parse(item);
     }
   }
 }

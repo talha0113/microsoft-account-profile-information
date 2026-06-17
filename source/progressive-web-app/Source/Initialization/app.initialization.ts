@@ -10,12 +10,15 @@ export function ApplicationInitialization(
 ): () => Promise<boolean> {
   return (): Promise<boolean> => {
     return new Promise<boolean>(
-      (resolve: (a: boolean) => void, reject: (reason) => void): void => {
-        const currentLanguage =
-          StorageManager.get<string>(TranslationConfiguration.languageKey) ===
-          null
-            ? TranslationConfiguration.availableLanguages[0]
-            : StorageManager.get<string>(TranslationConfiguration.languageKey);
+      (
+        resolve: (a: boolean) => void,
+        reject: (reason: unknown) => void
+      ): void => {
+        const storedLanguage = StorageManager.get<string>(
+          TranslationConfiguration.languageKey
+        );
+        const currentLanguage: string =
+          storedLanguage ?? TranslationConfiguration.availableLanguages[0];
         StorageManager.add<string>(
           TranslationConfiguration.languageKey,
           currentLanguage

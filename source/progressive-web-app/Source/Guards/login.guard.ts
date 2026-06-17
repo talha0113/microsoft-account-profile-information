@@ -19,7 +19,7 @@ export const loginGuard: CanActivateFn = (
   const router = inject(Router);
   return inject(AuthenticationRepository).data$.pipe(
     map(value => {
-      return !(value.data != null) || router.parseUrl('/status');
+      return value.data == null || router.parseUrl('/status');
     })
   );
 };
