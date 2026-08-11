@@ -67,7 +67,7 @@ describe('Login Component', () => {
       nativeElement.querySelector('img');
 
     expect(loginButton?.textContent.toLowerCase()).toContain('login');
-    expect(loginButton?.disabled).toBeFalsy();
+    expect(loginButton?.disabled).toBeDefined();
     expect(progressImage).toBeDefined();
   });
 

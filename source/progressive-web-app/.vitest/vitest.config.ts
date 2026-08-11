@@ -2,6 +2,8 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
+        pool: 'forks',
+        singleFork: true, // moved from poolOptions.forks.singleFork
         coverage: {
             thresholds: {
                 statements: 48,
