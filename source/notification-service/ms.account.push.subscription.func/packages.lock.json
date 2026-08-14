@@ -85,12 +85,12 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.Storage": {
         "type": "Direct",
-        "requested": "[6.8.1, )",
-        "resolved": "6.8.1",
-        "contentHash": "yAS0AL2RcmUaf9Uw9xgBjPaccawfYFAEjXC1xGP1J1CH9GSlsg9llnKEvOCxghJjIhoDEN5K3Bjbcp5QAoGPuQ==",
+        "requested": "[6.8.2, )",
+        "resolved": "6.8.2",
+        "contentHash": "L9k8xW//S27R9WoeDv2BTDOLAkvzqtUPcHD7EvFLGgRyeVd4LMyr5tFu7zzNPGxPZywxC6Pe0qLPTZhJNsxEjg==",
         "dependencies": {
-          "Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs": "6.8.1",
-          "Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues": "5.5.4"
+          "Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs": "6.8.2",
+          "Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues": "5.5.5"
         }
       },
       "Microsoft.Azure.Functions.Worker.Sdk": {
@@ -405,8 +405,8 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.Storage.Blobs": {
         "type": "Transitive",
-        "resolved": "6.8.1",
-        "contentHash": "fxu3uKzuFsnzK7+22DwA6/4Dd4+dEgH6Nvww0pt078Ou1a3qiz7B42D3/zffEEpRIsqPll5LgTVt8r1x8+HqBQ==",
+        "resolved": "6.8.2",
+        "contentHash": "kVbZcVS8EFaffD3WevNEka99toLwsl9VsGgRuFO7nUCIhBqkkN0ehS3CUO51Zeiy8I5xdXsZN50f/DcfFS6Isg==",
         "dependencies": {
           "Azure.Storage.Blobs": "12.23.0",
           "Microsoft.Azure.Functions.Worker.Core": "1.20.0",
@@ -416,8 +416,8 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.Storage.Queues": {
         "type": "Transitive",
-        "resolved": "5.5.4",
-        "contentHash": "/JZMukCWT9F1VZAggd0Yyx+/FAWxxG4ConEP4MMIYfihyt75UcnXnMjvL/Z6yq11nNWaXmwigYyFwWPH67RhRQ==",
+        "resolved": "5.5.5",
+        "contentHash": "GxoTrs+FXJP6paliWUT+hipnGi625U6x2gHY7WoYfFy5X3XL4If8FR9ORlGDEylPO/IEkMsfjpUS/8fdFglfwQ==",
         "dependencies": {
           "Azure.Storage.Queues": "12.21.0",
           "Microsoft.Azure.Functions.Worker.Core": "1.20.0",
@@ -634,8 +634,8 @@
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "10.0.10",
-        "contentHash": "z/2xXlFw2aLGjHyEm6E0tQ+In6VfzQzTrtArbQ2c0TQE16ZbyDCMGPvaUT9I0s8rgy9sRWlU2P9waW37qV04qA=="
+        "resolved": "10.0.11",
+        "contentHash": "/a1aJz4m7ylhEDf25ugQChLQoN5XwoGjWw/BoR/ZWWKsO1v4DdJElS1uyngahz4B/eOzjFk1KNTkarRLE5wsIg=="
       },
       "Microsoft.Extensions.DependencyModel": {
         "type": "Transitive",
@@ -990,7 +990,7 @@
       "ms.account.push.subscription.core": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "[10.0.10, )",
+          "Microsoft.Extensions.DependencyInjection": "[10.0.11, )",
           "Scrutor": "[7.0.0, )",
           "ms.account.push.subscription.domain": "[1.0.0, )"
         }
@@ -1040,11 +1040,11 @@
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "CentralTransitive",
-        "requested": "[10.0.10, )",
-        "resolved": "10.0.10",
-        "contentHash": "ANyvsgkNBRvcJh2XLgn8veGmajf+8m0AbKK+HPWdRL1yraSNVVSmQhFntLtdz/C795jxqqup+k05cs/3jZQPOA==",
+        "requested": "[10.0.11, )",
+        "resolved": "10.0.11",
+        "contentHash": "PSmotV19c7E3lKed++uYo1kSiXFI+uTl37CBSrhq+CfLC3FCHjG7R91+xPnNehQfHS1b0Tzo/CCLPWH3qaEheg==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.10"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.11"
         }
       },
       "Newtonsoft.Json": {
