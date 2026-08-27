@@ -72,9 +72,9 @@
       },
       "Microsoft.Azure.Functions.Worker.Extensions.SignalRService": {
         "type": "Direct",
-        "requested": "[2.0.1, )",
-        "resolved": "2.0.1",
-        "contentHash": "9U6P1hDIreNLXtnvsXpHzjVY+JLkTlJUTjwAqViOfoWEIV+Y8bVDYkdQZS5xvbgHQuEtpOF9wnmj3Pl0/Xy8rw==",
+        "requested": "[2.1.0, )",
+        "resolved": "2.1.0",
+        "contentHash": "7cPr9EzNluDlsJ+6bHx1ft/Rk18u2h7qx50noKAko9EOzvgDG6aK2llRoGTMqSW3tEc0Vh/3l4Y5QHXwjLzcJA==",
         "dependencies": {
           "Microsoft.Azure.Functions.Worker.Extensions.Abstractions": "1.3.0",
           "Microsoft.Azure.SignalR.Management": "1.29.0",
