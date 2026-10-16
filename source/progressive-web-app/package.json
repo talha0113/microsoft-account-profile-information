@@ -17,7 +17,7 @@
     "@angular/platform-browser": "^22.2.2",
     "@angular/router": "^22.2.2",
     "@angular/service-worker": "^22.2.2",
-    "@azure/msal-browser": "^5.25.0",
+    "@azure/msal-browser": "^5.25.1",
     "@jsverse/transloco": "^8.4.0",
     "@microsoft/applicationinsights-web": "^3.4.5",
     "@microsoft/signalr": "^10.0.11",
