@@ -14,9 +14,9 @@
       },
       "Microsoft.Azure.Cosmos": {
         "type": "Direct",
-        "requested": "[3.63.3, )",
-        "resolved": "3.63.3",
-        "contentHash": "my9N2y0NAkVYIAqmF2FsHSTdo0sAcZTV2H9gM0nmwqjxKo6yar+jW0GG2JOtxAxqFx5eRPlOIq+CJjCzZ4/TYA==",
+        "requested": "[3.63.4, )",
+        "resolved": "3.63.4",
+        "contentHash": "P4lbLiYd4pTdN54PVBd5OG3viVSX+jxCPY7s8QjdDGVFwTu+NwSDyEpshbWSbL/dYVmpvuZ0hasZHVEUh6VMWw==",
         "dependencies": {
           "Azure.Core": "1.44.1",
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
@@ -634,8 +634,8 @@
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "10.0.11",
-        "contentHash": "/a1aJz4m7ylhEDf25ugQChLQoN5XwoGjWw/BoR/ZWWKsO1v4DdJElS1uyngahz4B/eOzjFk1KNTkarRLE5wsIg=="
+        "resolved": "10.0.14",
+        "contentHash": "QtpQzuSZVyTPCuHW058yCs9Nj0394uUkNyFHS813nOmK9UgUdBdaprJ5PPsBgsQIpxADTsTkbaMMonykem6qdw=="
       },
       "Microsoft.Extensions.DependencyModel": {
         "type": "Transitive",
@@ -990,7 +990,7 @@
       "ms.account.push.subscription.core": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "[10.0.11, )",
+          "Microsoft.Extensions.DependencyInjection": "[10.0.14, )",
           "Scrutor": "[7.0.0, )",
           "ms.account.push.subscription.domain": "[1.0.0, )"
         }
@@ -1004,7 +1004,7 @@
           "Azure.Identity": "[1.21.0, )",
           "Azure.Storage.Queues": "[12.28.1, )",
           "Lib.AspNetCore.WebPush": "[2.2.2, )",
-          "Microsoft.Azure.Cosmos": "[3.63.3, )",
+          "Microsoft.Azure.Cosmos": "[3.63.4, )",
           "Microsoft.Extensions.Configuration.Abstractions": "[10.0.13, )",
           "Newtonsoft.Json": "[13.0.4, )",
           "WebPush": "[1.0.13, )",
@@ -1040,11 +1040,11 @@
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "CentralTransitive",
-        "requested": "[10.0.11, )",
-        "resolved": "10.0.11",
-        "contentHash": "PSmotV19c7E3lKed++uYo1kSiXFI+uTl37CBSrhq+CfLC3FCHjG7R91+xPnNehQfHS1b0Tzo/CCLPWH3qaEheg==",
+        "requested": "[10.0.14, )",
+        "resolved": "10.0.14",
+        "contentHash": "2LzcuVjemeXR+WdY9wGIr8iGb7fYsDAit+IScxXX2XJnX0b++mWcE/WO6fEGIqhdMfSQM2ZS5JGMHYZix7YXZg==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.11"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.14"
         }
       },
       "Newtonsoft.Json": {
